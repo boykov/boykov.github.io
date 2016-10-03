@@ -1,16 +1,10 @@
-#+TITLE: Развертывание OpenLDAP
-#+OPTIONS: toc:4
-#+OPTIONS: H:6 num:nil html-postamble:nil ^:nil tags:nil
+#+TITLE: Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4
+#+OPTIONS: toc:4 H:6 num:nil html-postamble:nil ^:nil tags:nil
+#+SETUPFILE: theme-readtheorg-local.setup
 
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/htmlize.css"/>
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+Конфигурационные файлы: https://github.com/boykov/cc-ldap-centos
 
-#+HTML_HEAD: <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-#+HTML_HEAD: <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-#+HTML_HEAD: <script type="text/javascript" src="../org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-#+HTML_HEAD: <script type="text/javascript" src="../org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
-
-* Разработать документацию по установке и настройке сервера LDAP
+* Установка и настройка сервера OpenLDAP
 :PROPERTIES:
 :ID:       f3a148ae-26f4-4c54-a25c-532d2b9086ba
 :END:
@@ -19,15 +13,21 @@
 Необходимо разработать документацию по установке и настройке сервера LDAP в ОС CentOS 5. Предпочтение отдавать реализациям, доступным в базовом репозитории дистрибутива. Проверить работоспособность выработанных инструкций в ОС CentOS 6.
 #+end_quote
 
+** OpenLDAP 2.3 и CentOS 5
+
 [[https://github.com/boykov/docker-ldap][docker-ldap]]
 
 #+INCLUDE: "/home/eab/data/gitno/github/docker-ldap/Dockerfile" src dockerfile :lines "17-20"
 
-* Разработать документацию по настройке аутентификации пользователей при помощи LDAP
+** OpenLDAP 2.4 и CentOS 6
+
+
+* Настройка аутентификации пользователей при помощи LDAP
 :PROPERTIES:
 :ID:       49b5e2df-0c06-445a-ae9e-66bcd6cc9e40
 :END:
 
+#+begin_quote
 Необходимо разработать документацию по настройке аутентификации пользователей при помощи LDAP в ОС CentOS 5. Проверить работоспособность выработанных инструкций в ОС CentOS 6.
 
 В документацию должно входить:
@@ -35,6 +35,7 @@
 - Список пакетов, которые необходимо установить;
 - Список файлов, модификация которых необходима для настройки процесса аутентификации посредством LDAP;
 - Описание всех опций, выставляемых в этих файлах.
+#+end_quote
 
 * Разработать схему БД LDAP
 :PROPERTIES:
