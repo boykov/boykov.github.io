@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-04 Вт. 11:46 -->
+<!-- 2016-10-04 Вт. 13:25 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -161,14 +161,14 @@ for the JavaScript code in this tag.
 </ul>
 </li>
 <li><a href="#orgheadline4">Настройка аутентификации пользователей при помощи LDAP</a></li>
-<li><a href="#orgheadline5">Разработать схему БД LDAP</a></li>
-<li><a href="#orgheadline6">Разработать документацию по процессу добавления нового пользователя в систему</a></li>
+<li><a href="#orgheadline5">Схемы БД LDAP</a></li>
+<li><a href="#orgheadline6">Процесс добавления нового пользователя в систему</a></li>
 <li><a href="#orgheadline7">Перевести аутентификацию пользователей кластера на использование LDAP</a></li>
 </ul>
 </div>
 </div>
 <p>
-Конфигурационные файлы: <a href="https://github.com/boykov/cc-ldap-centos">https://github.com/boykov/cc-ldap-centos</a>
+В данном документе применяется управление конфигурациями при помощи <a href="https://www.docker.com/what-docker">Docker</a>. Все документируемые команды и конфигурационные файлы прошли проверку на работоспособность в воспроизводимом программном окружении, которое доступно в проекте <a href="https://github.com/boykov/cc-ldap-centos">cc-ldap-centos</a>.
 </p>
 
 <div id="outline-container-orgheadline1" class="outline-2">
@@ -186,9 +186,62 @@ for the JavaScript code in this tag.
 <div class="outline-text-3" id="text-orgheadline2">
 <div class="org-src-container">
 
+<pre class="src src-dockerfile"><span style="color: #268bd2; font-weight: bold;">FROM</span> centos:centos5
+</pre>
+</div>
+
+<p>
+В CentOS 5 из базового репозитория устанавливается 2.3.43 версия OpenLDAP.
+</p>
+<div class="org-src-container">
+
 <pre class="src src-dockerfile"><span style="color: #268bd2; font-weight: bold;">RUN</span> yum -y update &amp;&amp; <span style="color: #b58900; font-weight: bold;">\</span>
     yum -y install openldap-servers openldap-clients &amp;&amp; <span style="color: #b58900; font-weight: bold;">\</span>
     yum clean all
+</pre>
+</div>
+<div class="tip">
+<p>
+Там, где это не вызывает недоразумений, вместо синтаксиса обычных команд иногда будет использоваться синтакс Dockerfile. Например, предыдущая команда означает просто <code class="src src-sh">yum -y install openldap-server openldap-clients
+</code>.
+</p>
+
+</div>
+<p>
+Для запуска сервиса <code class="src src-sh">ldap
+</code> необходимо подготовить каталог и файл конфигурации базы данных.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">    cp /etc/openldap/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+    chown ldap. /var/lib/ldap/DB_CONFIG
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">    rm -f /etc/openldap/slapd.conf
+    cp /root/slapd.conf /etc/openldap/slapd.conf
+    chown ldap. /etc/openldap/slapd.conf
+
+    service ldap start
+    sleep 3
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="orgsrcblock1">    killall slapd
+    <span style="color: #8787d7;">oldpath</span>=<span style="color: #6c71c4; font-weight: bold;">`pwd`</span>
+    <span style="color: #268bd2; font-weight: bold;">cd</span> /etc/openldap
+    mkdir slapd.d
+    slaptest -f slapd.conf -F slapd.d
+    chown -R ldap:ldap slapd.d
+    chmod -R 0750 slapd.d
+    mv slapd.conf slapd.conf.bak
+    <span style="color: #268bd2; font-weight: bold;">cd</span> $<span style="color: #8787d7;">oldpath</span>
+    service ldap start
+    sleep 3
 </pre>
 </div>
 </div>
@@ -222,20 +275,24 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5"><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Разработать схему БД LDAP</h2>
+<h2 id="orgheadline5"><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схемы БД LDAP</h2>
 <div class="outline-text-2" id="text-orgheadline5">
+<blockquote>
 <p>
 Необходимо разработать схему БД LDAP, предназначенную для хранения учетных данных пользователей кластера.
 </p>
+</blockquote>
 </div>
 </div>
 
 <div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6"><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Разработать документацию по процессу добавления нового пользователя в систему</h2>
+<h2 id="orgheadline6"><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h2>
 <div class="outline-text-2" id="text-orgheadline6">
+<blockquote>
 <p>
 Необходимо разработать документацию по процессу добавления нового пользователя в систему, использующего аутентификацию посредством LDAP. Предложить CLI (или GUI WEB) интерфейс для выполнения данной операции. Ориентироваться на использование в ОС CentOS 5/6.
 </p>
+</blockquote>
 </div>
 </div>
 
