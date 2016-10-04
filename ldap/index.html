@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-04 Вт. 13:25 -->
+<!-- 2016-10-04 Вт. 13:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -154,16 +154,16 @@ for the JavaScript code in this tag.
 <h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">Установка и настройка сервера OpenLDAP</a>
+<li><a href="#install-and-config">Установка и настройка сервера OpenLDAP</a>
 <ul>
-<li><a href="#orgheadline2">OpenLDAP 2.3 и CentOS 5</a></li>
-<li><a href="#orgheadline3">OpenLDAP 2.4 и CentOS 6</a></li>
+<li><a href="#ldap2.3-centos5">OpenLDAP 2.3 и CentOS 5</a></li>
+<li><a href="#ldap2.4-centos6">OpenLDAP 2.4 и CentOS 6</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline4">Настройка аутентификации пользователей при помощи LDAP</a></li>
-<li><a href="#orgheadline5">Схемы БД LDAP</a></li>
-<li><a href="#orgheadline6">Процесс добавления нового пользователя в систему</a></li>
-<li><a href="#orgheadline7">Перевести аутентификацию пользователей кластера на использование LDAP</a></li>
+<li><a href="#authentification">Настройка аутентификации пользователей при помощи LDAP</a></li>
+<li><a href="#schema">Схема БД LDAP</a></li>
+<li><a href="#new-user">Процесс добавления нового пользователя в систему</a></li>
+<li><a href="#cluster">Перевести аутентификацию пользователей кластера на использование LDAP</a></li>
 </ul>
 </div>
 </div>
@@ -171,9 +171,9 @@ for the JavaScript code in this tag.
 В данном документе применяется управление конфигурациями при помощи <a href="https://www.docker.com/what-docker">Docker</a>. Все документируемые команды и конфигурационные файлы прошли проверку на работоспособность в воспроизводимом программном окружении, которое доступно в проекте <a href="https://github.com/boykov/cc-ldap-centos">cc-ldap-centos</a>.
 </p>
 
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1"><a id="ID-f3a148ae-26f4-4c54-a25c-532d2b9086ba"></a>Установка и настройка сервера OpenLDAP</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="install-and-config"><a id="orgheadline3"></a><a id="ID-f3a148ae-26f4-4c54-a25c-532d2b9086ba"></a>Установка и настройка сервера OpenLDAP</h2>
+<div class="outline-text-2" id="text-install-and-config">
 <blockquote>
 <p>
 Необходимо разработать документацию по установке и настройке сервера LDAP в ОС CentOS 5. Предпочтение отдавать реализациям, доступным в базовом репозитории дистрибутива. Проверить работоспособность выработанных инструкций в ОС CentOS 6.
@@ -181,9 +181,9 @@ for the JavaScript code in this tag.
 </blockquote>
 </div>
 
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">OpenLDAP 2.3 и CentOS 5</h3>
-<div class="outline-text-3" id="text-orgheadline2">
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="ldap2.3-centos5"><a id="orgheadline1"></a><a id="ID-cdb77a09-a1eb-4db8-ad05-e45c3b49418c"></a>OpenLDAP 2.3 и CentOS 5</h3>
+<div class="outline-text-3" id="text-ldap2.3-centos5">
 <div class="org-src-container">
 
 <pre class="src src-dockerfile"><span style="color: #268bd2; font-weight: bold;">FROM</span> centos:centos5
@@ -247,15 +247,17 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">OpenLDAP 2.4 и CentOS 6</h3>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="ldap2.4-centos6"><a id="orgheadline2"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a>OpenLDAP 2.4 и CentOS 6</h3>
+<div class="outline-text-3" id="text-ldap2.4-centos6">
+</div>
 </div>
 </div>
 
 
 <div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4"><a id="ID-49b5e2df-0c06-445a-ae9e-66bcd6cc9e40"></a>Настройка аутентификации пользователей при помощи LDAP</h2>
-<div class="outline-text-2" id="text-orgheadline4">
+<h2 id="authentification"><a id="orgheadline4"></a><a id="ID-49b5e2df-0c06-445a-ae9e-66bcd6cc9e40"></a>Настройка аутентификации пользователей при помощи LDAP</h2>
+<div class="outline-text-2" id="text-authentification">
 <blockquote>
 <p>
 Необходимо разработать документацию по настройке аутентификации пользователей при помощи LDAP в ОС CentOS 5. Проверить работоспособность выработанных инструкций в ОС CentOS 6.
@@ -275,8 +277,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5"><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схемы БД LDAP</h2>
-<div class="outline-text-2" id="text-orgheadline5">
+<h2 id="schema"><a id="orgheadline5"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схема БД LDAP</h2>
+<div class="outline-text-2" id="text-schema">
 <blockquote>
 <p>
 Необходимо разработать схему БД LDAP, предназначенную для хранения учетных данных пользователей кластера.
@@ -286,8 +288,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6"><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h2>
-<div class="outline-text-2" id="text-orgheadline6">
+<h2 id="new-user"><a id="orgheadline6"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h2>
+<div class="outline-text-2" id="text-new-user">
 <blockquote>
 <p>
 Необходимо разработать документацию по процессу добавления нового пользователя в систему, использующего аутентификацию посредством LDAP. Предложить CLI (или GUI WEB) интерфейс для выполнения данной операции. Ориентироваться на использование в ОС CentOS 5/6.
@@ -297,8 +299,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7"><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a>Перевести аутентификацию пользователей кластера на использование LDAP</h2>
-<div class="outline-text-2" id="text-orgheadline7">
+<h2 id="cluster"><a id="orgheadline7"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a>Перевести аутентификацию пользователей кластера на использование LDAP</h2>
+<div class="outline-text-2" id="text-cluster">
 </div>
 </div>
 </div>
