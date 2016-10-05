@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-05 Ср. 12:40 -->
+<!-- 2016-10-05 Ср. 18:06 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -215,6 +215,9 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
+<a href="javascript:toggleDiv('myContent');" class="fa">slapd.conf</a>
+
+<div id="myContent" style="display:none">
 <div class="org-src-container">
 
 <pre class="src src-conf-space"><span style="color: #268bd2;">include</span>         /etc/openldap/schema/core.schema
@@ -249,6 +252,7 @@ for the JavaScript code in this tag.
 <span style="color: #268bd2;">index</span> nisMapName,nisMapEntry            eq,pres,sub
 </pre>
 </div>
+</div>
 
 <div class="org-src-container">
 
@@ -265,12 +269,107 @@ for the JavaScript code in this tag.
     sleep 3
 </pre>
 </div>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">    <span style="color: #268bd2;">ROOT_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>)
+    <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Use bash variable subsitution to escape special chars http://stackoverflow.com/a/14339705</span>
+    sed -i <span style="color: #2aa198;">"s+%LDAP_ROOT_PASSWORD%+${ROOT_PWD//+/\\+}+"</span> /root/manager.ldif
+    ldapmodify -v -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">cn</span>=config -f /root/manager.ldif -x -w 1
+
+    <span style="color: #268bd2;">MANAGER_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span>)
+    sed -i <span style="color: #2aa198;">"s+%LDAP_MANAGER_PASSWORD%+${MANAGER_PWD//+/\\+}+"</span> /root/domain.ldif
+    ldapmodify  -v -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">cn</span>=config -f /root/domain.ldif -x -w $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>
+
+    ldapadd -x -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">dc</span>=tuleap,<span style="color: #268bd2;">dc</span>=local -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f /root/base.ldif
+</pre>
+</div>
+
+<br/><a href="javascript:toggleDiv('myContent-manager');" class="fa">manager.ldif</a>
+
+<div id="myContent-manager" style="display:true">
+<div class="org-src-container">
+
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={0}config,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcRootPW</span>
+olcRootPW: %LDAP_ROOT_PASSWORD%
+</pre>
+</div>
+</div>
+
+<br/><a href="javascript:toggleDiv('myContent-domain');" class="fa">domain.ldif</a>
+
+<div id="myContent-domain" style="display:none">
+<div class="org-src-container">
+
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={1}monitor,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcAccess</span>
+olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"
+  read by dn.base="cn=Manager,dc=tuleap,dc=local" read by * none
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcSuffix</span>
+olcSuffix: dc=tuleap,dc=local
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcRootDN</span>
+olcRootDN: cn=Manager,dc=tuleap,dc=local
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcRootPW</span>
+olcRootPW: %LDAP_MANAGER_PASSWORD%
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcAccess</span>
+olcAccess: {0}to attrs=userPassword,shadowLastChange by
+  dn="cn=Manager,dc=tuleap,dc=local" write by anonymous auth by self write by * none
+olcAccess: {1}to dn.base="" by * read
+olcAccess: {2}to * by dn="cn=Manager,dc=tuleap,dc=local" write by * read
+</pre>
+</div>
+</div>
+
+<br/><a href="javascript:toggleDiv('myContent-base');" class="fa">base.ldif</a>
+
+<div id="myContent-base" style="display:none">
+<div class="org-src-container">
+
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=tuleap,dc=local</span>
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+dc: tuleap
+o : tuleap
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=Manager,dc=tuleap,dc=local</span>
+objectClass: organizationalRole
+cn: Manager
+description: Directory Manager
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=people,dc=tuleap,dc=local</span>
+objectClass: organizationalUnit
+ou: people
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=groups,dc=tuleap,dc=local</span>
+objectClass: organizationalUnit
+ou: groups
+</pre>
+</div>
+</div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-3">
 <h3 id="ldap2.4-centos6"><a id="orgheadline2"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a>OpenLDAP 2.4 и CentOS 6</h3>
 <div class="outline-text-3" id="text-ldap2.4-centos6">
+<a href="javascript:toggleDiv('myContent2');" class="fa">slapd.conf.obsolete</a>
+
+<div id="myContent2" style="display:none">
 <div class="org-src-container">
 
 <pre class="src src-conf-space"><span style="color: #268bd2;">include</span>         /etc/openldap/schema/corba.schema
@@ -337,6 +436,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
+</div>
 
 
 <div id="outline-container-orgheadline4" class="outline-2">
@@ -357,8 +457,48 @@ for the JavaScript code in this tag.
 <li>Описание всех опций, выставляемых в этих файлах.</li>
 </ul>
 </blockquote>
+
+<a href="javascript:toggleDiv('myContent-run');" class="fa">ldap-client/run.sh</a>
+
+<div id="myContent-run" style="display:true">
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/bin/</span><span style="color: #859900; font-weight: bold;">bash</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">for testing purpose</span>
+<span style="color: #268bd2;">LDAP_SERVER</span>=<span style="color: #2aa198;">"172.17.0.3"</span>
+<span style="color: #268bd2;">LDAP_BASEDN</span>=<span style="color: #2aa198;">"dc=tuleap,dc=local"</span>
+
+authconfig --enablemkhomedir --enableldap --enableldapauth --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
+
+getent passwd username
+</pre>
 </div>
 </div>
+
+<br/><a href="javascript:toggleDiv('myContent-client5');" class="fa">ldap-client/Dockerfile</a>
+
+<div id="myContent-client5" style="display:true">
+<div class="org-src-container">
+
+<pre class="src src-dockerfile"><span style="color: #859900; font-weight: bold;">RUN</span> yum install -y openssh-server  openldap-clients nss_ldap authconfig
+</pre>
+</div>
+</div>
+
+<br/><a href="javascript:toggleDiv('myContent-client6');" class="fa">ldap-client/Dockerfile-centos6</a>
+
+<div id="myContent-client6" style="display:true">
+<div class="org-src-container">
+
+<pre class="src src-dockerfile"><span style="color: #859900; font-weight: bold;">RUN</span> yum install -y openssh-server  openldap-clients nss-pam-ldapd pam_ldap authconfig
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
 
 <div id="outline-container-orgheadline5" class="outline-2">
 <h2 id="schema"><a id="orgheadline5"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схема БД LDAP</h2>
