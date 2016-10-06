@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-05 Ср. 19:47 -->
+<!-- 2016-10-06 Чт. 17:43 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -156,8 +156,10 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#install-and-config">Установка и настройка сервера OpenLDAP</a>
 <ul>
-<li><a href="#ldap2.3-centos5">OpenLDAP 2.3 и CentOS 5</a></li>
-<li><a href="#ldap2.4-centos6">OpenLDAP 2.4 и CentOS 6</a></li>
+<li><a href="#install-openldap">Установка OpenLDAP</a></li>
+<li><a href="#configure-bdb">Настройка базы данных Oracle Berkeley DB</a></li>
+<li><a href="#configure-slapd">Предварительная настройка схемы БД LDAP</a></li>
+<li><a href="#add-manager">Настройка</a></li>
 </ul>
 </li>
 <li><a href="#authentification">Настройка аутентификации пользователей при помощи LDAP</a></li>
@@ -167,25 +169,29 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<p>
-В данном документе применяется управление конфигурациями при помощи <a href="https://www.docker.com/what-docker">Docker</a>. Все документируемые команды и конфигурационные файлы прошли проверку на работоспособность в воспроизводимом программном окружении, которое доступно в проекте <a href="https://github.com/boykov/cc-ldap-centos">cc-ldap-centos</a>.
-</p>
 
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="install-and-config"><a id="orgheadline3"></a><a id="ID-f3a148ae-26f4-4c54-a25c-532d2b9086ba"></a>Установка и настройка сервера OpenLDAP</h2>
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="install-and-config"><a id="orgheadline5"></a><a id="ID-f3a148ae-26f4-4c54-a25c-532d2b9086ba"></a>Установка и настройка сервера OpenLDAP</h2>
 <div class="outline-text-2" id="text-install-and-config">
 <blockquote>
 <p>
 Необходимо разработать документацию по установке и настройке сервера LDAP в ОС CentOS 5. Предпочтение отдавать реализациям, доступным в базовом репозитории дистрибутива. Проверить работоспособность выработанных инструкций в ОС CentOS 6.
 </p>
 </blockquote>
+
+<div class="sidebar">
+<p>
+Команды и конфигурационные файлы прошли проверку на работоспособность в тестовом программном окружении, доступном в проекте <a href="https://github.com/boykov/cc-ldap-centos">cc-ldap-centos</a>.
+</p>
+
+</div>
 </div>
 
 <div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="ldap2.3-centos5"><a id="orgheadline1"></a><a id="ID-cdb77a09-a1eb-4db8-ad05-e45c3b49418c"></a>OpenLDAP 2.3 и CentOS 5</h3>
-<div class="outline-text-3" id="text-ldap2.3-centos5">
+<h3 id="install-openldap"><a id="orgheadline1"></a><a id="ID-cdb77a09-a1eb-4db8-ad05-e45c3b49418c"></a>Установка OpenLDAP</h3>
+<div class="outline-text-3" id="text-install-openldap">
 <p>
-В CentOS 5 из базового репозитория устанавливается 2.3 версия OpenLDAP.
+Базовые репозитории дистрибутивов CentOS 5 и CentOS6 содержат 2.3 и 2.4 версию OpenLDAP, соответственно. Выполнив стандартную установку
 </p>
 
 <div class="org-src-container">
@@ -194,8 +200,16 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 <p>
-Для запуска сервиса <code class="src src-sh">ldap
-</code> необходимо подготовить каталог и файл конфигурации базы данных.
+получаем 2 конфигурации, различающиеся в некоторых деталях. Например, название сервиса: <b>ldap</b> в случае CentOS 5/2.3 OpenLDAP (5/2.3) и <b>slapd</b> в случае CentOS 6/2.4 OpenLDAP (6/2.4).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="configure-bdb"><a id="orgheadline2"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a>Настройка базы данных Oracle Berkeley DB</h3>
+<div class="outline-text-3" id="text-configure-bdb">
+<p>
+Для запуска сервиса <b>ldap</b> (<b>slapd</b>) необходимо подготовить каталог и файл конфигурации базы данных. Расположение образца файла настройки, в 5/2.3
 </p>
 <div class="org-src-container">
 
@@ -203,7 +217,166 @@ for the JavaScript code in this tag.
     chown ldap. /var/lib/ldap/DB_CONFIG
 </pre>
 </div>
+<p>
+а в 6/2.4
+</p>
+<div class="org-src-container">
 
+<pre class="src src-sh">    cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+    chown ldap. /var/lib/ldap/DB_CONFIG
+</pre>
+</div>
+<p>
+Используем настройки без изменений в обеих конфигурациях.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="configure-slapd"><a id="orgheadline3"></a><a id="ID-fd3e3e26-d416-4cc5-9dfa-554caeaf7830"></a>Предварительная настройка схемы БД LDAP</h3>
+<div class="outline-text-3" id="text-configure-slapd">
+<p>
+Конфигурация 5/2.3 по умолчанию настраивается файлом <b>slapd.conf</b>. Такой подход считается устаревшим, <a href="http://www.openldap.org/doc/admin24/guide.html#Converting%20old%20style%20%7B%7Bslapd.conf%7D%7D(5)%20file%20to%20%7B%7Bcn=config%7D%7D%20format">рекомендуется</a> использовать <b>cn=config</b> формат. Конфигурация 6/2.4 поставляется с двумя эквивалентными вариантами, доступными через файл <b>slapd.conf.obsolete</b> и <b>slapd.d</b> каталог, содержащий настройки в <b>cn=config</b> формате.
+</p>
+
+<p>
+Внесем небольшие изменения в конфигурационный файл для 5/2.3
+</p>
+<a href="javascript:toggleDiv('myContent');" class="fa">/root/slapd.conf</a>
+
+<div id="myContent" style="display:none">
+<div class="org-src-container">
+
+<pre class="src src-conf-space"><span style="color: #93a1a1;">#</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">See slapd.conf(5) for details on configuration options.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">This file should NOT be world readable.</span>
+<span style="color: #93a1a1;">#</span>
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/core.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/cosine.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/inetorgperson.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/nis.schema
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Allow LDAPv2 client connections.  This is NOT the default.</span>
+<span style="color: #268bd2;">allow</span> bind_v2
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Do not enable referrals until AFTER you have a working directory</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">service AND an understanding of referrals.</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">referral       ldap://root.openldap.org</span>
+
+<span style="color: #268bd2;">pidfile</span>         /var/run/openldap/slapd.pid
+<span style="color: #268bd2;">argsfile</span>        /var/run/openldap/slapd.args
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Load dynamic backend modules:</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">modulepath    /usr/lib64/openldap</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Modules available in openldap-servers-overlays RPM package</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Module syncprov.la is now statically linked with slapd and there</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">is no need to load it here</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload accesslog.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload auditlog.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload denyop.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload dyngroup.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload dynlist.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload lastmod.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload pcache.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload ppolicy.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload refint.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload retcode.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload rwm.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload smbk5pwd.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload translucent.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload unique.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload valsort.la</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">modules available in openldap-servers-sql RPM package:</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload back_sql.la</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">The next three lines allow use of TLS for encrypting connections using a</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">dummy test certificate which you can generate by changing to</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">/etc/pki/tls/certs, running "make slapd.pem", and fixing permissions on</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">slapd.pem so that the ldap user or group can read it.  Your client software</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">may balk at self-signed certificates, however.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">TLSCACertificateFile /etc/pki/tls/certs/ca-bundle.crt</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">TLSCertificateFile /etc/pki/tls/certs/slapd.pem</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">TLSCertificateKeyFile /etc/pki/tls/certs/slapd.pem</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Sample security restrictions</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Require integrity protection (prevent hijacking)</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Require 112-bit (3DES or better) encryption for updates</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Require 63-bit encryption for simple bind</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">security ssf=1 update_ssf=112 simple_bind=64</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Sample access control policy:</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Root DSE: allow anyone to read it</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Subschema (sub)entry DSE: allow anyone to read it</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Other DSEs:</span>
+<span style="color: #93a1a1;">#               </span><span style="color: #93a1a1;">Allow self write access</span>
+<span style="color: #93a1a1;">#               </span><span style="color: #93a1a1;">Allow authenticated users read access</span>
+<span style="color: #93a1a1;">#               </span><span style="color: #93a1a1;">Allow anonymous users to authenticate</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Directives needed to implement policy:</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">access to dn.base="" by * read</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">access to dn.base="cn=Subschema" by * read</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">access to *</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">by self write</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">by users read</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">by anonymous auth</span>
+<span style="color: #93a1a1;">#</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">if no access controls are present, the default policy</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">allows anyone and everyone to read anything but restricts</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">updates to rootdn.  (e.g., "access to * by * read")</span>
+<span style="color: #93a1a1;">#</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">rootdn can always read and write EVERYTHING!</span>
+
+<span style="color: #93a1a1;">#######################################################################</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">ldbm and/or bdb database definitions</span>
+<span style="color: #93a1a1;">#######################################################################</span>
+<span style="color: #268bd2;">database</span>        config
+<span style="color: #268bd2;">rootdn</span>          <span style="color: #2aa198;">"cn=Manager,cn=config"</span>
+<span style="color: #268bd2;">rootpw</span>          1
+
+<span style="color: #268bd2;">database</span> monitor
+
+<span style="color: #268bd2;">database</span>        bdb
+<span style="color: #268bd2;">suffix</span>          <span style="color: #2aa198;">"dc=my-domain,dc=com"</span>
+<span style="color: #268bd2;">rootdn</span>          <span style="color: #2aa198;">"cn=Manager,dc=my-domain,dc=com"</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Cleartext passwords, especially for the rootdn, should</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">be avoided.  See slappasswd(8) and slapd.conf(5) for details.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Use of strong authentication encouraged.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">rootpw                secret</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">rootpw                {crypt}ijFYNcSNctBYg</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">The database directory MUST exist prior to running slapd AND </span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">should only be accessible by the slapd and slap tools.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Mode 700 recommended.</span>
+<span style="color: #268bd2;">directory</span>       /var/lib/ldap
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Indices to maintain for this database</span>
+<span style="color: #268bd2;">index</span> objectClass                       eq,pres
+<span style="color: #268bd2;">index</span> ou,cn,mail,surname,givenname      eq,pres,sub
+<span style="color: #268bd2;">index</span> uidNumber,gidNumber,loginShell    eq,pres
+<span style="color: #268bd2;">index</span> uid,memberUid                     eq,pres,sub
+<span style="color: #268bd2;">index</span> nisMapName,nisMapEntry            eq,pres,sub
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Replicas of this database</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">replogfile /var/lib/ldap/openldap-master-replog</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">replica host=ldap-1.example.com:389 starttls=critical</span>
+<span style="color: #93a1a1;">#     </span><span style="color: #93a1a1;">bindmethod=sasl saslmech=GSSAPI</span>
+<span style="color: #93a1a1;">#     </span><span style="color: #93a1a1;">authcId=host/ldap-master.example.com@EXAMPLE.COM</span>
+</pre>
+</div>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-diff"><span style="background-color: #fdf6e3;">83a84,88</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                1</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> database monitor</span>
+</pre>
+</div>
+<p>
+и произведем первый запуск сервиса
+</p>
 <div class="org-src-container">
 
 <pre class="src src-sh">    rm -f /etc/openldap/slapd.conf
@@ -215,45 +388,191 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-<a href="javascript:toggleDiv('myContent');" class="fa">slapd.conf</a>
+<p>
+Выполним аналогичные действия для 6/2.4
+</p>
+<a href="javascript:toggleDiv('myContent2');" class="fa">/root/slapd.conf.obsolete</a>
 
-<div id="myContent" style="display:none">
+<div id="myContent2" style="display:none">
 <div class="org-src-container">
 
-<pre class="src src-conf-space"><span style="color: #268bd2;">include</span>         /etc/openldap/schema/core.schema
+<pre class="src src-conf-space"><span style="color: #93a1a1;">#</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">See slapd.conf(5) for details on configuration options.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">This file should NOT be world readable.</span>
+<span style="color: #93a1a1;">#</span>
+
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/corba.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/core.schema
 <span style="color: #268bd2;">include</span>         /etc/openldap/schema/cosine.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/duaconf.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/dyngroup.schema
 <span style="color: #268bd2;">include</span>         /etc/openldap/schema/inetorgperson.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/java.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/misc.schema
 <span style="color: #268bd2;">include</span>         /etc/openldap/schema/nis.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/openldap.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/ppolicy.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/collective.schema
 
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Allow LDAPv2 client connections.  This is NOT the default.</span>
 <span style="color: #268bd2;">allow</span> bind_v2
 
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Do not enable referrals until AFTER you have a working directory</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">service AND an understanding of referrals.</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">referral       ldap://root.openldap.org</span>
+
 <span style="color: #268bd2;">pidfile</span>         /var/run/openldap/slapd.pid
 <span style="color: #268bd2;">argsfile</span>        /var/run/openldap/slapd.args
 
-<span style="color: #93a1a1;">#######################################################################</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">ldbm and/or bdb database definitions</span>
-<span style="color: #93a1a1;">#######################################################################</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Load dynamic backend modules</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">- modulepath is architecture dependent value (32/64-bit system)</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">- back_sql.la overlay requires openldap-server-sql package</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">- dyngroup.la and dynlist.la cannot be used at the same time</span>
 
-<span style="color: #268bd2;">database</span>        config
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">modulepath /usr/lib/openldap</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">modulepath /usr/lib64/openldap</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload accesslog.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload auditlog.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload back_sql.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload chain.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload collect.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload constraint.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload dds.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload deref.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload dyngroup.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload dynlist.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload memberof.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload pbind.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload pcache.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload ppolicy.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload refint.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload retcode.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload rwm.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload seqmod.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload smbk5pwd.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload sssvlv.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload syncprov.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload translucent.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload unique.la</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload valsort.la</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">The next three lines allow use of TLS for encrypting connections using a</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">dummy test certificate which you can generate by running</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">/usr/libexec/openldap/generate-server-cert.sh. Your client software may balk</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">at self-signed certificates, however.</span>
+<span style="color: #268bd2;">TLSCACertificatePath</span> /etc/openldap/certs
+<span style="color: #268bd2;">TLSCertificateFile</span> <span style="color: #2aa198;">"\"OpenLDAP Server\""</span>
+<span style="color: #268bd2;">TLSCertificateKeyFile</span> /etc/openldap/certs/password
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Sample security restrictions</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Require integrity protection (prevent hijacking)</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Require 112-bit (3DES or better) encryption for updates</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Require 63-bit encryption for simple bind</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">security ssf=1 update_ssf=112 simple_bind=64</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Sample access control policy:</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Root DSE: allow anyone to read it</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Subschema (sub)entry DSE: allow anyone to read it</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Other DSEs:</span>
+<span style="color: #93a1a1;">#               </span><span style="color: #93a1a1;">Allow self write access</span>
+<span style="color: #93a1a1;">#               </span><span style="color: #93a1a1;">Allow authenticated users read access</span>
+<span style="color: #93a1a1;">#               </span><span style="color: #93a1a1;">Allow anonymous users to authenticate</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Directives needed to implement policy:</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">access to dn.base="" by * read</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">access to dn.base="cn=Subschema" by * read</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">access to *</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">by self write</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">by users read</span>
+<span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">by anonymous auth</span>
+<span style="color: #93a1a1;">#</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">if no access controls are present, the default policy</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">allows anyone and everyone to read anything but restricts</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">updates to rootdn.  (e.g., "access to * by * read")</span>
+<span style="color: #93a1a1;">#</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">rootdn can always read and write EVERYTHING!</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">enable on-the-fly configuration (cn=config)</span>
+<span style="color: #268bd2;">database</span> config
+<span style="color: #268bd2;">access</span> to *
+        <span style="color: #268bd2;">by</span> dn.exact=<span style="color: #2aa198;">"gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"</span> manage
+        <span style="color: #268bd2;">by</span> * none
+
 <span style="color: #268bd2;">rootdn</span>          <span style="color: #2aa198;">"cn=Manager,cn=config"</span>
 <span style="color: #268bd2;">rootpw</span>          1
 
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">enable server status monitoring (cn=monitor)</span>
 <span style="color: #268bd2;">database</span> monitor
+<span style="color: #268bd2;">access</span> to *
+        <span style="color: #268bd2;">by</span> dn.exact=<span style="color: #2aa198;">"gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"</span> read
+        <span style="color: #268bd2;">by</span> dn.exact=<span style="color: #2aa198;">"cn=Manager,dc=my-domain,dc=com"</span> read
+        <span style="color: #268bd2;">by</span> * none
 
-<span style="color: #268bd2;">database</span> bdb
-<span style="color: #268bd2;">suffix</span> <span style="color: #2aa198;">"dc=tuleap,dc=local"</span>
+<span style="color: #93a1a1;">#######################################################################</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">database definitions</span>
+<span style="color: #93a1a1;">#######################################################################</span>
+
+<span style="color: #268bd2;">database</span>        bdb
+<span style="color: #268bd2;">suffix</span>          <span style="color: #2aa198;">"dc=my-domain,dc=com"</span>
+<span style="color: #268bd2;">checkpoint</span>      1024 15
+<span style="color: #268bd2;">rootdn</span>          <span style="color: #2aa198;">"cn=Manager,dc=my-domain,dc=com"</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Cleartext passwords, especially for the rootdn, should</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">be avoided.  See slappasswd(8) and slapd.conf(5) for details.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Use of strong authentication encouraged.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">rootpw                secret</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">rootpw                {crypt}ijFYNcSNctBYg</span>
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">The database directory MUST exist prior to running slapd AND </span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">should only be accessible by the slapd and slap tools.</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Mode 700 recommended.</span>
 <span style="color: #268bd2;">directory</span>       /var/lib/ldap
 
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Indices to maintain for this database</span>
 <span style="color: #268bd2;">index</span> objectClass                       eq,pres
 <span style="color: #268bd2;">index</span> ou,cn,mail,surname,givenname      eq,pres,sub
 <span style="color: #268bd2;">index</span> uidNumber,gidNumber,loginShell    eq,pres
 <span style="color: #268bd2;">index</span> uid,memberUid                     eq,pres,sub
 <span style="color: #268bd2;">index</span> nisMapName,nisMapEntry            eq,pres,sub
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Replicas of this database</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">replogfile /var/lib/ldap/openldap-master-replog</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">replica host=ldap-1.example.com:389 starttls=critical</span>
+<span style="color: #93a1a1;">#     </span><span style="color: #93a1a1;">bindmethod=sasl saslmech=GSSAPI</span>
+<span style="color: #93a1a1;">#     </span><span style="color: #93a1a1;">authcId=host/ldap-master.example.com@EXAMPLE.COM</span>
 </pre>
 </div>
 </div>
+<div class="org-src-container">
 
+<pre class="src src-diff"><span style="background-color: #fdf6e3;">102a103,105</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          1</span>
+<span style="color: #859900;">&gt;</span>
+</pre>
+</div>
+
+<div class="attention">
+<p>
+В случае с CentOS 6 и OpenLDAP 2.4 здесь дополнительно удаляется конфигурация <b>slapd.d</b>.
+</p>
+
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">    rm -f /etc/openldap/slapd.conf
+    cp /root/slapd.conf.obsolete /etc/openldap/slapd.conf
+    chown ldap. /etc/openldap/slapd.conf
+    rm -rf /etc/openldap/slapd.d
+
+    service slapd start
+    sleep 3
+</pre>
+</div>
+
+<p>
+<a id="orgtarget1"></a>Теперь для обеих конфигураций можно осуществить переход к <b>cn=config</b> формату и избавиться от <b>slapd.conf</b>
+</p>
 <div class="org-src-container">
 
 <pre class="src src-sh">    killall slapd
@@ -265,11 +584,35 @@ for the JavaScript code in this tag.
     chmod -R 0750 slapd.d
     mv slapd.conf slapd.conf.bak
     <span style="color: #657b83; font-weight: bold;">cd</span> $<span style="color: #268bd2;">oldpath</span>
-    service ldap start
+</pre>
+</div>
+<p>
+После перезапуска, для 5/2.3
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">    service ldap start
     sleep 3
 </pre>
 </div>
+<p>
+и для 6/2.4
+</p>
+<div class="org-src-container">
 
+<pre class="src src-sh">    service slapd start
+    sleep 3
+</pre>
+</div>
+<p>
+получаем сервисы, отличающиеся только настройками по умолчанию, поставляемыми из базовых репозиториев в файлах <b>/etc/openldap/slapd.conf</b> (5/2.3) и <b>/usr/share/openldap-servers/slapd.conf.obsolete</b> (6/2.4).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="add-manager"><a id="orgheadline4"></a><a id="ID-17e9c727-04eb-495e-97a8-36ab4f2b3cc9"></a>Настройка</h3>
+<div class="outline-text-3" id="text-add-manager">
 <div class="org-src-container">
 
 <pre class="src src-sh">    <span style="color: #268bd2;">ROOT_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>)
@@ -286,7 +629,6 @@ for the JavaScript code in this tag.
 </div>
 
 <br/><a href="javascript:toggleDiv('myContent-manager');" class="fa">manager.ldif</a>
-
 <div id="myContent-manager" style="display:true">
 <div class="org-src-container">
 
@@ -297,9 +639,7 @@ olcRootPW: %LDAP_ROOT_PASSWORD%
 </pre>
 </div>
 </div>
-
 <br/><a href="javascript:toggleDiv('myContent-domain');" class="fa">domain.ldif</a>
-
 <div id="myContent-domain" style="display:none">
 <div class="org-src-container">
 
@@ -333,9 +673,7 @@ olcAccess: {2}to * by dn="cn=Manager,dc=tuleap,dc=local" write by * read
 </pre>
 </div>
 </div>
-
 <br/><a href="javascript:toggleDiv('myContent-base');" class="fa">base.ldif</a>
-
 <div id="myContent-base" style="display:none">
 <div class="org-src-container">
 
@@ -361,76 +699,24 @@ ou: groups
 </pre>
 </div>
 </div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="ldap2.4-centos6"><a id="orgheadline2"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a>OpenLDAP 2.4 и CentOS 6</h3>
-<div class="outline-text-3" id="text-ldap2.4-centos6">
-<a href="javascript:toggleDiv('myContent2');" class="fa">slapd.conf.obsolete</a>
-
-<div id="myContent2" style="display:none">
+<br/><a href="javascript:toggleDiv('myContent-admin');" class="fa">admin.ldif</a>
+<div id="myContent-admin" style="display:none">
 <div class="org-src-container">
 
-<pre class="src src-conf-space"><span style="color: #268bd2;">include</span>         /etc/openldap/schema/corba.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/core.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/cosine.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/duaconf.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/dyngroup.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/inetorgperson.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/java.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/misc.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/nis.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/openldap.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/ppolicy.schema
-<span style="color: #268bd2;">include</span>         /etc/openldap/schema/collective.schema
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Allow LDAPv2 client connections.  This is NOT the default.</span>
-<span style="color: #268bd2;">allow</span> bind_v2
-
-<span style="color: #268bd2;">pidfile</span>         /var/run/openldap/slapd.pid
-<span style="color: #268bd2;">argsfile</span>        /var/run/openldap/slapd.args
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">The next three lines allow use of TLS for encrypting connections using a</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">dummy test certificate which you can generate by running</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">/usr/libexec/openldap/generate-server-cert.sh. Your client software may balk</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">at self-signed certificates, however.</span>
-<span style="color: #268bd2;">TLSCACertificatePath</span> /etc/openldap/certs
-<span style="color: #268bd2;">TLSCertificateFile</span> <span style="color: #2aa198;">"\"OpenLDAP Server\""</span>
-<span style="color: #268bd2;">TLSCertificateKeyFile</span> /etc/openldap/certs/password
-
-<span style="color: #268bd2;">database</span> config
-<span style="color: #268bd2;">access</span> to *
-        <span style="color: #268bd2;">by</span> dn.exact=<span style="color: #2aa198;">"gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"</span> manage
-        <span style="color: #268bd2;">by</span> * none
-
-<span style="color: #268bd2;">rootdn</span>          <span style="color: #2aa198;">"cn=Manager,cn=config"</span>
-<span style="color: #268bd2;">rootpw</span>          1
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">enable server status monitoring (cn=monitor)</span>
-<span style="color: #268bd2;">database</span> monitor
-<span style="color: #268bd2;">access</span> to *
-        <span style="color: #268bd2;">by</span> dn.exact=<span style="color: #2aa198;">"gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"</span> read
-        <span style="color: #268bd2;">by</span> dn.exact=<span style="color: #2aa198;">"cn=Manager,dc=my-domain,dc=com"</span> read
-        <span style="color: #268bd2;">by</span> * none
-
-<span style="color: #93a1a1;">#######################################################################</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">database definitions</span>
-<span style="color: #93a1a1;">#######################################################################</span>
-
-<span style="color: #268bd2;">database</span>        bdb
-<span style="color: #268bd2;">suffix</span> <span style="color: #2aa198;">"dc=tuleap,dc=local"</span>
-<span style="color: #268bd2;">checkpoint</span>      1024 15
-<span style="color: #268bd2;">rootdn</span>          <span style="color: #2aa198;">"cn=Manager,dc=tuleap,dc=local"</span>
-
-<span style="color: #268bd2;">directory</span>       /var/lib/ldap
-
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Indices to maintain for this database</span>
-<span style="color: #268bd2;">index</span> objectClass                       eq,pres
-<span style="color: #268bd2;">index</span> ou,cn,mail,surname,givenname      eq,pres,sub
-<span style="color: #268bd2;">index</span> uidNumber,gidNumber,loginShell    eq,pres
-<span style="color: #268bd2;">index</span> uid,memberUid                     eq,pres,sub
-<span style="color: #268bd2;">index</span> nisMapName,nisMapEntry            eq,pres,sub
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=username,ou=people,dc=tuleap,dc=local</span>
+cn: User Name
+userPassword: p@ssw0rd
+uid: username
+uidNumber: 1050
+loginShell: /bin/bash
+homeDirectory: /home/webminder
+gidNumber: 1030
+objectClass: posixAccount
+objectClass: shadowAccount
+objectClass: person
+objectClass: inetOrgPerson
+gecos: User Name
+sn: User Name
 </pre>
 </div>
 </div>
@@ -438,9 +724,8 @@ ou: groups
 </div>
 </div>
 
-
-<div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="authentification"><a id="orgheadline4"></a><a id="ID-49b5e2df-0c06-445a-ae9e-66bcd6cc9e40"></a>Настройка аутентификации пользователей при помощи LDAP</h2>
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="authentification"><a id="orgheadline6"></a><a id="ID-49b5e2df-0c06-445a-ae9e-66bcd6cc9e40"></a>Настройка аутентификации пользователей при помощи LDAP</h2>
 <div class="outline-text-2" id="text-authentification">
 <blockquote>
 <p>
@@ -500,8 +785,8 @@ getent passwd username
 
 
 
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="schema"><a id="orgheadline5"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схема БД LDAP</h2>
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="schema"><a id="orgheadline7"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схема БД LDAP</h2>
 <div class="outline-text-2" id="text-schema">
 <blockquote>
 <p>
@@ -511,8 +796,8 @@ getent passwd username
 </div>
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="new-user"><a id="orgheadline6"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h2>
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="new-user"><a id="orgheadline8"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h2>
 <div class="outline-text-2" id="text-new-user">
 <blockquote>
 <p>
@@ -522,8 +807,8 @@ getent passwd username
 </div>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="cluster"><a id="orgheadline7"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a>Перевести аутентификацию пользователей кластера на использование LDAP</h2>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="cluster"><a id="orgheadline9"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a>Перевести аутентификацию пользователей кластера на использование LDAP</h2>
 <div class="outline-text-2" id="text-cluster">
 </div>
 </div>
