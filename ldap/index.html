@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-06 Чт. 17:43 -->
+<!-- 2016-10-07 Пт. 13:43 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -157,9 +157,9 @@ for the JavaScript code in this tag.
 <li><a href="#install-and-config">Установка и настройка сервера OpenLDAP</a>
 <ul>
 <li><a href="#install-openldap">Установка OpenLDAP</a></li>
-<li><a href="#configure-bdb">Настройка базы данных Oracle Berkeley DB</a></li>
+<li><a href="#configure-bdb">Настройка базы данных BDB</a></li>
 <li><a href="#configure-slapd">Предварительная настройка схемы БД LDAP</a></li>
-<li><a href="#add-manager">Настройка</a></li>
+<li><a href="#add-manager">Подготовка к тестированию аутентификации при помощи LDAP</a></li>
 </ul>
 </li>
 <li><a href="#authentification">Настройка аутентификации пользователей при помощи LDAP</a></li>
@@ -169,6 +169,11 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
+<style type="text/css">
+  pre.src:before {
+    top: -5px;
+  }
+</style>
 
 <div id="outline-container-orgheadline5" class="outline-2">
 <h2 id="install-and-config"><a id="orgheadline5"></a><a id="ID-f3a148ae-26f4-4c54-a25c-532d2b9086ba"></a>Установка и настройка сервера OpenLDAP</h2>
@@ -206,7 +211,7 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="configure-bdb"><a id="orgheadline2"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a>Настройка базы данных Oracle Berkeley DB</h3>
+<h3 id="configure-bdb"><a id="orgheadline2"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a>Настройка базы данных BDB</h3>
 <div class="outline-text-3" id="text-configure-bdb">
 <p>
 Для запуска сервиса <b>ldap</b> (<b>slapd</b>) необходимо подготовить каталог и файл конфигурации базы данных. Расположение образца файла настройки, в 5/2.3
@@ -384,7 +389,6 @@ for the JavaScript code in this tag.
     chown ldap. /etc/openldap/slapd.conf
 
     service ldap start
-    sleep 3
 </pre>
 </div>
 
@@ -566,7 +570,6 @@ for the JavaScript code in this tag.
     rm -rf /etc/openldap/slapd.d
 
     service slapd start
-    sleep 3
 </pre>
 </div>
 
@@ -575,7 +578,9 @@ for the JavaScript code in this tag.
 </p>
 <div class="org-src-container">
 
-<pre class="src src-sh">    killall slapd
+<pre class="src src-sh">    sleep 3
+
+    killall slapd
     <span style="color: #268bd2;">oldpath</span>=<span style="color: #6c71c4; font-weight: bold;">`pwd`</span>
     <span style="color: #657b83; font-weight: bold;">cd</span> /etc/openldap
     mkdir slapd.d
@@ -592,7 +597,6 @@ for the JavaScript code in this tag.
 <div class="org-src-container">
 
 <pre class="src src-sh">    service ldap start
-    sleep 3
 </pre>
 </div>
 <p>
@@ -601,7 +605,6 @@ for the JavaScript code in this tag.
 <div class="org-src-container">
 
 <pre class="src src-sh">    service slapd start
-    sleep 3
 </pre>
 </div>
 <p>
@@ -611,11 +614,21 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="add-manager"><a id="orgheadline4"></a><a id="ID-17e9c727-04eb-495e-97a8-36ab4f2b3cc9"></a>Настройка</h3>
+<h3 id="add-manager"><a id="orgheadline4"></a><a id="ID-17e9c727-04eb-495e-97a8-36ab4f2b3cc9"></a>Подготовка к тестированию аутентификации при помощи LDAP</h3>
 <div class="outline-text-3" id="text-add-manager">
+<p>
+Чтобы получить минимально работоспособный сервер LDAP, позволяющий осуществлять аутентификацию для клиентских систем, внесем необходимые изменения в схему. В частности, сконфигурируем базу <b>bdb</b> для доменного имени <b>dc=mercury,dc=febras,dc=net</b>, пропишем пароли для менеджеров схемы <b>cn=Manager,cn=config</b> и <b>cn=Manager,dc=mercury,dc=febras,dc=net</b>, добавим 2 подразделения <b>groups</b> и <b>people</b>. Также, для примера, пропишем в <b>domain.ldif</b> два правила доступа &#x2014; в дальнейшем, при <a href="#ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31">настройке схемы БД LDAP</a>, потребуется переконфигурировать все правила доступа заново.
+</p>
+
+<p>
+Для обеих конфигураций выполним следующие действия
+</p>
+
 <div class="org-src-container">
 
-<pre class="src src-sh">    <span style="color: #268bd2;">ROOT_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>)
+<pre class="src src-sh">    sleep 3
+
+    <span style="color: #268bd2;">ROOT_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>)
     <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Use bash variable subsitution to escape special chars http://stackoverflow.com/a/14339705</span>
     sed -i <span style="color: #2aa198;">"s+%LDAP_ROOT_PASSWORD%+${ROOT_PWD//+/\\+}+"</span> /root/manager.ldif
     ldapmodify -v -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">cn</span>=config -f /root/manager.ldif -x -w 1
@@ -624,12 +637,13 @@ for the JavaScript code in this tag.
     sed -i <span style="color: #2aa198;">"s+%LDAP_MANAGER_PASSWORD%+${MANAGER_PWD//+/\\+}+"</span> /root/domain.ldif
     ldapmodify  -v -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">cn</span>=config -f /root/domain.ldif -x -w $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>
 
-    ldapadd -x -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">dc</span>=tuleap,<span style="color: #268bd2;">dc</span>=local -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f /root/base.ldif
+    ldapadd -x -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f /root/base.ldif
+    ldapadd -x -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f /root/admin.ldif
 </pre>
 </div>
 
-<br/><a href="javascript:toggleDiv('myContent-manager');" class="fa">manager.ldif</a>
-<div id="myContent-manager" style="display:true">
+<br/><a href="javascript:toggleDiv('myContent-manager');" class="fa">/root/manager.ldif</a>
+<div id="myContent-manager" style="display:none">
 <div class="org-src-container">
 
 <pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={0}config,cn=config</span>
@@ -639,7 +653,7 @@ olcRootPW: %LDAP_ROOT_PASSWORD%
 </pre>
 </div>
 </div>
-<br/><a href="javascript:toggleDiv('myContent-domain');" class="fa">domain.ldif</a>
+<br/><a href="javascript:toggleDiv('myContent-domain');" class="fa">/root/domain.ldif</a>
 <div id="myContent-domain" style="display:none">
 <div class="org-src-container">
 
@@ -647,17 +661,17 @@ olcRootPW: %LDAP_ROOT_PASSWORD%
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcAccess</span>
 olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"
-  read by dn.base="cn=Manager,dc=tuleap,dc=local" read by * none
+  read by dn.base="cn=Manager,dc=mercury,dc=febras,dc=net" read by * none
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcSuffix</span>
-olcSuffix: dc=tuleap,dc=local
+olcSuffix: dc=mercury,dc=febras,dc=net
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcRootDN</span>
-olcRootDN: cn=Manager,dc=tuleap,dc=local
+olcRootDN: cn=Manager,dc=mercury,dc=febras,dc=net
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
@@ -667,43 +681,43 @@ olcRootPW: %LDAP_MANAGER_PASSWORD%
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcAccess</span>
 olcAccess: {0}to attrs=userPassword,shadowLastChange by
-  dn="cn=Manager,dc=tuleap,dc=local" write by anonymous auth by self write by * none
+  dn="cn=Manager,dc=mercury,dc=febras,dc=net" write by anonymous auth by self write by * none
 olcAccess: {1}to dn.base="" by * read
-olcAccess: {2}to * by dn="cn=Manager,dc=tuleap,dc=local" write by * read
+olcAccess: {2}to * by dn="cn=Manager,dc=mercury,dc=febras,dc=net" write by * read
 </pre>
 </div>
 </div>
-<br/><a href="javascript:toggleDiv('myContent-base');" class="fa">base.ldif</a>
+<br/><a href="javascript:toggleDiv('myContent-base');" class="fa">/root/base.ldif</a>
 <div id="myContent-base" style="display:none">
 <div class="org-src-container">
 
-<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=tuleap,dc=local</span>
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=mercury,dc=febras,dc=net</span>
 objectClass: top
 objectClass: dcObject
 objectClass: organization
-dc: tuleap
-o : tuleap
+dc: mercury
+o : mercury
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=Manager,dc=tuleap,dc=local</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=Manager,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalRole
 cn: Manager
 description: Directory Manager
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=people,dc=tuleap,dc=local</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=people,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
 ou: people
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=groups,dc=tuleap,dc=local</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=groups,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
 ou: groups
 </pre>
 </div>
 </div>
-<br/><a href="javascript:toggleDiv('myContent-admin');" class="fa">admin.ldif</a>
-<div id="myContent-admin" style="display:none">
+<br/><a href="javascript:toggleDiv('myContent-admin');" class="fa">/root/admin.ldif</a>
+<div id="myContent-admin" style="display:true">
 <div class="org-src-container">
 
-<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=username,ou=people,dc=tuleap,dc=local</span>
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=username,ou=people,dc=mercury,dc=febras,dc=net</span>
 cn: User Name
 userPassword: p@ssw0rd
 uid: username
@@ -720,6 +734,10 @@ sn: User Name
 </pre>
 </div>
 </div>
+
+<p>
+Для тестирования аутентификации будем использовать запись <b>username</b>.
+</p>
 </div>
 </div>
 </div>
@@ -743,7 +761,19 @@ sn: User Name
 </ul>
 </blockquote>
 
-<a href="javascript:toggleDiv('myContent-run');" class="fa">ldap-client/run.sh</a>
+<div class="org-src-container">
+
+<pre class="src src-sh">yum install -y openssh-server openldap-clients nss_ldap authconfig
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">yum install -y openssh-server openldap-clients nss-pam-ldapd authconfig
+</pre>
+</div>
+
+<a href="javascript:toggleDiv('myContent-run');" class="fa">/root/run.sh</a>
 
 <div id="myContent-run" style="display:true">
 <div class="org-src-container">
@@ -752,7 +782,7 @@ sn: User Name
 
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">for testing purpose</span>
 <span style="color: #268bd2;">LDAP_SERVER</span>=<span style="color: #2aa198;">"172.17.0.3"</span>
-<span style="color: #268bd2;">LDAP_BASEDN</span>=<span style="color: #2aa198;">"dc=tuleap,dc=local"</span>
+<span style="color: #268bd2;">LDAP_BASEDN</span>=<span style="color: #2aa198;">"dc=mercury,dc=febras,dc=net"</span>
 
 authconfig --enablemkhomedir --enableldap --enableldapauth --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
 
@@ -761,29 +791,138 @@ getent passwd username
 </div>
 </div>
 
-<br/><a href="javascript:toggleDiv('myContent-client5');" class="fa">ldap-client/Dockerfile</a>
-
-<div id="myContent-client5" style="display:true">
 <div class="org-src-container">
 
-<pre class="src src-dockerfile"><span style="color: #859900; font-weight: bold;">RUN</span> yum install -y openssh-server  openldap-clients nss_ldap authconfig
+<pre class="src src-conf-colon"><span style="color: #268bd2;">username</span>:x:1050:1030:User Name:/home/webminder:/bin/bash
+</pre>
+</div>
+
+<a href="javascript:toggleDiv('myContent-client');" class="fa">client.diff</a>
+
+<div id="myContent-client" style="display:none">
+<div class="org-src-container">
+
+<pre class="src src-diff"><span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/ldap.conf.original</span><span style="background-color: #fdf6e3;">      2015-06-15 22:37:42.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/ldap.conf</span><span style="background-color: #fdf6e3;">       2016-10-07 12:56:11.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">@@ -14,10 +14,10 @@</span>
+<span style="color: #93a1a1;"> # space. How long nss_ldap takes to failover depends on</span>
+<span style="color: #93a1a1;"> # whether your LDAP client library supports configurable</span>
+<span style="color: #93a1a1;"> # network or connect timeouts (see bind_timelimit).</span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">host 127.0.0.1</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">#host 127.0.0.1</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #93a1a1;"> # The distinguished name of the search base.</span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">base dc=example,dc=com</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">base dc=mercury,dc=febras,dc=net</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #93a1a1;"> # Another way to specify your LDAP server is to provide an</span>
+<span style="color: #93a1a1;"> # uri with the server name. This allows to use</span>
+<span style="background-color: #fdf6e3;">@@ -293,3 +293,7 @@</span>
+<span style="color: #93a1a1;"> # SASL mechanism for PAM authentication - use is experimental</span>
+<span style="color: #93a1a1;"> # at present and does not support password policy control</span>
+<span style="color: #93a1a1;"> #pam_sasl_mech DIGEST-MD5</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">uri ldap://172.17.0.3/</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">ssl no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">tls_cacertdir /etc/openldap/cacerts</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">pam_password md5</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/nsswitch.conf.original</span><span style="background-color: #fdf6e3;">  2004-09-23 12:17:12.000000000 +1100</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/nsswitch.conf</span><span style="background-color: #fdf6e3;">   2016-10-07 12:56:11.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">@@ -30,9 +30,9 @@</span>
+<span style="color: #93a1a1;"> #shadow:    db files nisplus nis</span>
+<span style="color: #93a1a1;"> #group:     db files nisplus nis</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">passwd:     files</span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">shadow:     files</span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">group:      files</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">passwd:     files ldap</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">shadow:     files ldap</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">group:      files ldap</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #93a1a1;"> #hosts:     db files nisplus nis dns</span>
+<span style="color: #93a1a1;"> hosts:      files dns</span>
+<span style="background-color: #fdf6e3;">@@ -54,10 +54,10 @@</span>
+<span style="color: #93a1a1;"> rpc:        files</span>
+<span style="color: #93a1a1;"> services:   files</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">netgroup:   nisplus</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">netgroup:   files ldap</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #93a1a1;"> publickey:  nisplus</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">automount:  files nisplus</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">automount:  files ldap</span>
+<span style="color: #93a1a1;"> aliases:    files nisplus</span>
+<span style="color: #93a1a1;"> </span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/openldap-ldap.conf.original</span><span style="background-color: #fdf6e3;">     2015-09-29 20:29:18.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/openldap-ldap.conf</span><span style="background-color: #fdf6e3;">      2016-10-07 12:56:11.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">@@ -11,3 +11,6 @@</span>
+<span style="color: #93a1a1;"> #SIZELIMIT     12</span>
+<span style="color: #93a1a1;"> #TIMELIMIT     15</span>
+<span style="color: #93a1a1;"> #DEREF         never</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">URI ldap://172.17.0.3/</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">BASE dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">TLS_CACERTDIR /etc/openldap/cacerts</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/system-auth.original</span><span style="background-color: #fdf6e3;">    2016-10-07 12:37:11.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-07 12:56:11.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">@@ -2,16 +2,24 @@</span>
+<span style="color: #93a1a1;"> # This file is auto-generated.</span>
+<span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
+<span style="color: #93a1a1;"> auth        required      pam_env.so</span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">auth        sufficient    pam_unix.so try_first_pass nullok</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">auth        sufficient    pam_unix.so nullok try_first_pass</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">auth        sufficient    pam_ldap.so use_first_pass</span>
+<span style="color: #93a1a1;"> auth        required      pam_deny.so</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">account     required      pam_unix.so</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_unix.so broken_shadow</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_permit.so</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">password    required      pam_cracklib.so try_first_pass retry=3</span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">password    sufficient    pam_unix.so try_first_pass use_authtok nullok md5</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">password    requisite     pam_cracklib.so try_first_pass retry=3</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">password    sufficient    pam_unix.so md5 nullok try_first_pass use_authtok</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">password    sufficient    pam_ldap.so use_authtok</span>
+<span style="color: #93a1a1;"> password    required      pam_deny.so</span>
+<span style="color: #93a1a1;"> </span>
+<span style="color: #93a1a1;"> session     optional      pam_keyinit.so revoke</span>
+<span style="color: #93a1a1;"> session     required      pam_limits.so</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_mkhomedir.so</span>
+<span style="color: #93a1a1;"> session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid</span>
+<span style="color: #93a1a1;"> session     required      pam_unix.so</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/authconfig.original</span><span style="background-color: #fdf6e3;">     2016-10-07 12:37:11.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">ldap-client/authconfig</span><span style="background-color: #fdf6e3;">      2016-10-07 12:56:11.000000000 +1000</span>
+<span style="background-color: #fdf6e3;">@@ -1 +1,21 @@</span>
+<span style="color: #dc322f;">-</span><span style="color: #dc322f;">USEMD5=yes</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USEWINBINDAUTH=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USEPASSWDQC=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">PASSWDALGORITHM=md5</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USEPAMACCESS=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USESSSDAUTH=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USESYSNETAUTH=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USEKERBEROS=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">FORCESMARTCARD=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USESMBAUTH=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USESMARTCARD=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USELDAPAUTH=yes</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USESSSD=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USEWINBIND=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USESHADOW=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USEDB=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USEHESIOD=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USELDAP=yes</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USEMKHOMEDIR=yes</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USELOCAUTHORIZE=no</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USECRACKLIB=yes</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">USENIS=no</span>
 </pre>
 </div>
 </div>
-
-<br/><a href="javascript:toggleDiv('myContent-client6');" class="fa">ldap-client/Dockerfile-centos6</a>
-
-<div id="myContent-client6" style="display:true">
-<div class="org-src-container">
-
-<pre class="src src-dockerfile"><span style="color: #859900; font-weight: bold;">RUN</span> yum install -y openssh-server  openldap-clients nss-pam-ldapd pam_ldap authconfig
-</pre>
 </div>
 </div>
-</div>
-</div>
-
-
 
 <div id="outline-container-orgheadline7" class="outline-2">
 <h2 id="schema"><a id="orgheadline7"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схема БД LDAP</h2>
