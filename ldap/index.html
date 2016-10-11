@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-11 Вт. 10:33 -->
+<!-- 2016-10-11 Вт. 18:01 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -794,7 +794,9 @@ rm -rf /gen/etc5/etcnew
 
 getent passwd username
 
-/usr/share/openldap/migration/migrate_passwd.pl /etc/passwd || true
+/usr/share/openldap/migration/migrate_passwd.pl /etc/passwd &gt; /gen/passwd.ldif
+
+/usr/share/openldap/migration/migrate_group.pl /etc/group &gt; /gen/group.ldif
 </pre>
 </div>
 </div>
@@ -811,8 +813,8 @@ getent passwd username
 <div class="org-src-container">
 
 <pre class="src src-diff"><span style="color: #93a1a1;">diff -u -r -x passwd -x group -x shadow /gen/etc5/etc/group- /gen/etc5/etcnew/group-</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/group-</span><span style="background-color: #fdf6e3;">        2016-10-10 06:52:12.426998830 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/group-</span><span style="background-color: #fdf6e3;">     2016-10-10 06:52:12.562998836 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/group-</span><span style="background-color: #fdf6e3;">        2016-10-11 07:58:41.162746134 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/group-</span><span style="background-color: #fdf6e3;">     2016-10-11 07:58:41.378746143 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -26,3 +26,4 @@</span>
 <span style="color: #93a1a1;"> utmp:x:22:</span>
 <span style="color: #93a1a1;"> nscd:x:28:</span>
@@ -820,8 +822,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">ldap:x:55:</span>
 <span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">Only in /gen/etc5/etcnew: gshadow</span>
 <span style="color: #93a1a1;">diff -u -r -x passwd -x group -x shadow /gen/etc5/etc/ldap.conf /gen/etc5/etcnew/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/ldap.conf</span><span style="background-color: #fdf6e3;">     2016-10-10 06:52:12.426998830 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/ldap.conf</span><span style="background-color: #fdf6e3;">  2016-10-10 06:52:12.558998836 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/ldap.conf</span><span style="background-color: #fdf6e3;">     2016-10-11 07:58:41.162746134 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/ldap.conf</span><span style="background-color: #fdf6e3;">  2016-10-11 07:58:41.378746143 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -14,10 +14,10 @@</span>
 <span style="color: #93a1a1;"> # space. How long nss_ldap takes to failover depends on</span>
 <span style="color: #93a1a1;"> # whether your LDAP client library supports configurable</span>
@@ -844,8 +846,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">pam_password md5</span>
 <span style="color: #93a1a1;">diff -u -r -x passwd -x group -x shadow /gen/etc5/etc/nsswitch.conf /gen/etc5/etcnew/nsswitch.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-10 06:52:12.426998830 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-10 06:52:12.558998836 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-11 07:58:41.154746133 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-11 07:58:41.378746143 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -30,9 +30,9 @@</span>
 <span style="color: #93a1a1;"> #shadow:    db files nisplus nis</span>
 <span style="color: #93a1a1;"> #group:     db files nisplus nis</span>
@@ -859,7 +861,7 @@ getent passwd username
 <span style="color: #93a1a1;"> </span>
 <span style="color: #93a1a1;"> #hosts:     db files nisplus nis dns</span>
 <span style="color: #93a1a1;"> hosts:      files dns</span>
-<span style="background-color: #fdf6e3;">@@ -54,10 +54,10 @@</span>
+<span style="background-color: #fdf6e3;">@@ -54,11 +54,11 @@</span>
 <span style="color: #93a1a1;"> rpc:        files</span>
 <span style="color: #93a1a1;"> services:   files</span>
 <span style="color: #93a1a1;"> </span>
@@ -872,9 +874,10 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">automount:  files ldap</span>
 <span style="color: #93a1a1;"> aliases:    files nisplus</span>
 <span style="color: #93a1a1;"> </span>
+<span style="color: #93a1a1;"> sudoers:  files ldap</span>
 <span style="color: #93a1a1;">diff -u -r -x passwd -x group -x shadow /gen/etc5/etc/openldap/ldap.conf /gen/etc5/etcnew/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-10 06:52:12.418998830 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-10 06:52:12.558998836 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-11 07:58:41.150746133 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-11 07:58:41.374746142 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -11,3 +11,6 @@</span>
 <span style="color: #93a1a1;"> #SIZELIMIT     12</span>
 <span style="color: #93a1a1;"> #TIMELIMIT     15</span>
@@ -883,8 +886,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">TLS_CACERTDIR /etc/openldap/cacerts</span>
 <span style="color: #93a1a1;">diff -u -r -x passwd -x group -x shadow /gen/etc5/etc/pam.d/system-auth /gen/etc5/etcnew/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-10 06:52:12.414998830 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-10 06:52:12.558998836 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-11 07:58:41.146746133 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-11 07:58:41.378746143 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -2,16 +2,24 @@</span>
 <span style="color: #93a1a1;"> # This file is auto-generated.</span>
 <span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
@@ -916,17 +919,17 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">Only in /gen/etc5/etcnew/pam.d: system-auth-ac</span>
 <span style="color: #93a1a1;">diff -u -r -x passwd -x group -x shadow /gen/etc5/etc/passwd- /gen/etc5/etcnew/passwd-</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/passwd-</span><span style="background-color: #fdf6e3;">       2016-10-10 06:52:12.414998830 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/passwd-</span><span style="background-color: #fdf6e3;">    2016-10-10 06:52:12.558998836 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/passwd-</span><span style="background-color: #fdf6e3;">       2016-10-11 07:58:41.146746133 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/passwd-</span><span style="background-color: #fdf6e3;">    2016-10-11 07:58:41.378746143 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -1,4 +1,4 @@</span>
 <span style="color: #dc322f;">-</span><span style="color: #dc322f;">root:$1$UKLtvLuY$kka6S665oCFmU7ivSDZzU.:0:0:root:/root:/bin/bash</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">root:$1$wLpn7l2N$Y516ZbST20mhRMB53x964/:0:0:root:/root:/bin/bash</span>
+<span style="color: #859900;">+</span><span style="color: #859900;">root:$1$O9mjGgnA$PS0E7QmoQu/DPFLttpUGS.:0:0:root:/root:/bin/bash</span>
 <span style="color: #93a1a1;"> bin:*:1:1:bin:/bin:/sbin/nologin</span>
 <span style="color: #93a1a1;"> daemon:*:2:2:daemon:/sbin:/sbin/nologin</span>
 <span style="color: #93a1a1;"> adm:*:3:4:adm:/var/adm:/sbin/nologin</span>
 <span style="color: #93a1a1;">diff -u -r -x passwd -x group -x shadow /gen/etc5/etc/sysconfig/authconfig /gen/etc5/etcnew/sysconfig/authconfig</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">  2016-10-10 06:52:12.422998830 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">       2016-10-10 06:52:12.558998836 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">  2016-10-11 07:58:41.150746133 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">       2016-10-11 07:58:41.374746142 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -1 +1,21 @@</span>
 <span style="color: #dc322f;">-</span><span style="color: #dc322f;">USEMD5=yes</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">USEWINBINDAUTH=no</span>
@@ -960,8 +963,8 @@ getent passwd username
 <div class="org-src-container">
 
 <pre class="src src-diff"><span style="color: #93a1a1;">diff -u -r /gen/etc6/etc/nslcd.conf /gen/etc6/etcnew/nslcd.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nslcd.conf</span><span style="background-color: #fdf6e3;">    2016-10-10 06:52:13.958998894 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nslcd.conf</span><span style="background-color: #fdf6e3;"> 2016-10-10 06:52:14.318998909 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nslcd.conf</span><span style="background-color: #fdf6e3;">    2016-10-11 08:00:07.230749702 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nslcd.conf</span><span style="background-color: #fdf6e3;"> 2016-10-11 08:00:07.490749713 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -128,5 +128,7 @@</span>
 <span style="color: #93a1a1;"> uid nslcd</span>
 <span style="color: #93a1a1;"> gid ldap</span>
@@ -973,8 +976,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">ssl no</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #93a1a1;">diff -u -r /gen/etc6/etc/nsswitch.conf /gen/etc6/etcnew/nsswitch.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-10 06:52:13.974998895 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-10 06:52:14.314998909 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-11 08:00:07.266749703 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-11 08:00:07.490749713 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -30,9 +30,9 @@</span>
 <span style="color: #93a1a1;"> #shadow:    db files nisplus nis</span>
 <span style="color: #93a1a1;"> #group:     db files nisplus nis</span>
@@ -1003,8 +1006,8 @@ getent passwd username
 <span style="color: #93a1a1;"> </span>
 <span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">Only in /gen/etc6/etcnew/openldap: cacerts</span>
 <span style="color: #93a1a1;">diff -u -r /gen/etc6/etc/openldap/ldap.conf /gen/etc6/etcnew/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-10 06:52:13.974998895 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-10 06:52:14.310998908 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-11 08:00:07.262749703 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-11 08:00:07.486749712 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -12,4 +12,6 @@</span>
 <span style="color: #93a1a1;"> #TIMELIMIT     15</span>
 <span style="color: #93a1a1;"> #DEREF         never</span>
@@ -1014,8 +1017,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">URI ldap://172.17.0.6/</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #93a1a1;">diff -u -r /gen/etc6/etc/pam.d/fingerprint-auth /gen/etc6/etcnew/pam.d/fingerprint-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">        2016-10-10 06:52:13.950998894 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">     2016-10-10 06:52:14.318998909 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">        2016-10-11 08:00:07.218749701 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">     2016-10-11 08:00:07.490749713 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -5,14 +5,17 @@</span>
 <span style="color: #93a1a1;"> auth        sufficient    pam_fprintd.so</span>
 <span style="color: #93a1a1;"> auth        required      pam_deny.so</span>
@@ -1037,8 +1040,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">Only in /gen/etc6/etcnew/pam.d: fingerprint-auth-ac</span>
 <span style="color: #93a1a1;">diff -u -r /gen/etc6/etc/pam.d/password-auth /gen/etc6/etcnew/pam.d/password-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/password-auth</span><span style="background-color: #fdf6e3;">   2016-10-10 06:52:13.950998894 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/password-auth</span><span style="background-color: #fdf6e3;">        2016-10-10 06:52:14.318998909 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/password-auth</span><span style="background-color: #fdf6e3;">   2016-10-11 08:00:07.218749701 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/password-auth</span><span style="background-color: #fdf6e3;">        2016-10-11 08:00:07.490749713 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -2,16 +2,25 @@</span>
 <span style="color: #93a1a1;"> # This file is auto-generated.</span>
 <span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
@@ -1070,8 +1073,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">Only in /gen/etc6/etcnew/pam.d: password-auth-ac</span>
 <span style="color: #93a1a1;">diff -u -r /gen/etc6/etc/pam.d/smartcard-auth /gen/etc6/etcnew/pam.d/smartcard-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">  2016-10-10 06:52:13.950998894 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">       2016-10-10 06:52:14.318998909 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">  2016-10-11 08:00:07.218749701 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">       2016-10-11 08:00:07.490749713 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -2,18 +2,20 @@</span>
 <span style="color: #93a1a1;"> # This file is auto-generated.</span>
 <span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
@@ -1099,8 +1102,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">Only in /gen/etc6/etcnew/pam.d: smartcard-auth-ac</span>
 <span style="color: #93a1a1;">diff -u -r /gen/etc6/etc/pam.d/system-auth /gen/etc6/etcnew/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-10 06:52:13.950998894 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-10 06:52:14.318998909 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-11 08:00:07.218749701 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-11 08:00:07.490749713 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -2,16 +2,25 @@</span>
 <span style="color: #93a1a1;"> # This file is auto-generated.</span>
 <span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
@@ -1132,8 +1135,8 @@ getent passwd username
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">Only in /gen/etc6/etcnew/pam.d: system-auth-ac</span>
 <span style="color: #93a1a1;">diff -u -r /gen/etc6/etc/pam_ldap.conf /gen/etc6/etcnew/pam_ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam_ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-10 06:52:13.958998894 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam_ldap.conf</span><span style="background-color: #fdf6e3;">      2016-10-10 06:52:14.314998909 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam_ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-11 08:00:07.226749702 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam_ldap.conf</span><span style="background-color: #fdf6e3;">      2016-10-11 08:00:07.490749713 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -14,10 +14,10 @@</span>
 <span style="color: #93a1a1;"> # space. How long nss_ldap takes to failover depends on</span>
 <span style="color: #93a1a1;"> # whether your LDAP client library supports configurable</span>
@@ -1182,6 +1185,596 @@ getent passwd username
 Необходимо разработать схему БД LDAP, предназначенную для хранения учетных данных пользователей кластера.
 </p>
 </blockquote>
+
+<a href="javascript:toggleDiv('myContent-passwd');" class="fa">passwd.ldif</a>
+
+<div id="myContent-passwd" style="display:none">
+<div class="org-src-container">
+
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=root,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: root
+cn: root
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}$1$O9mjGgnA$PS0E7QmoQu/DPFLttpUGS.
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 0
+gidNumber: 0
+homeDirectory: /root
+gecos: root
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=bin,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: bin
+cn: bin
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 1
+gidNumber: 1
+homeDirectory: /bin
+gecos: bin
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=daemon,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: daemon
+cn: daemon
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 2
+gidNumber: 2
+homeDirectory: /sbin
+gecos: daemon
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=adm,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: adm
+cn: adm
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 3
+gidNumber: 4
+homeDirectory: /var/adm
+gecos: adm
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=lp,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: lp
+cn: lp
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 4
+gidNumber: 7
+homeDirectory: /var/spool/lpd
+gecos: lp
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=sync,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: sync
+cn: sync
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/sync
+uidNumber: 5
+gidNumber: 0
+homeDirectory: /sbin
+gecos: sync
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=shutdown,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: shutdown
+cn: shutdown
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/shutdown
+uidNumber: 6
+gidNumber: 0
+homeDirectory: /sbin
+gecos: shutdown
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=halt,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: halt
+cn: halt
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/halt
+uidNumber: 7
+gidNumber: 0
+homeDirectory: /sbin
+gecos: halt
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=mail,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: mail
+cn: mail
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 8
+gidNumber: 12
+homeDirectory: /var/spool/mail
+gecos: mail
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=news,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: news
+cn: news
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+uidNumber: 9
+gidNumber: 13
+homeDirectory: /etc/news
+gecos: news
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=uucp,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: uucp
+cn: uucp
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 10
+gidNumber: 14
+homeDirectory: /var/spool/uucp
+gecos: uucp
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=operator,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: operator
+cn: operator
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 11
+gidNumber: 0
+homeDirectory: /root
+gecos: operator
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=games,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: games
+cn: games
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 12
+gidNumber: 100
+homeDirectory: /usr/games
+gecos: games
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=gopher,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: gopher
+cn: gopher
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 13
+gidNumber: 30
+homeDirectory: /var/gopher
+gecos: gopher
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=ftp,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: ftp
+cn: FTP User
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 14
+gidNumber: 50
+homeDirectory: /var/ftp
+gecos: FTP User
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=nobody,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: nobody
+cn: Nobody
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}*
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 99
+gidNumber: 99
+homeDirectory: /
+gecos: Nobody
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=vcsa,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: vcsa
+cn: virtual console memory owner
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}!!
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 69
+gidNumber: 69
+homeDirectory: /dev
+gecos: virtual console memory owner
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=nscd,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: nscd
+cn: NSCD Daemon
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}!!
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 28
+gidNumber: 28
+homeDirectory: /
+gecos: NSCD Daemon
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=sshd,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: sshd
+cn: Privilege-separated SSH
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}!!
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 74
+gidNumber: 74
+homeDirectory: /var/empty/sshd
+gecos: Privilege-separated SSH
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=ldap,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: ldap
+cn: LDAP User
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}!!
+shadowLastChange: 17085
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/false
+uidNumber: 55
+gidNumber: 55
+homeDirectory: /var/lib/ldap
+gecos: LDAP User
+</pre>
+</div>
+</div>
+
+<br/><a href="javascript:toggleDiv('myContent-group');" class="fa">group.ldif</a>
+
+<div id="myContent-group" style="display:none">
+<div class="org-src-container">
+
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=root,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: root
+userPassword: {crypt}x
+gidNumber: 0
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=bin,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: bin
+userPassword: {crypt}x
+gidNumber: 1
+memberUid: daemon
+memberUid: root
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=daemon,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: daemon
+userPassword: {crypt}x
+gidNumber: 2
+memberUid: bin
+memberUid: root
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=sys,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: sys
+userPassword: {crypt}x
+gidNumber: 3
+memberUid: adm
+memberUid: bin
+memberUid: root
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=adm,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: adm
+userPassword: {crypt}x
+gidNumber: 4
+memberUid: daemon
+memberUid: root
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=tty,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: tty
+userPassword: {crypt}x
+gidNumber: 5
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=disk,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: disk
+userPassword: {crypt}x
+gidNumber: 6
+memberUid: root
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=lp,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: lp
+userPassword: {crypt}x
+gidNumber: 7
+memberUid: daemon
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=mem,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: mem
+userPassword: {crypt}x
+gidNumber: 8
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=kmem,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: kmem
+userPassword: {crypt}x
+gidNumber: 9
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=wheel,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: wheel
+userPassword: {crypt}x
+gidNumber: 10
+memberUid: root
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=mail,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: mail
+userPassword: {crypt}x
+gidNumber: 12
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=news,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: news
+userPassword: {crypt}x
+gidNumber: 13
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=uucp,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: uucp
+userPassword: {crypt}x
+gidNumber: 14
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=man,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: man
+userPassword: {crypt}x
+gidNumber: 15
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=games,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: games
+userPassword: {crypt}x
+gidNumber: 20
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=gopher,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: gopher
+userPassword: {crypt}x
+gidNumber: 30
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=dip,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: dip
+userPassword: {crypt}x
+gidNumber: 40
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=ftp,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: ftp
+userPassword: {crypt}x
+gidNumber: 50
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=lock,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: lock
+userPassword: {crypt}x
+gidNumber: 54
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=nobody,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: nobody
+userPassword: {crypt}x
+gidNumber: 99
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=users,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: users
+userPassword: {crypt}x
+gidNumber: 100
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=floppy,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: floppy
+userPassword: {crypt}x
+gidNumber: 19
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=vcsa,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: vcsa
+userPassword: {crypt}x
+gidNumber: 69
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=audio,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: audio
+userPassword: {crypt}x
+gidNumber: 63
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=utmp,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: utmp
+userPassword: {crypt}x
+gidNumber: 22
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=nscd,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: nscd
+userPassword: {crypt}x
+gidNumber: 28
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=sshd,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: sshd
+userPassword: {crypt}x
+gidNumber: 74
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=ldap,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: ldap
+userPassword: {crypt}x
+gidNumber: 55
+</pre>
+</div>
+</div>
 </div>
 </div>
 
