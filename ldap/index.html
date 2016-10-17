@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-17 Пн. 16:13 -->
+<!-- 2016-10-17 Пн. 22:23 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -255,7 +255,7 @@ for the JavaScript code in this tag.
 <p>
 Внесем небольшие изменения в конфигурационный файл для 5/2.3
 </p>
-<a href="javascript:toggleDiv('myContent');" class="fa">/root/slapd.conf</a>
+<a onclick="toggleDiv2('myContent',$(this));" class="fa fa-caret-right">/root/slapd.conf</a>
 
 <div id="myContent" style="display:none">
 <div class="org-src-container">
@@ -412,7 +412,7 @@ for the JavaScript code in this tag.
 <p>
 Выполним аналогичные действия для 6/2.4
 </p>
-<a href="javascript:toggleDiv('myContent2');" class="fa">/root/slapd.conf.obsolete</a>
+<a onclick="toggleDiv2('myContent2',$(this));" class="fa fa-caret-right">/root/slapd.conf.obsolete</a>
 
 <div id="myContent2" style="display:none">
 <div class="org-src-container">
@@ -665,7 +665,7 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-<br/><a href="javascript:toggleDiv('myContent-manager');" class="fa">/root/manager.ldif</a>
+<br/><a onclick="toggleDiv2('myContent-manager',$(this));" class="fa fa-caret-right">/root/manager.ldif</a>
 <div id="myContent-manager" style="display:none">
 <div class="org-src-container">
 
@@ -676,7 +676,7 @@ olcRootPW: %LDAP_ROOT_PASSWORD%
 </pre>
 </div>
 </div>
-<br/><a href="javascript:toggleDiv('myContent-domain');" class="fa">/root/domain.ldif</a>
+<br/><a onclick="toggleDiv2('myContent-domain',$(this));" class="fa fa-caret-right">/root/domain.ldif</a>
 <div id="myContent-domain" style="display:none">
 <div class="org-src-container">
 
@@ -710,7 +710,7 @@ olcAccess: {2}to * by dn="cn=Manager,dc=mercury,dc=febras,dc=net" write by * rea
 </pre>
 </div>
 </div>
-<br/><a href="javascript:toggleDiv('myContent-base');" class="fa">/root/base.ldif</a>
+<br/><a onclick="toggleDiv2('myContent-base',$(this));" class="fa fa-caret-right">/root/base.ldif</a>
 <div id="myContent-base" style="display:none">
 <div class="org-src-container">
 
@@ -882,7 +882,7 @@ yum install -y openldap migrationtools sudo
 Файлы, которые были модифицированы программой <b>authconfig</b> в случае 5/2.3
 </p>
 
-<a href="javascript:toggleDiv('myContent-client-files');" class="fa">client-files.diff</a>
+<a onclick="toggleDiv2('myContent-client-files',$(this));" class="fa fa-caret-down">client-files.diff</a>
 <div id="myContent-client-files" style="display:true">
 <div class="org-src-container">
 
@@ -906,7 +906,7 @@ yum install -y openldap migrationtools sudo
 и в случае 6/2.4
 </p>
 
-<a href="javascript:toggleDiv('myContent-client6-files');" class="fa">client6-files.diff</a>
+<a onclick="toggleDiv2('myContent-client6-files',$(this));" class="fa fa-caret-down">client6-files.diff</a>
 <div id="myContent-client6-files" style="display:true">
 <div class="org-src-container">
 
@@ -934,22 +934,22 @@ yum install -y openldap migrationtools sudo
 <div id="outline-container-orgheadline9" class="outline-3">
 <h3 id="client-options"><a id="orgheadline9"></a><a id="ID-a8dfad56-906c-45b6-9ef1-7d5a9cfa854f"></a>Описание используемых опций</h3>
 <div class="outline-text-3" id="text-client-options">
-<a href="javascript:toggleDiv('myContent-client');" class="fa">client.diff</a>
+<a onclick="toggleDiv2('myContent-client',$(this));" class="fa fa-caret-right">client.diff</a>
 
 <div id="myContent-client" style="display:none">
 <div class="org-src-container">
 
 <pre class="src src-diff"><span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/group- /gen/etc5/etcnew/group-</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/group-</span><span style="background-color: #fdf6e3;">        2016-10-17 06:05:28.987956185 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/group-</span><span style="background-color: #fdf6e3;">     2016-10-17 06:05:29.183956193 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/group-</span><span style="background-color: #fdf6e3;">        2016-10-17 08:22:55.456298064 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/group-</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:55.652298072 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -26,3 +26,4 @@</span>
 <span style="color: #93a1a1;"> utmp:x:22:</span>
 <span style="color: #93a1a1;"> nscd:x:28:</span>
 <span style="color: #93a1a1;"> sshd:x:74:</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">ldap:x:55:</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/ldap.conf /gen/etc5/etcnew/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/ldap.conf</span><span style="background-color: #fdf6e3;">     2016-10-17 06:05:28.987956185 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/ldap.conf</span><span style="background-color: #fdf6e3;">  2016-10-17 06:05:29.183956193 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/ldap.conf</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:55.456298064 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/ldap.conf</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:55.648298072 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -14,10 +14,10 @@</span>
 <span style="color: #93a1a1;"> # space. How long nss_ldap takes to failover depends on</span>
 <span style="color: #93a1a1;"> # whether your LDAP client library supports configurable</span>
@@ -974,8 +974,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">+</span><span style="color: #859900;">sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">sudoers_debug 0</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/nsswitch.conf /gen/etc5/etcnew/nsswitch.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 06:05:28.979956185 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 06:05:29.183956193 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:55.452298064 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 08:22:55.648298072 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -30,9 +30,9 @@</span>
 <span style="color: #93a1a1;"> #shadow:    db files nisplus nis</span>
 <span style="color: #93a1a1;"> #group:     db files nisplus nis</span>
@@ -1004,8 +1004,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #93a1a1;"> </span>
 <span style="color: #93a1a1;"> sudoers:  files ldap</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/openldap/ldap.conf /gen/etc5/etcnew/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 06:05:28.975956184 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 06:05:29.179956193 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 08:22:55.448298064 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:55.644298072 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -11,3 +11,6 @@</span>
 <span style="color: #93a1a1;"> #SIZELIMIT     12</span>
 <span style="color: #93a1a1;"> #TIMELIMIT     15</span>
@@ -1014,8 +1014,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">+</span><span style="color: #859900;">BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">TLS_CACERTDIR /etc/openldap/cacerts</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/pam.d/system-auth /gen/etc5/etcnew/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 06:05:28.971956184 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 06:05:29.183956193 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:55.440298063 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:55.648298072 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -2,16 +2,24 @@</span>
 <span style="color: #93a1a1;"> # This file is auto-generated.</span>
 <span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
@@ -1046,8 +1046,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #93a1a1;"> session     required      pam_unix.so</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/passwd- /gen/etc5/etcnew/passwd-</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/passwd-</span><span style="background-color: #fdf6e3;">       2016-10-17 06:05:28.967956184 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/passwd-</span><span style="background-color: #fdf6e3;">    2016-10-17 06:05:29.183956193 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/passwd-</span><span style="background-color: #fdf6e3;">       2016-10-17 08:22:55.440298063 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/passwd-</span><span style="background-color: #fdf6e3;">    2016-10-17 08:22:55.648298072 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -1,4 +1,4 @@</span>
 <span style="color: #dc322f;">-</span><span style="color: #dc322f;">root:$1$UKLtvLuY$kka6S665oCFmU7ivSDZzU.:0:0:root:/root:/bin/bash</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">root:$1$ViVw1/LQ$jM/snRtNbpBVvKKStUwqn0:0:0:root:/root:/bin/bash</span>
@@ -1055,8 +1055,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #93a1a1;"> daemon:*:2:2:daemon:/sbin:/sbin/nologin</span>
 <span style="color: #93a1a1;"> adm:*:3:4:adm:/var/adm:/sbin/nologin</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/sysconfig/authconfig /gen/etc5/etcnew/sysconfig/authconfig</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">  2016-10-17 06:05:28.975956184 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">       2016-10-17 06:05:29.179956193 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:55.448298064 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">       2016-10-17 08:22:55.644298072 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -1 +1,21 @@</span>
 <span style="color: #dc322f;">-</span><span style="color: #dc322f;">USEMD5=yes</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">USEWINBINDAUTH=no</span>
@@ -1084,20 +1084,20 @@ yum install -y openldap migrationtools sudo
 </div>
 </div>
 
-<br/><a href="javascript:toggleDiv('myContent-client6');" class="fa">client6.diff</a>
+<br/><a onclick="toggleDiv2('myContent-client6',$(this));" class="fa fa-caret-right">client6.diff</a>
 
 <div id="myContent-client6" style="display:none">
 <div class="org-src-container">
 
 <pre class="src src-diff"><span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/ldap.conf /gen/etc6/etcnew/ldap.conf</span>
 <span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/ldap.conf</span><span style="background-color: #fdf6e3;">     1970-01-01 00:00:00.000000000 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/ldap.conf</span><span style="background-color: #fdf6e3;">  2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/ldap.conf</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -0,0 +1,2 @@</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">sudoers_debug 0</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/nslcd.conf /gen/etc6/etcnew/nslcd.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nslcd.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 06:05:31.923956307 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nslcd.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nslcd.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 08:22:58.412298187 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nslcd.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -128,5 +128,7 @@</span>
 <span style="color: #93a1a1;"> uid nslcd</span>
 <span style="color: #93a1a1;"> gid ldap</span>
@@ -1109,8 +1109,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">+</span><span style="color: #859900;">ssl no</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/nsswitch.conf /gen/etc6/etcnew/nsswitch.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 06:05:31.935956307 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:58.440298188 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -30,9 +30,9 @@</span>
 <span style="color: #93a1a1;"> #shadow:    db files nisplus nis</span>
 <span style="color: #93a1a1;"> #group:     db files nisplus nis</span>
@@ -1138,8 +1138,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #93a1a1;"> aliases:    files nisplus</span>
 <span style="color: #93a1a1;"> </span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/openldap/ldap.conf /gen/etc6/etcnew/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 06:05:31.935956307 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 08:22:58.436298188 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:58.724298199 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -12,4 +12,6 @@</span>
 <span style="color: #93a1a1;"> #TIMELIMIT     15</span>
 <span style="color: #93a1a1;"> #DEREF         never</span>
@@ -1149,8 +1149,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">+</span><span style="color: #859900;">URI ldap://172.17.0.6/</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam.d/fingerprint-auth /gen/etc6/etcnew/pam.d/fingerprint-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">        2016-10-17 06:05:31.911956306 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">        2016-10-17 08:22:58.396298186 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -5,14 +5,17 @@</span>
 <span style="color: #93a1a1;"> auth        sufficient    pam_fprintd.so</span>
 <span style="color: #93a1a1;"> auth        required      pam_deny.so</span>
@@ -1171,8 +1171,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #93a1a1;"> session     required      pam_unix.so</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam.d/password-auth /gen/etc6/etcnew/pam.d/password-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/password-auth</span><span style="background-color: #fdf6e3;">   2016-10-17 06:05:31.911956306 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/password-auth</span><span style="background-color: #fdf6e3;">        2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/password-auth</span><span style="background-color: #fdf6e3;">   2016-10-17 08:22:58.396298186 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/password-auth</span><span style="background-color: #fdf6e3;">        2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -2,16 +2,25 @@</span>
 <span style="color: #93a1a1;"> # This file is auto-generated.</span>
 <span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
@@ -1203,8 +1203,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #93a1a1;"> session     required      pam_unix.so</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam.d/smartcard-auth /gen/etc6/etcnew/pam.d/smartcard-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 06:05:31.915956306 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">       2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:58.396298186 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">       2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -2,18 +2,20 @@</span>
 <span style="color: #93a1a1;"> # This file is auto-generated.</span>
 <span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
@@ -1231,8 +1231,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #93a1a1;"> session     required      pam_unix.so</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam.d/system-auth /gen/etc6/etcnew/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 06:05:31.915956306 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:58.396298186 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -2,16 +2,25 @@</span>
 <span style="color: #93a1a1;"> # This file is auto-generated.</span>
 <span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
@@ -1263,8 +1263,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #93a1a1;"> session     required      pam_unix.so</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam_ldap.conf /gen/etc6/etcnew/pam_ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam_ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 06:05:31.919956306 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam_ldap.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam_ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:58.408298186 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam_ldap.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -14,10 +14,10 @@</span>
 <span style="color: #93a1a1;"> # space. How long nss_ldap takes to failover depends on</span>
 <span style="color: #93a1a1;"> # whether your LDAP client library supports configurable</span>
@@ -1288,7 +1288,7 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">+</span><span style="color: #859900;">pam_password md5</span>
 <span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/sysconfig/authconfig /gen/etc6/etcnew/sysconfig/authconfig</span>
 <span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">  1970-01-01 00:00:00.000000000 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">       2016-10-17 06:05:32.127956315 +0000</span>
+<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">       2016-10-17 08:22:58.728298200 +0000</span>
 <span style="background-color: #fdf6e3;">@@ -0,0 +1,26 @@</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">IPADOMAINJOINED=no</span>
 <span style="color: #859900;">+</span><span style="color: #859900;">USEMKHOMEDIR=yes</span>
@@ -1332,7 +1332,7 @@ yum install -y openldap migrationtools sudo
 </p>
 </blockquote>
 
-<a href="javascript:toggleDiv('myContent-passwd');" class="fa">passwd.ldif</a>
+<a onclick="toggleDiv2('myContent-passwd',$(this));" class="fa fa-caret-right">passwd.ldif</a>
 
 <div id="myContent-passwd" style="display:none">
 <div class="org-src-container">
@@ -1699,7 +1699,7 @@ gecos: LDAP User
 </div>
 </div>
 
-<br/><a href="javascript:toggleDiv('myContent-group');" class="fa">group.ldif</a>
+<br/><a onclick="toggleDiv2('myContent-group',$(this));" class="fa fa-caret-right">group.ldif</a>
 
 <div id="myContent-group" style="display:none">
 <div class="org-src-container">
