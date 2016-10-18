@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-17 Пн. 22:23 -->
+<!-- 2016-10-18 Вт. 15:42 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -209,7 +209,7 @@ for the JavaScript code in this tag.
 </p>
 
 <div class="org-src-container">
-
+<label class="org-src-name">Установка сервера OpenLDAP для 5/2.3 и 6/2.4</label>
 <pre class="src src-sh">yum -y install openldap openldap-servers openldap-clients sudo
 </pre>
 </div>
@@ -226,7 +226,7 @@ for the JavaScript code in this tag.
 Для запуска сервиса <b>ldap</b> (<b>slapd</b>) необходимо подготовить каталог и файл конфигурации базы данных. Расположение образца файла настройки, в 5/2.3
 </p>
 <div class="org-src-container">
-
+<label class="org-src-name">Конфигурация БД для 5/2.3</label>
 <pre class="src src-sh">    cp /etc/openldap/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
     chown ldap. /var/lib/ldap/DB_CONFIG
 </pre>
@@ -235,7 +235,7 @@ for the JavaScript code in this tag.
 а в 6/2.4
 </p>
 <div class="org-src-container">
-
+<label class="org-src-name">Конфигурация БД для 6/2.4</label>
 <pre class="src src-sh">    cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
     chown ldap. /var/lib/ldap/DB_CONFIG
 </pre>
@@ -255,11 +255,13 @@ for the JavaScript code in this tag.
 <p>
 Внесем небольшие изменения в конфигурационный файл для 5/2.3
 </p>
-<a onclick="toggleDiv2('myContent',$(this));" class="fa fa-caret-right">/root/slapd.conf</a>
 
+<div align="right">
+<a onclick="toggleDiv2('myContent',$(this));" class="fa fa-caret-right">/root/slapd.conf</a>
+</div>
 <div id="myContent" style="display:none">
 <div class="org-src-container">
-
+<label class="org-src-name">Конфигурационный файл для 5/2.3</label>
 <pre class="src src-conf-space"><span style="color: #93a1a1;">#</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">See slapd.conf(5) for details on configuration options.</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">This file should NOT be world readable.</span>
@@ -380,7 +382,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div class="org-src-container">
-
+<label class="org-src-name">Настройка <b>conf</b>-файла для 5/2.3</label>
 <pre class="src src-diff"><span style="background-color: #fdf6e3;">8a9</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/sudo.schema</span>
 <span style="background-color: #fdf6e3;">83a85,89</span>
@@ -395,7 +397,7 @@ for the JavaScript code in this tag.
 и произведем первый запуск сервиса
 </p>
 <div class="org-src-container">
-
+<label class="org-src-name">Первый запуск сервиса для 5/2.3</label>
 <pre class="src src-sh">    cp /usr/share/doc/sudo-1.7.2p1/schema.OpenLDAP /etc/openldap/schema/sudo.schema
     chown ldap. /etc/openldap/schema/sudo.schema
 
@@ -412,11 +414,13 @@ for the JavaScript code in this tag.
 <p>
 Выполним аналогичные действия для 6/2.4
 </p>
-<a onclick="toggleDiv2('myContent2',$(this));" class="fa fa-caret-right">/root/slapd.conf.obsolete</a>
 
+<div align="right">
+<a onclick="toggleDiv2('myContent2',$(this));" class="fa fa-caret-right">/root/slapd.conf.obsolete</a>
+</div>
 <div id="myContent2" style="display:none">
 <div class="org-src-container">
-
+<label class="org-src-name">Конфигурационный файл для 6/2.4</label>
 <pre class="src src-conf-space"><span style="color: #93a1a1;">#</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">See slapd.conf(5) for details on configuration options.</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">This file should NOT be world readable.</span>
@@ -565,7 +569,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div class="org-src-container">
-
+<label class="org-src-name">Настройка <b>conf</b>-файла для 6/2.4</label>
 <pre class="src src-diff"><span style="background-color: #fdf6e3;">17a18</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/sudo.schema</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
@@ -583,7 +587,7 @@ for the JavaScript code in this tag.
 </div>
 
 <div class="org-src-container">
-
+<label class="org-src-name">Первый запуск сервиса для 6/2.4</label>
 <pre class="src src-sh">    cp /usr/share/doc/sudo-1.8.6p3/schema.OpenLDAP /etc/openldap/schema/sudo.schema
     chown ldap. /etc/openldap/schema/sudo.schema
 
@@ -601,7 +605,7 @@ for the JavaScript code in this tag.
 <a id="orgtarget1"></a>Теперь для обеих конфигураций можно осуществить переход к <b>cn=config</b> формату и избавиться от <b>slapd.conf</b>
 </p>
 <div class="org-src-container">
-
+<label class="org-src-name">Преобразование к <b>cn=config</b> формату для 5/2.3 и 6/2.4</label>
 <pre class="src src-sh">    sleep 3
 
     killall slapd
@@ -649,7 +653,7 @@ for the JavaScript code in this tag.
 </p>
 
 <div class="org-src-container">
-
+<label class="org-src-name">Начальное конфигурирование схемы БД LDAP для 5/2.3 и 6/2.4</label>
 <pre class="src src-sh">    sleep 3
 
     <span style="color: #268bd2;">ROOT_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>)
@@ -776,6 +780,7 @@ sudoOption: env_reset
 </div>
 
 <p>
+<br  />
 Для тестирования аутентификации будем использовать запись <b>username</b>.
 </p>
 </div>
@@ -810,7 +815,7 @@ sudoOption: env_reset
 </p>
 
 <div class="org-src-container">
-
+<label class="org-src-name">Установка клиента для 5/2.3</label>
 <pre class="src src-sh">yum install -y openssh-server openldap-clients nss_ldap authconfig
 yum install -y openldap openldap-servers sudo
 </pre>
@@ -821,7 +826,7 @@ yum install -y openldap openldap-servers sudo
 </p>
 
 <div class="org-src-container">
-
+<label class="org-src-name">Установка клиента для 6/2.4</label>
 <pre class="src src-sh">yum install -y openssh-server openldap-clients nss-pam-ldapd authconfig
 yum install -y openldap migrationtools sudo
 </pre>
@@ -837,8 +842,11 @@ yum install -y openldap migrationtools sudo
 </p>
 
 <div class="org-src-container">
+<label class="org-src-name">Настройка клиента для 5/2.3</label>
+<pre class="src src-sh">authconfig --enableshadow --enablemkhomedir --enableldap --enableldapauth <span style="color: #b58900; font-weight: bold;">\</span>
+           --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
 
-<pre class="src src-sh">authconfig --enableshadow --enablemkhomedir --enableldap --enableldapauth --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
+<span style="color: #268bd2;">opts</span>=<span style="color: #2aa198;">"-N -x group -x shadow -x gshadow -x system-auth-ac -x passwd"</span>
 
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/ldap.conf
@@ -848,8 +856,12 @@ yum install -y openldap migrationtools sudo
 и для 6/2.4
 </p>
 <div class="org-src-container">
+<label class="org-src-name">Настройка клиента для 6/2.4</label>
+<pre class="src src-sh">authconfig --enablemkhomedir --enableldap --enableldapauth <span style="color: #b58900; font-weight: bold;">\</span>
+           --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
 
-<pre class="src src-sh">authconfig --enablemkhomedir --enableldap --enableldapauth --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
+<span style="color: #268bd2;">opts</span>=<span style="color: #2aa198;">"-N -x fingerprint-auth-ac -x password-auth-ac \</span>
+<span style="color: #2aa198;">-x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd"</span>
 
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/ldap.conf
@@ -882,10 +894,12 @@ yum install -y openldap migrationtools sudo
 Файлы, которые были модифицированы программой <b>authconfig</b> в случае 5/2.3
 </p>
 
+<div align="right">
 <a onclick="toggleDiv2('myContent-client-files',$(this));" class="fa fa-caret-down">client-files.diff</a>
+</div>
 <div id="myContent-client-files" style="display:true">
 <div class="org-src-container">
-
+<label class="org-src-name">Список измененных файлов для 5/2.3</label>
 <pre class="src src-diff"><span style="color: #93a1a1;">/etc/group</span>
 <span style="color: #93a1a1;">/etc/group-</span>
 <span style="color: #93a1a1;">/etc/gshadow</span>
@@ -906,10 +920,12 @@ yum install -y openldap migrationtools sudo
 и в случае 6/2.4
 </p>
 
+<div align="right">
 <a onclick="toggleDiv2('myContent-client6-files',$(this));" class="fa fa-caret-down">client6-files.diff</a>
+</div>
 <div id="myContent-client6-files" style="display:true">
 <div class="org-src-container">
-
+<label class="org-src-name">Список измененных файлов для 6/2.4</label>
 <pre class="src src-diff"><span style="color: #93a1a1;">/etc/ldap.conf</span>
 <span style="color: #93a1a1;">/etc/nslcd.conf</span>
 <span style="color: #93a1a1;">/etc/nsswitch.conf</span>
@@ -939,147 +955,102 @@ yum install -y openldap migrationtools sudo
 <div id="myContent-client" style="display:none">
 <div class="org-src-container">
 
-<pre class="src src-diff"><span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/group- /gen/etc5/etcnew/group-</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/group-</span><span style="background-color: #fdf6e3;">        2016-10-17 08:22:55.456298064 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/group-</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:55.652298072 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -26,3 +26,4 @@</span>
-<span style="color: #93a1a1;"> utmp:x:22:</span>
-<span style="color: #93a1a1;"> nscd:x:28:</span>
-<span style="color: #93a1a1;"> sshd:x:74:</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">ldap:x:55:</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/ldap.conf /gen/etc5/etcnew/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/ldap.conf</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:55.456298064 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/ldap.conf</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:55.648298072 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -14,10 +14,10 @@</span>
-<span style="color: #93a1a1;"> # space. How long nss_ldap takes to failover depends on</span>
-<span style="color: #93a1a1;"> # whether your LDAP client library supports configurable</span>
-<span style="color: #93a1a1;"> # network or connect timeouts (see bind_timelimit).</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">host 127.0.0.1</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">#host 127.0.0.1</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> # The distinguished name of the search base.</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">base dc=example,dc=com</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> # Another way to specify your LDAP server is to provide an</span>
-<span style="color: #93a1a1;"> # uri with the server name. This allows to use</span>
-<span style="background-color: #fdf6e3;">@@ -293,3 +293,9 @@</span>
-<span style="color: #93a1a1;"> # SASL mechanism for PAM authentication - use is experimental</span>
-<span style="color: #93a1a1;"> # at present and does not support password policy control</span>
-<span style="color: #93a1a1;"> #pam_sasl_mech DIGEST-MD5</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">uri ldap://172.17.0.6/</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">ssl no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">tls_cacertdir /etc/openldap/cacerts</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">pam_password md5</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">sudoers_base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">sudoers_debug 0</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/nsswitch.conf /gen/etc5/etcnew/nsswitch.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:55.452298064 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 08:22:55.648298072 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -30,9 +30,9 @@</span>
-<span style="color: #93a1a1;"> #shadow:    db files nisplus nis</span>
-<span style="color: #93a1a1;"> #group:     db files nisplus nis</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">passwd:     files</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">shadow:     files</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">group:      files</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">passwd:     files ldap</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">shadow:     files ldap</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">group:      files ldap</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> #hosts:     db files nisplus nis dns</span>
-<span style="color: #93a1a1;"> hosts:      files dns</span>
-<span style="background-color: #fdf6e3;">@@ -54,11 +54,11 @@</span>
-<span style="color: #93a1a1;"> rpc:        files</span>
-<span style="color: #93a1a1;"> services:   files</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">netgroup:   nisplus</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">netgroup:   files ldap</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> publickey:  nisplus</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">automount:  files nisplus</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">automount:  files ldap</span>
-<span style="color: #93a1a1;"> aliases:    files nisplus</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> sudoers:  files ldap</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/openldap/ldap.conf /gen/etc5/etcnew/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 08:22:55.448298064 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:55.644298072 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -11,3 +11,6 @@</span>
-<span style="color: #93a1a1;"> #SIZELIMIT     12</span>
-<span style="color: #93a1a1;"> #TIMELIMIT     15</span>
-<span style="color: #93a1a1;"> #DEREF         never</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">URI ldap://172.17.0.6/</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">BASE dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">TLS_CACERTDIR /etc/openldap/cacerts</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/pam.d/system-auth /gen/etc5/etcnew/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:55.440298063 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:55.648298072 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -2,16 +2,24 @@</span>
-<span style="color: #93a1a1;"> # This file is auto-generated.</span>
-<span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
-<span style="color: #93a1a1;"> auth        required      pam_env.so</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">auth        sufficient    pam_unix.so try_first_pass nullok</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        sufficient    pam_unix.so nullok try_first_pass</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        sufficient    pam_ldap.so use_first_pass</span>
-<span style="color: #93a1a1;"> auth        required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">account     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_unix.so broken_shadow</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_permit.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">password    required      pam_cracklib.so try_first_pass retry=3</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">password    sufficient    pam_unix.so try_first_pass use_authtok nullok md5</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">password    requisite     pam_cracklib.so try_first_pass retry=3</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">password    sufficient    pam_ldap.so use_authtok</span>
-<span style="color: #93a1a1;"> password    required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> session     optional      pam_keyinit.so revoke</span>
-<span style="color: #93a1a1;"> session     required      pam_limits.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_mkhomedir.so</span>
-<span style="color: #93a1a1;"> session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid</span>
-<span style="color: #93a1a1;"> session     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/passwd- /gen/etc5/etcnew/passwd-</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/passwd-</span><span style="background-color: #fdf6e3;">       2016-10-17 08:22:55.440298063 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/passwd-</span><span style="background-color: #fdf6e3;">    2016-10-17 08:22:55.648298072 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -1,4 +1,4 @@</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">root:$1$UKLtvLuY$kka6S665oCFmU7ivSDZzU.:0:0:root:/root:/bin/bash</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">root:$1$ViVw1/LQ$jM/snRtNbpBVvKKStUwqn0:0:0:root:/root:/bin/bash</span>
-<span style="color: #93a1a1;"> bin:*:1:1:bin:/bin:/sbin/nologin</span>
-<span style="color: #93a1a1;"> daemon:*:2:2:daemon:/sbin:/sbin/nologin</span>
-<span style="color: #93a1a1;"> adm:*:3:4:adm:/var/adm:/sbin/nologin</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x group -x shadow -x gshadow -x system-auth-ac -x passwd /gen/etc5/etc/sysconfig/authconfig /gen/etc5/etcnew/sysconfig/authconfig</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etc/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:55.448298064 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc5/etcnew/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">       2016-10-17 08:22:55.644298072 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -1 +1,21 @@</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">USEMD5=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEWINBINDAUTH=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEPASSWDQC=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">PASSWDALGORITHM=md5</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEPAMACCESS=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESSSDAUTH=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESYSNETAUTH=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEKERBEROS=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">FORCESMARTCARD=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESMBAUTH=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESMARTCARD=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USELDAPAUTH=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESSSD=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEWINBIND=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESHADOW=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEDB=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEHESIOD=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USELDAP=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEMKHOMEDIR=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USELOCAUTHORIZE=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USECRACKLIB=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USENIS=no</span>
+<pre class="src src-diff"><span style="color: #93a1a1;">/etc/group-</span>
+<span style="background-color: #fdf6e3;">28a29</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ldap:x:55:</span>
+<span style="color: #93a1a1;">/etc/ldap.conf</span>
+<span style="background-color: #fdf6e3;">17c17</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> host 127.0.0.1</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> #host 127.0.0.1</span>
+<span style="background-color: #fdf6e3;">20c20</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
+<span style="background-color: #fdf6e3;">295a296,301</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
+<span style="color: #93a1a1;">/etc/nsswitch.conf</span>
+<span style="background-color: #fdf6e3;">33,35c33,35</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> shadow:     files</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> group:      files</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> passwd:     files ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> shadow:     files ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> group:      files ldap</span>
+<span style="background-color: #fdf6e3;">57c57</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> netgroup:   nisplus</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> netgroup:   files ldap</span>
+<span style="background-color: #fdf6e3;">61c61</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> automount:  files nisplus</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
+<span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
+<span style="background-color: #fdf6e3;">13a14,16</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
+<span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
+<span style="background-color: #fdf6e3;">5c5,7</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_unix.so nullok try_first_pass</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_ldap.so use_first_pass</span>
+<span style="background-color: #fdf6e3;">8c10,13</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_permit.so</span>
+<span style="background-color: #fdf6e3;">10,11c15,17</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    required      pam_cracklib.so try_first_pass retry=3</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    sufficient    pam_unix.so try_first_pass use_authtok nullok md5</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    requisite     pam_cracklib.so try_first_pass retry=3</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_ldap.so use_authtok</span>
+<span style="background-color: #fdf6e3;">15a22</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so</span>
+<span style="background-color: #fdf6e3;">17a25</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
+<span style="color: #93a1a1;">/etc/passwd-</span>
+<span style="background-color: #fdf6e3;">1c1</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> root:$1$UKLtvLuY$kka6S665oCFmU7ivSDZzU.:0:0:root:/root:/bin/bash</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> root:$1$ViVw1/LQ$jM/snRtNbpBVvKKStUwqn0:0:0:root:/root:/bin/bash</span>
+<span style="color: #93a1a1;">/etc/sysconfig/authconfig</span>
+<span style="background-color: #fdf6e3;">1c1,21</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> USEMD5=yes</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEWINBINDAUTH=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEPASSWDQC=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> PASSWDALGORITHM=md5</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEPAMACCESS=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESSSDAUTH=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESYSNETAUTH=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEKERBEROS=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> FORCESMARTCARD=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESMBAUTH=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESMARTCARD=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USELDAPAUTH=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESSSD=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEWINBIND=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESHADOW=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEDB=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEHESIOD=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USELDAP=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEMKHOMEDIR=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USELOCAUTHORIZE=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USECRACKLIB=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USENIS=no</span>
 </pre>
 </div>
 </div>
@@ -1089,233 +1060,164 @@ yum install -y openldap migrationtools sudo
 <div id="myContent-client6" style="display:none">
 <div class="org-src-container">
 
-<pre class="src src-diff"><span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/ldap.conf /gen/etc6/etcnew/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/ldap.conf</span><span style="background-color: #fdf6e3;">     1970-01-01 00:00:00.000000000 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/ldap.conf</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -0,0 +1,2 @@</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">sudoers_base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">sudoers_debug 0</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/nslcd.conf /gen/etc6/etcnew/nslcd.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nslcd.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 08:22:58.412298187 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nslcd.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -128,5 +128,7 @@</span>
-<span style="color: #93a1a1;"> uid nslcd</span>
-<span style="color: #93a1a1;"> gid ldap</span>
-<span style="color: #93a1a1;"> # This comment prevents repeated auto-migration of settings.</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">uri ldap://127.0.0.1/</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">base dc=example,dc=com</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">uri ldap://172.17.0.6/</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">ssl no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">tls_cacertdir /etc/openldap/cacerts</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/nsswitch.conf /gen/etc6/etcnew/nsswitch.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/nsswitch.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:58.440298188 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/nsswitch.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -30,9 +30,9 @@</span>
-<span style="color: #93a1a1;"> #shadow:    db files nisplus nis</span>
-<span style="color: #93a1a1;"> #group:     db files nisplus nis</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">passwd:     files</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">shadow:     files</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">group:      files</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">passwd:     files ldap</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">shadow:     files ldap</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">group:      files ldap</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> #hosts:     db files nisplus nis dns</span>
-<span style="color: #93a1a1;"> hosts:      files dns</span>
-<span style="background-color: #fdf6e3;">@@ -54,10 +54,10 @@</span>
-<span style="color: #93a1a1;"> rpc:        files</span>
-<span style="color: #93a1a1;"> services:   files</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">netgroup:   nisplus</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">netgroup:   files ldap</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> publickey:  nisplus</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">automount:  files nisplus</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">automount:  files ldap</span>
-<span style="color: #93a1a1;"> aliases:    files nisplus</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/openldap/ldap.conf /gen/etc6/etcnew/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/openldap/ldap.conf</span><span style="background-color: #fdf6e3;">    2016-10-17 08:22:58.436298188 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/openldap/ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:58.724298199 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -12,4 +12,6 @@</span>
-<span style="color: #93a1a1;"> #TIMELIMIT     15</span>
-<span style="color: #93a1a1;"> #DEREF         never</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">TLS_CACERTDIR  /etc/openldap/certs</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">TLS_CACERTDIR /etc/openldap/cacerts</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">URI ldap://172.17.0.6/</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">BASE dc=mercury,dc=febras,dc=net</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam.d/fingerprint-auth /gen/etc6/etcnew/pam.d/fingerprint-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">        2016-10-17 08:22:58.396298186 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/fingerprint-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -5,14 +5,17 @@</span>
-<span style="color: #93a1a1;"> auth        sufficient    pam_fprintd.so</span>
-<span style="color: #93a1a1;"> auth        required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">account     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_unix.so broken_shadow</span>
-<span style="color: #93a1a1;"> account     sufficient    pam_localuser.so</span>
-<span style="color: #93a1a1;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
-<span style="color: #93a1a1;"> account     required      pam_permit.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> password    required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> session     optional      pam_keyinit.so revoke</span>
-<span style="color: #93a1a1;"> session     required      pam_limits.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_mkhomedir.so umask=0077</span>
-<span style="color: #93a1a1;"> session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid</span>
-<span style="color: #93a1a1;"> session     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam.d/password-auth /gen/etc6/etcnew/pam.d/password-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/password-auth</span><span style="background-color: #fdf6e3;">   2016-10-17 08:22:58.396298186 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/password-auth</span><span style="background-color: #fdf6e3;">        2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -2,16 +2,25 @@</span>
-<span style="color: #93a1a1;"> # This file is auto-generated.</span>
-<span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
-<span style="color: #93a1a1;"> auth        required      pam_env.so</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">auth        sufficient    pam_unix.so try_first_pass nullok</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        sufficient    pam_unix.so nullok try_first_pass</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        sufficient    pam_ldap.so use_first_pass</span>
-<span style="color: #93a1a1;"> auth        required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">account     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_unix.so broken_shadow</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     sufficient    pam_localuser.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_permit.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> password    requisite     pam_cracklib.so try_first_pass retry=3 type=</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">password    sufficient    pam_ldap.so use_authtok</span>
-<span style="color: #93a1a1;"> password    required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> session     optional      pam_keyinit.so revoke</span>
-<span style="color: #93a1a1;"> session     required      pam_limits.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_mkhomedir.so umask=0077</span>
-<span style="color: #93a1a1;"> session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid</span>
-<span style="color: #93a1a1;"> session     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam.d/smartcard-auth /gen/etc6/etcnew/pam.d/smartcard-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:58.396298186 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/smartcard-auth</span><span style="background-color: #fdf6e3;">       2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -2,18 +2,20 @@</span>
-<span style="color: #93a1a1;"> # This file is auto-generated.</span>
-<span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
-<span style="color: #93a1a1;"> auth        required      pam_env.so</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">auth        [success=done ignore=ignore default=die] pam_pkcs11.so wait_for_card</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        [success=done ignore=ignore default=die] pam_pkcs11.so wait_for_card card_only</span>
-<span style="color: #93a1a1;"> auth        required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">account     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_unix.so broken_shadow</span>
-<span style="color: #93a1a1;"> account     sufficient    pam_localuser.so</span>
-<span style="color: #93a1a1;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
-<span style="color: #93a1a1;"> account     required      pam_permit.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">password    optional      pam_pkcs11.so</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">password    requisite     pam_cracklib.so try_first_pass retry=3 type=</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">password    required      pam_pkcs11.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> session     optional      pam_keyinit.so revoke</span>
-<span style="color: #93a1a1;"> session     required      pam_limits.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_mkhomedir.so umask=0077</span>
-<span style="color: #93a1a1;"> session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid</span>
-<span style="color: #93a1a1;"> session     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam.d/system-auth /gen/etc6/etcnew/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam.d/system-auth</span><span style="background-color: #fdf6e3;">     2016-10-17 08:22:58.396298186 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam.d/system-auth</span><span style="background-color: #fdf6e3;">  2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -2,16 +2,25 @@</span>
-<span style="color: #93a1a1;"> # This file is auto-generated.</span>
-<span style="color: #93a1a1;"> # User changes will be destroyed the next time authconfig is run.</span>
-<span style="color: #93a1a1;"> auth        required      pam_env.so</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">auth        sufficient    pam_unix.so try_first_pass nullok</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        sufficient    pam_unix.so nullok try_first_pass</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">auth        sufficient    pam_ldap.so use_first_pass</span>
-<span style="color: #93a1a1;"> auth        required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">account     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_unix.so broken_shadow</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     sufficient    pam_localuser.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">account     required      pam_permit.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> password    requisite     pam_cracklib.so try_first_pass retry=3 type=</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">password    sufficient    pam_ldap.so use_authtok</span>
-<span style="color: #93a1a1;"> password    required      pam_deny.so</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> session     optional      pam_keyinit.so revoke</span>
-<span style="color: #93a1a1;"> session     required      pam_limits.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_mkhomedir.so umask=0077</span>
-<span style="color: #93a1a1;"> session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid</span>
-<span style="color: #93a1a1;"> session     required      pam_unix.so</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">session     optional      pam_ldap.so</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/pam_ldap.conf /gen/etc6/etcnew/pam_ldap.conf</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/pam_ldap.conf</span><span style="background-color: #fdf6e3;"> 2016-10-17 08:22:58.408298186 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/pam_ldap.conf</span><span style="background-color: #fdf6e3;">      2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -14,10 +14,10 @@</span>
-<span style="color: #93a1a1;"> # space. How long nss_ldap takes to failover depends on</span>
-<span style="color: #93a1a1;"> # whether your LDAP client library supports configurable</span>
-<span style="color: #93a1a1;"> # network or connect timeouts (see bind_timelimit).</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">host 127.0.0.1</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">#host 127.0.0.1</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> # The distinguished name of the search base.</span>
-<span style="color: #dc322f;">-</span><span style="color: #dc322f;">base dc=example,dc=com</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #93a1a1;"> </span>
-<span style="color: #93a1a1;"> # Another way to specify your LDAP server is to provide an</span>
-<span style="color: #93a1a1;"> # uri with the server name. This allows to use</span>
-<span style="background-color: #fdf6e3;">@@ -287,3 +287,7 @@</span>
-<span style="color: #93a1a1;"> # SASL mechanism for PAM authentication - use is experimental</span>
-<span style="color: #93a1a1;"> # at present and does not support password policy control</span>
-<span style="color: #93a1a1;"> #pam_sasl_mech DIGEST-MD5</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">uri ldap://172.17.0.6/</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">ssl no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">tls_cacertdir /etc/openldap/cacerts</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">pam_password md5</span>
-<span style="color: #93a1a1;">diff -u -r --unidirectional-new-file -x fingerprint-auth-ac -x password-auth-ac -x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd /gen/etc6/etc/sysconfig/authconfig /gen/etc6/etcnew/sysconfig/authconfig</span>
-<span style="background-color: #fdf6e3;">--- </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etc/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">  1970-01-01 00:00:00.000000000 +0000</span>
-<span style="background-color: #fdf6e3;">+++ </span><span style="color: #657b83; background-color: #fdf6e3; font-weight: bold;">/gen/etc6/etcnew/sysconfig/authconfig</span><span style="background-color: #fdf6e3;">       2016-10-17 08:22:58.728298200 +0000</span>
-<span style="background-color: #fdf6e3;">@@ -0,0 +1,26 @@</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">IPADOMAINJOINED=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEMKHOMEDIR=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEPAMACCESS=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">CACHECREDENTIALS=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESSSDAUTH=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESHADOW=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEWINBIND=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEDB=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">FORCELEGACY=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEFPRINTD=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">FORCESMARTCARD=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">PASSWDALGORITHM=sha512</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USELDAPAUTH=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEPASSWDQC=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">IPAV2NONTP=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USELOCAUTHORIZE=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USECRACKLIB=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEIPAV2=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEWINBINDAUTH=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESMARTCARD=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USELDAP=yes</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USENIS=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEKERBEROS=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESYSNETAUTH=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USESSSD=no</span>
-<span style="color: #859900;">+</span><span style="color: #859900;">USEHESIOD=no</span>
+<pre class="src src-diff"><span style="color: #93a1a1;">/etc/ldap.conf</span>
+<span style="background-color: #fdf6e3;">0a1,2</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
+<span style="color: #93a1a1;">/etc/nslcd.conf</span>
+<span style="background-color: #fdf6e3;">131,132c131,134</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> uri ldap://127.0.0.1/</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
+<span style="color: #93a1a1;">/etc/nsswitch.conf</span>
+<span style="background-color: #fdf6e3;">33,35c33,35</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> shadow:     files</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> group:      files</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> passwd:     files ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> shadow:     files ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> group:      files ldap</span>
+<span style="background-color: #fdf6e3;">57c57</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> netgroup:   nisplus</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> netgroup:   files ldap</span>
+<span style="background-color: #fdf6e3;">61c61</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> automount:  files nisplus</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
+<span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
+<span style="background-color: #fdf6e3;">15c15,17</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLS_CACERTDIR /etc/openldap/certs</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
+<span style="color: #93a1a1;">/etc/pam.d/fingerprint-auth</span>
+<span style="background-color: #fdf6e3;">8c8</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
+<span style="background-color: #fdf6e3;">10a11</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
+<span style="background-color: #fdf6e3;">16a18</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so umask=0077</span>
+<span style="background-color: #fdf6e3;">18a21</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
+<span style="color: #93a1a1;">/etc/pam.d/password-auth</span>
+<span style="background-color: #fdf6e3;">5c5,7</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_unix.so nullok try_first_pass</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_ldap.so use_first_pass</span>
+<span style="background-color: #fdf6e3;">8c10,14</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_localuser.so</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_permit.so</span>
+<span style="background-color: #fdf6e3;">11c17,18</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_ldap.so use_authtok</span>
+<span style="background-color: #fdf6e3;">15a23</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so umask=0077</span>
+<span style="background-color: #fdf6e3;">17a26</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
+<span style="color: #93a1a1;">/etc/pam.d/smartcard-auth</span>
+<span style="background-color: #fdf6e3;">5c5</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        [success=done ignore=ignore default=die] pam_pkcs11.so wait_for_card</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        [success=done ignore=ignore default=die] pam_pkcs11.so wait_for_card card_only</span>
+<span style="background-color: #fdf6e3;">8c8</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
+<span style="background-color: #fdf6e3;">10a11</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
+<span style="background-color: #fdf6e3;">13,14c14</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    optional      pam_pkcs11.so</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    requisite     pam_cracklib.so try_first_pass retry=3 type=</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    required      pam_pkcs11.so</span>
+<span style="background-color: #fdf6e3;">17a18</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so umask=0077</span>
+<span style="background-color: #fdf6e3;">19a21</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
+<span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
+<span style="background-color: #fdf6e3;">5c5,7</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_unix.so nullok try_first_pass</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_ldap.so use_first_pass</span>
+<span style="background-color: #fdf6e3;">8c10,14</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_localuser.so</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_permit.so</span>
+<span style="background-color: #fdf6e3;">11c17,18</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_ldap.so use_authtok</span>
+<span style="background-color: #fdf6e3;">15a23</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so umask=0077</span>
+<span style="background-color: #fdf6e3;">17a26</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
+<span style="color: #93a1a1;">/etc/pam_ldap.conf</span>
+<span style="background-color: #fdf6e3;">17c17</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> host 127.0.0.1</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> #host 127.0.0.1</span>
+<span style="background-color: #fdf6e3;">20c20</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
+<span style="background-color: #fdf6e3;">289a290,293</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
+<span style="color: #93a1a1;">/etc/sysconfig/authconfig</span>
+<span style="background-color: #fdf6e3;">0a1,26</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> IPADOMAINJOINED=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEMKHOMEDIR=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEPAMACCESS=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> CACHECREDENTIALS=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESSSDAUTH=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESHADOW=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEWINBIND=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEDB=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> FORCELEGACY=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEFPRINTD=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> FORCESMARTCARD=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> PASSWDALGORITHM=sha512</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USELDAPAUTH=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEPASSWDQC=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> IPAV2NONTP=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USELOCAUTHORIZE=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USECRACKLIB=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEIPAV2=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEWINBINDAUTH=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESMARTCARD=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USELDAP=yes</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USENIS=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEKERBEROS=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESYSNETAUTH=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USESSSD=no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> USEHESIOD=no</span>
 </pre>
 </div>
 </div>
@@ -1345,7 +1247,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$ViVw1/LQ$jM/snRtNbpBVvKKStUwqn0
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1363,7 +1265,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1381,7 +1283,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1399,7 +1301,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1417,7 +1319,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1435,7 +1337,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1453,7 +1355,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1471,7 +1373,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1489,7 +1391,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1507,7 +1409,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1524,7 +1426,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1542,7 +1444,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1560,7 +1462,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1578,7 +1480,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1596,7 +1498,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1614,7 +1516,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1632,7 +1534,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1650,7 +1552,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1668,7 +1570,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1686,7 +1588,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17091
+shadowLastChange: 17092
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
