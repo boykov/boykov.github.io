@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-24 Пн. 13:59 -->
+<!-- 2016-10-25 Tue 16:35 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -168,21 +168,26 @@ for the JavaScript code in this tag.
 <li><a href="#install-openldap">Установка OpenLDAP</a></li>
 <li><a href="#configure-bdb">Настройка базы данных BDB</a></li>
 <li><a href="#configure-slapd">Предварительная настройка схемы БД LDAP</a></li>
-<li><a href="#add-manager">Подготовка к конфигурированию схемы БД LDAP</a></li>
+<li><a href="#config-transform">Преобразование в <b>cn=config</b> формат</a></li>
+<li><a href="#add-manager">Установка пароля менеджера схемы</a></li>
 </ul>
 </li>
 <li><a href="#authentification">Настройка аутентификации пользователей при помощи LDAP</a>
 <ul>
-<li><a href="#client-packages">Используемые пакеты</a></li>
+<li><a href="#client-packages">Требуемые пакеты</a></li>
 <li><a href="#client-commands">Используемые команды</a></li>
-<li><a href="#client-files">Измененные файлы</a></li>
-<li><a href="#client-options">Описание используемых опций</a></li>
+<li><a href="#client-files">Изменяемые файлы</a></li>
+<li><a href="#client-options">Описание опций</a></li>
 </ul>
 </li>
 <li><a href="#schema">Схема БД LDAP</a>
 <ul>
 <li><a href="#minimal-schema">Подготовка к тестированию аутентификации при помощи LDAP</a></li>
-<li><a href="#new-user">Процесс добавления нового пользователя в систему</a></li>
+</ul>
+</li>
+<li><a href="#new-user">Процесс добавления нового пользователя в систему</a>
+<ul>
+<li><a href="#new-user-ldap">Добавление пользователя с помощью протокола LDAP</a></li>
 <li><a href="#test-client">Тестирование клиентского подключения</a></li>
 <li><a href="#add-users">Миграция пользователей и групп</a></li>
 </ul>
@@ -192,8 +197,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="install-and-config"><a id="orgheadline5"></a><a id="ID-f3a148ae-26f4-4c54-a25c-532d2b9086ba"></a>Установка и настройка сервера OpenLDAP</h2>
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="install-and-config"><a id="orgheadline6"></a><a id="ID-f3a148ae-26f4-4c54-a25c-532d2b9086ba"></a>Установка и настройка сервера OpenLDAP</h2>
 <div class="outline-text-2" id="text-install-and-config">
 <blockquote>
 <p>
@@ -608,7 +613,12 @@ for the JavaScript code in this tag.
     service slapd start
 </pre>
 </div>
+</div>
+</div>
 
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="config-transform"><a id="orgheadline4"></a><a id="ID-3d434678-6d24-4888-a97a-ac0c493ff0ec"></a>Преобразование в <b>cn=config</b> формат</h3>
+<div class="outline-text-3" id="text-config-transform">
 <p>
 <a id="orgtarget1"></a>Теперь для обеих конфигураций можно осуществить переход к <b>cn=config</b> формату и избавиться от <b>slapd.conf</b>
 </p>
@@ -649,8 +659,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="add-manager"><a id="orgheadline4"></a><a id="ID-17e9c727-04eb-495e-97a8-36ab4f2b3cc9"></a>Подготовка к конфигурированию схемы БД LDAP</h3>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="add-manager"><a id="orgheadline5"></a><a id="ID-234e1535-dac2-4e77-8d65-8267aca6044d"></a>Установка пароля менеджера схемы</h3>
 <div class="outline-text-3" id="text-add-manager">
 <p>
 Чтобы иметь доступ к серверу LDAP для конфигурирование схемы БД LDAP, внесем необходимые изменения: пропишем пароль менеджера схемы <b>cn=Manager,cn=config</b>. Для обеих конфигураций выполним следующие действия
@@ -678,12 +688,29 @@ olcRootPW: %LDAP_ROOT_PASSWORD%
 </pre>
 </div>
 </div>
+
+<div class="note">
+<p>
+Первичный доступ к схемам LDAP, использущим только <b>cn=config</b> формат
+(без <b>conf</b>-файлов), осуществляется при помощи <b>ldapi</b> интерфейса.  В
+случае 5/2.3 при использовании <b>-Y EXTERNAL -H ldapi:///</b> флагов
+появляется ошибка <b>Insufficient access (50)</b>.  Поэтому, используется
+явное задание пароля для rootdn (<b>cn=Manager,cn=config</b>) в
+<b>conf</b>-файле и последующее его изменение через <b>ldapmodify</b>, имитируя
+использование <b>ldapi</b>.
+</p>
+
+</div>
+
+<p>
+Дальнейшая настройка схемы осуществляется в разделе <a href="#schema">Схема БД LDAP</a>.
+</p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline10" class="outline-2">
-<h2 id="authentification"><a id="orgheadline10"></a><a id="ID-49b5e2df-0c06-445a-ae9e-66bcd6cc9e40"></a>Настройка аутентификации пользователей при помощи LDAP</h2>
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="authentification"><a id="orgheadline11"></a><a id="ID-49b5e2df-0c06-445a-ae9e-66bcd6cc9e40"></a>Настройка аутентификации пользователей при помощи LDAP</h2>
 <div class="outline-text-2" id="text-authentification">
 <blockquote>
 <p>
@@ -702,8 +729,8 @@ olcRootPW: %LDAP_ROOT_PASSWORD%
 </blockquote>
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="client-packages"><a id="orgheadline6"></a><a id="ID-a4da4894-117b-40b6-a6c7-1447f083d6e1"></a>Используемые пакеты</h3>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="client-packages"><a id="orgheadline7"></a><a id="ID-a4da4894-117b-40b6-a6c7-1447f083d6e1"></a>Требуемые пакеты</h3>
 <div class="outline-text-3" id="text-client-packages">
 <p>
 Для настройки клиентского подключения в 5/2.3 понадобятся следующие пакеты
@@ -729,11 +756,11 @@ yum install -y openldap migrationtools sudo
 </div>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="client-commands"><a id="orgheadline7"></a><a id="ID-6e7a8278-7334-46f7-b289-07da7f2b6d14"></a>Используемые команды</h3>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="client-commands"><a id="orgheadline8"></a><a id="ID-6e7a8278-7334-46f7-b289-07da7f2b6d14"></a>Используемые команды</h3>
 <div class="outline-text-3" id="text-client-commands">
 <p>
-Модифицируем с помощью <b>authconfig</b> конфигурацию клиента. Отдельно настроим <b>/etc/ldap.conf</b>. Для 5/2.3
+Модифицируем с помощью <b>authconfig</b> и <b>echo</b>-команд конфигурацию клиента, отдельно настроим <b>/etc/ldap.conf</b>. Для 5/2.3
 </p>
 
 <div class="org-src-container">
@@ -741,22 +768,17 @@ yum install -y openldap migrationtools sudo
 <pre class="src src-sh">authconfig --enableshadow --enablemkhomedir --enableldap --enableldapauth <span style="color: #b58900; font-weight: bold;">\</span>
            --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
 
-<span style="color: #268bd2;">opts</span>=<span style="color: #2aa198;">"-N -x group -x shadow -x gshadow -x system-auth-ac -x passwd"</span>
-
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/ldap.conf
 </pre>
 </div>
 <p>
-и для 6/2.4
+и для 6/2.4 (здесь дополнительно модифицируются файлы <b>nsswitch.conf</b> и <b>sudo-ldap.conf</b>)
 </p>
 <div class="org-src-container">
 <label class="org-src-name">Настройка клиента для 6/2.4</label>
 <pre class="src src-sh">authconfig --enablemkhomedir --enableldap --enableldapauth <span style="color: #b58900; font-weight: bold;">\</span>
            --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
-
-<span style="color: #268bd2;">opts</span>=<span style="color: #2aa198;">"-N -x fingerprint-auth-ac -x password-auth-ac \</span>
-<span style="color: #2aa198;">-x smartcard-auth-ac -x system-auth-ac -x S12nslcd -x K88nslcd"</span>
 
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers:  files ldap &gt;&gt; /etc/nsswitch.conf
 
@@ -769,11 +791,11 @@ yum install -y openldap migrationtools sudo
 </div>
 </div>
 
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="client-files"><a id="orgheadline8"></a><a id="ID-386e40de-d1f2-4dc8-994b-5870d4ec42fb"></a>Измененные файлы</h3>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="client-files"><a id="orgheadline9"></a><a id="ID-386e40de-d1f2-4dc8-994b-5870d4ec42fb"></a>Изменяемые файлы</h3>
 <div class="outline-text-3" id="text-client-files">
 <p>
-Файлы, которые были модифицированы программой <b>authconfig</b> в случае 5/2.3
+Файлы, которые были модифицированы <a href="#client-commands">настройками</a> в случае 5/2.3
 </p>
 
 <div align="right">
@@ -829,8 +851,8 @@ yum install -y openldap migrationtools sudo
 </div>
 </div>
 
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="client-options"><a id="orgheadline9"></a><a id="ID-a8dfad56-906c-45b6-9ef1-7d5a9cfa854f"></a>Описание используемых опций</h3>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="client-options"><a id="orgheadline10"></a><a id="ID-a8dfad56-906c-45b6-9ef1-7d5a9cfa854f"></a>Описание опций</h3>
 <div class="outline-text-3" id="text-client-options">
 <a onclick="toggleDiv2('myContent-client5',$(this));" class="fa fa-caret-right">client5.diff</a>
 
@@ -850,7 +872,7 @@ yum install -y openldap migrationtools sudo
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,301</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -875,7 +897,7 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
 <span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
@@ -947,7 +969,7 @@ yum install -y openldap migrationtools sudo
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> uri ldap://127.0.0.1/</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
 <span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
@@ -975,7 +997,7 @@ yum install -y openldap migrationtools sudo
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLS_CACERTDIR /etc/openldap/certs</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #93a1a1;">/etc/pam.d/fingerprint-auth</span>
 <span style="background-color: #fdf6e3;">8c8</span>
@@ -1066,13 +1088,13 @@ yum install -y openldap migrationtools sudo
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">289a290,293</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
 <span style="color: #93a1a1;">/etc/sudo-ldap.conf</span>
 <span style="background-color: #fdf6e3;">86a87,90</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
@@ -1111,8 +1133,8 @@ yum install -y openldap migrationtools sudo
 </div>
 </div>
 
-<div id="outline-container-orgheadline15" class="outline-2">
-<h2 id="schema"><a id="orgheadline15"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схема БД LDAP</h2>
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="schema"><a id="orgheadline13"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a>Схема БД LDAP</h2>
 <div class="outline-text-2" id="text-schema">
 <blockquote>
 <p>
@@ -1121,19 +1143,29 @@ yum install -y openldap migrationtools sudo
 </blockquote>
 </div>
 
-<div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="minimal-schema"><a id="orgheadline11"></a><a id="ID-3446a07c-3649-4e85-84c1-044e78c340dc"></a>Подготовка к тестированию аутентификации при помощи LDAP</h3>
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="minimal-schema"><a id="orgheadline12"></a><a id="ID-3446a07c-3649-4e85-84c1-044e78c340dc"></a>Подготовка к тестированию аутентификации при помощи LDAP</h3>
 <div class="outline-text-3" id="text-minimal-schema">
 <p>
 Чтобы получить минимально работоспособный сервер LDAP, позволяющий
 осуществлять аутентификацию для клиентских систем, внесем необходимые
 изменения в схему. В частности, сконфигурируем базу <b>bdb</b> для
 доменного имени <b>dc=mercury,dc=febras,dc=net</b>, пропишем пароль для
-менеджера схемы <b>cn=Manager,dc=mercury,dc=febras,dc=net</b>, добавим 2
-подразделения <b>groups</b> и <b>people</b>. Также, добавим в <b>domain.ldif</b>
-правила доступа к атрибутам <b>userPassword</b> и <b>shadowLastChange</b> для
-менеджера, владельца и неавторизованного пользователя.
+менеджера домена <b>cn=Manager,dc=mercury,dc=febras,dc=net</b>, добавим 3
+подразделения <b>groups</b>, <b>people</b> и <b>sudoers</b>. Также, добавим в
+<b>domain.ldif</b> правила доступа к атрибутам <b>userPassword</b> и
+<b>shadowLastChange</b>: для менеджера домена и владельца записи &#x2013;
+write и неавторизованного пользователя &#x2013; auth.
 </p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">cd</span> /schema
+
+ldapmodify -v -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">cn</span>=config -f domain.ldif -x -w $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>
+ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f base.ldif
+</pre>
+</div>
 
 <br/><a onclick="toggleDiv2('myContent-domain',$(this));" class="fa fa-caret-right">/root/domain.ldif</a>
 <div id="myContent-domain" style="display:none">
@@ -1197,6 +1229,11 @@ ou: sudoers
 objectClass: organizationalUnit
 ou: groups
 
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=wheel,ou=groups,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+gidNumber: 1030
+
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=admins,ou=sudoers,dc=mercury,dc=febras,dc=net</span>
 objectClass: sudoRole
 objectClass: top
@@ -1204,7 +1241,7 @@ cn: admins
 sudoCommand: ALL
 sudoRunAs: ALL
 sudoHost: ALL
-sudoUser: username
+sudoUser: %wheel
 sudoOption: !authenticate
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=defaults,ou=sudoers,dc=mercury,dc=febras,dc=net</span>
@@ -1218,10 +1255,11 @@ sudoOption: env_reset
 </div>
 </div>
 </div>
+</div>
 
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="new-user"><a id="orgheadline12"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h3>
-<div class="outline-text-3" id="text-new-user">
+<div id="outline-container-orgheadline17" class="outline-2">
+<h2 id="new-user"><a id="orgheadline17"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h2>
+<div class="outline-text-2" id="text-new-user">
 <blockquote>
 <p>
 Необходимо разработать документацию по процессу добавления нового
@@ -1230,6 +1268,21 @@ LDAP. Предложить CLI (или GUI WEB) интерфейс для вып
 операции. Ориентироваться на использование в ОС CentOS 5/6.
 </p>
 </blockquote>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="new-user-ldap"><a id="orgheadline14"></a><a id="ID-6e8437bc-7e1f-489a-9afb-44f3d67d49ab"></a>Добавление пользователя с помощью протокола LDAP</h3>
+<div class="outline-text-3" id="text-new-user-ldap">
+<p>
+Используем утилиту <b>ldapadd</b> для добавления записи пользователя в формате <b>ldif</b>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f user.ldif
+ldapsearch -x -LLL -D <span style="color: #2aa198;">'cn=Manager,cn=config'</span> -b <span style="color: #2aa198;">'dc=mercury,dc=febras,dc=net'</span> <span style="color: #2aa198;">'*'</span> -w $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>
+</pre>
+</div>
 
 <br/><a onclick="toggleDiv2('myContent-user',$(this));" class="fa fa-caret-right">/root/user.ldif</a>
 <div id="myContent-user" style="display:none">
@@ -1253,13 +1306,6 @@ shadowLastChange: 17093
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=username,ou=groups,dc=mercury,dc=febras,dc=net</span>
-objectClass: posixGroup
-objectClass: top
-cn: username
-userPassword: {crypt}x
-gidNumber: 1030
 </pre>
 </div>
 </div>
@@ -1270,8 +1316,8 @@ gidNumber: 1030
 </div>
 </div>
 
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="test-client"><a id="orgheadline13"></a><a id="ID-061371a3-a5d6-4fa2-9e15-2d8adef5caf0"></a>Тестирование клиентского подключения</h3>
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="test-client"><a id="orgheadline15"></a><a id="ID-061371a3-a5d6-4fa2-9e15-2d8adef5caf0"></a>Тестирование клиентского подключения</h3>
 <div class="outline-text-3" id="text-test-client">
 <p>
 Протестируем подключение с помощью команды
@@ -1292,8 +1338,8 @@ gidNumber: 1030
 </div>
 </div>
 
-<div id="outline-container-orgheadline14" class="outline-3">
-<h3 id="add-users"><a id="orgheadline14"></a><a id="ID-3c998117-af2e-4965-94c7-3ebfb31d7691"></a>Миграция пользователей и групп</h3>
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="add-users"><a id="orgheadline16"></a><a id="ID-3c998117-af2e-4965-94c7-3ebfb31d7691"></a>Миграция пользователей и групп</h3>
 <div class="outline-text-3" id="text-add-users">
 <a onclick="toggleDiv2('myContent-passwd',$(this));" class="fa fa-caret-right">passwd.ldif</a>
 
@@ -1308,7 +1354,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$ViVw1/LQ$jM/snRtNbpBVvKKStUwqn0
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1326,7 +1372,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1344,7 +1390,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1362,7 +1408,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1380,7 +1426,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1398,7 +1444,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1416,7 +1462,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1434,7 +1480,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1452,7 +1498,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1470,7 +1516,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1487,7 +1533,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1505,7 +1551,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1523,7 +1569,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1541,7 +1587,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1559,7 +1605,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1577,7 +1623,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1595,7 +1641,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1613,7 +1659,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1631,7 +1677,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1649,7 +1695,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17098
+shadowLastChange: 17099
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1888,8 +1934,8 @@ gidNumber: 55
 </div>
 </div>
 
-<div id="outline-container-orgheadline16" class="outline-2">
-<h2 id="cluster"><a id="orgheadline16"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a>Перевести аутентификацию пользователей кластера на использование LDAP</h2>
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="cluster"><a id="orgheadline18"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a>Перевести аутентификацию пользователей кластера на использование LDAP</h2>
 <div class="outline-text-2" id="text-cluster">
 </div>
 </div>
