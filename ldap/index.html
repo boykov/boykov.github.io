@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-25 Tue 16:35 -->
+<!-- 2016-10-27 Thu 13:10 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -187,7 +187,8 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#new-user">Процесс добавления нового пользователя в систему</a>
 <ul>
-<li><a href="#new-user-ldap">Добавление пользователя с помощью протокола LDAP</a></li>
+<li><a href="#new-user-ldap">Добавление пользователя с помощью CLI интерфейса</a></li>
+<li><a href="#new-user-php">Добавление пользователя с помощью GUI Web интерфейса</a></li>
 <li><a href="#test-client">Тестирование клиентского подключения</a></li>
 <li><a href="#add-users">Миграция пользователей и групп</a></li>
 </ul>
@@ -677,16 +678,13 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-<br/><a onclick="toggleDiv2('myContent-manager',$(this));" class="fa fa-caret-down">/root/manager.ldif</a>
-<div id="myContent-manager" style="display:true">
 <div class="org-src-container">
-
-<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={0}config,cn=config</span>
+<label class="org-src-name">Файл <b>manager.ldif</b></label>
+<pre class="src src-ldif" id="orgsrcblock1"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={0}config,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcRootPW</span>
 olcRootPW: %LDAP_ROOT_PASSWORD%
 </pre>
-</div>
 </div>
 
 <div class="note">
@@ -872,7 +870,7 @@ yum install -y openldap migrationtools sudo
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,301</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.9/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -897,7 +895,7 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.9/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
 <span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
@@ -1149,13 +1147,20 @@ yum install -y openldap migrationtools sudo
 <p>
 Чтобы получить минимально работоспособный сервер LDAP, позволяющий
 осуществлять аутентификацию для клиентских систем, внесем необходимые
-изменения в схему. В частности, сконфигурируем базу <b>bdb</b> для
-доменного имени <b>dc=mercury,dc=febras,dc=net</b>, пропишем пароль для
-менеджера домена <b>cn=Manager,dc=mercury,dc=febras,dc=net</b>, добавим 3
-подразделения <b>groups</b>, <b>people</b> и <b>sudoers</b>. Также, добавим в
-<b>domain.ldif</b> правила доступа к атрибутам <b>userPassword</b> и
-<b>shadowLastChange</b>: для менеджера домена и владельца записи &#x2013;
-write и неавторизованного пользователя &#x2013; auth.
+изменения в схему. В частности, <a href="#orgsrcblock2">сконфигурируем</a> базу <b>bdb</b> для
+доменного имени <b>dc=mercury,dc=febras,dc=net</b>, определим менеджера
+домена <b>cn=Manager,dc=mercury,dc=febras,dc=net</b> и его пароль.  Также,
+добавим в <b>domain.ldif</b> правила доступа к атрибутам <b>userPassword</b> и
+<b>shadowLastChange</b>: для менеджера домена и владельца записи &#x2013; write и
+для неавторизованного пользователя &#x2013; auth.
+</p>
+
+<p>
+Далее, <a href="#orgsrcblock3">пропишем</a> необходимые атрибуты, начиная с корневого узла <b>dn:
+dc=mercury,dc=febras,dc=net</b>, добавим подразделения <b>people</b>, <b>groups</b>
+и <b>sudoers</b>. Создадим одну posix-группу <b>wheel</b> и сконфигурируем
+<b>sudoers</b> так, чтобы разрешить выполнение <b>sudo</b> команд без ввода
+пароля для членов этой группы.
 </p>
 
 <div class="org-src-container">
@@ -1167,17 +1172,9 @@ ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=
 </pre>
 </div>
 
-<br/><a onclick="toggleDiv2('myContent-domain',$(this));" class="fa fa-caret-right">/root/domain.ldif</a>
-<div id="myContent-domain" style="display:none">
 <div class="org-src-container">
-
-<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={1}monitor,cn=config</span>
-<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
-<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcAccess</span>
-olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"
-  read by dn.base="cn=Manager,dc=mercury,dc=febras,dc=net" read by * none
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<label class="org-src-name">Файл <b>domain.ldif</b></label>
+<pre class="src src-ldif" id="orgsrcblock2"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcSuffix</span>
 olcSuffix: dc=mercury,dc=febras,dc=net
@@ -1200,12 +1197,12 @@ olcAccess: {1}to dn.base="" by * read
 olcAccess: {2}to * by dn="cn=Manager,dc=mercury,dc=febras,dc=net" write by * read
 </pre>
 </div>
-</div>
+
 <br/><a onclick="toggleDiv2('myContent-base',$(this));" class="fa fa-caret-right">/root/base.ldif</a>
 <div id="myContent-base" style="display:none">
 <div class="org-src-container">
 
-<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=mercury,dc=febras,dc=net</span>
+<pre class="src src-ldif" id="orgsrcblock3"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=mercury,dc=febras,dc=net</span>
 objectClass: top
 objectClass: dcObject
 objectClass: organization
@@ -1230,6 +1227,7 @@ objectClass: organizationalUnit
 ou: groups
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=wheel,ou=groups,dc=mercury,dc=febras,dc=net</span>
+cn: wheel
 objectClass: posixGroup
 objectClass: top
 gidNumber: 1030
@@ -1257,8 +1255,8 @@ sudoOption: env_reset
 </div>
 </div>
 
-<div id="outline-container-orgheadline17" class="outline-2">
-<h2 id="new-user"><a id="orgheadline17"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h2>
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="new-user"><a id="orgheadline18"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a>Процесс добавления нового пользователя в систему</h2>
 <div class="outline-text-2" id="text-new-user">
 <blockquote>
 <p>
@@ -1271,7 +1269,7 @@ LDAP. Предложить CLI (или GUI WEB) интерфейс для вып
 </div>
 
 <div id="outline-container-orgheadline14" class="outline-3">
-<h3 id="new-user-ldap"><a id="orgheadline14"></a><a id="ID-6e8437bc-7e1f-489a-9afb-44f3d67d49ab"></a>Добавление пользователя с помощью протокола LDAP</h3>
+<h3 id="new-user-ldap"><a id="orgheadline14"></a><a id="ID-6e8437bc-7e1f-489a-9afb-44f3d67d49ab"></a>Добавление пользователя с помощью CLI интерфейса</h3>
 <div class="outline-text-3" id="text-new-user-ldap">
 <p>
 Используем утилиту <b>ldapadd</b> для добавления записи пользователя в формате <b>ldif</b>
@@ -1280,14 +1278,11 @@ LDAP. Предложить CLI (или GUI WEB) интерфейс для вып
 <div class="org-src-container">
 
 <pre class="src src-sh">ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f user.ldif
-ldapsearch -x -LLL -D <span style="color: #2aa198;">'cn=Manager,cn=config'</span> -b <span style="color: #2aa198;">'dc=mercury,dc=febras,dc=net'</span> <span style="color: #2aa198;">'*'</span> -w $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>
 </pre>
 </div>
 
-<br/><a onclick="toggleDiv2('myContent-user',$(this));" class="fa fa-caret-right">/root/user.ldif</a>
-<div id="myContent-user" style="display:none">
 <div class="org-src-container">
-
+<label class="org-src-name">Файл <b>user.ldif</b>, применяемый для создания нового пользователя</label>
 <pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=username,ou=people,dc=mercury,dc=febras,dc=net</span>
 cn: User Name
 userPassword: p@ssw0rd
@@ -1309,18 +1304,25 @@ shadowWarning: 7
 </pre>
 </div>
 </div>
-<p>
-<br  />
-Для тестирования аутентификации будем использовать запись <b>username</b>.
-</p>
-</div>
 </div>
 
 <div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="test-client"><a id="orgheadline15"></a><a id="ID-061371a3-a5d6-4fa2-9e15-2d8adef5caf0"></a>Тестирование клиентского подключения</h3>
+<h3 id="new-user-php"><a id="orgheadline15"></a><a id="ID-6de9e6dc-04f2-429d-b22e-55caa2e270ee"></a>Добавление пользователя с помощью GUI Web интерфейса</h3>
+<div class="outline-text-3" id="text-new-user-php">
+
+<div id="orgparagraph1" class="figure">
+<p><img src="./php01.png" alt="php01.png" />
+</p>
+<p><span class="figure-number">&#1056;&#1080;&#1089;. 1.:</span> Создание пользователя с использованием шаблона phpLDAPadmin</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="test-client"><a id="orgheadline16"></a><a id="ID-061371a3-a5d6-4fa2-9e15-2d8adef5caf0"></a>Тестирование клиентского подключения</h3>
 <div class="outline-text-3" id="text-test-client">
 <p>
-Протестируем подключение с помощью команды
+Для проверки возможности аутентификации будем использовать <a href="#new-user-ldap">запись</a> <b>username</b>. Протестируем подключение с помощью команды
 </p>
 <div class="org-src-container">
 
@@ -1335,11 +1337,28 @@ shadowWarning: 7
 <pre class="src src-conf-colon"><span style="color: #268bd2;">username</span>:x:1050:1030:User Name:/home/webminder:/bin/bash
 </pre>
 </div>
+
+<p>
+Убедимся, что механизм <b>sudoers</b> задействован. Вывод команды
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">sshpass -p p@ssw0rd ssh -t username@$(<span style="color: #6c71c4; font-weight: bold;">ip</span>) sudo ls /root
+</pre>
+</div>
+<p>
+демонстрирует, что пользователь <b>username</b> успешно прочитал содержимое каталога <b>root</b> с помощью <b>sudo</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">Dockerfile5  Dockerfile6  run5.sh  run6.sh
+</pre>
+</div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline16" class="outline-3">
-<h3 id="add-users"><a id="orgheadline16"></a><a id="ID-3c998117-af2e-4965-94c7-3ebfb31d7691"></a>Миграция пользователей и групп</h3>
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="add-users"><a id="orgheadline17"></a><a id="ID-3c998117-af2e-4965-94c7-3ebfb31d7691"></a>Миграция пользователей и групп</h3>
 <div class="outline-text-3" id="text-add-users">
 <a onclick="toggleDiv2('myContent-passwd',$(this));" class="fa fa-caret-right">passwd.ldif</a>
 
@@ -1354,7 +1373,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$ViVw1/LQ$jM/snRtNbpBVvKKStUwqn0
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1372,7 +1391,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1390,7 +1409,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1408,7 +1427,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1426,7 +1445,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1444,7 +1463,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1462,7 +1481,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1480,7 +1499,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1498,7 +1517,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1516,7 +1535,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1533,7 +1552,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1551,7 +1570,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1569,7 +1588,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1587,7 +1606,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1605,7 +1624,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1623,7 +1642,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1641,7 +1660,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1659,7 +1678,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1677,7 +1696,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1695,7 +1714,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17099
+shadowLastChange: 17101
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1934,8 +1953,8 @@ gidNumber: 55
 </div>
 </div>
 
-<div id="outline-container-orgheadline18" class="outline-2">
-<h2 id="cluster"><a id="orgheadline18"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a>Перевести аутентификацию пользователей кластера на использование LDAP</h2>
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="cluster"><a id="orgheadline19"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a>Перевести аутентификацию пользователей кластера на использование LDAP</h2>
 <div class="outline-text-2" id="text-cluster">
 </div>
 </div>
