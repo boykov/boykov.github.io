@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-10-28 Пт. 11:29 -->
+<!-- 2016-10-28 Пт. 11:39 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Установка пакета ModEM</title>
@@ -175,7 +175,7 @@ for the JavaScript code in this tag.
 </div>
 
 <pre class="example">
-modem_docs.tar.gz  modem.tar.gz
+ModEM  modem_docs.tar.gz  modem.tar.gz
 </pre>
 
 <div id="outline-container-orgheadline1" class="outline-2">
@@ -190,8 +190,8 @@ rm -rf ModEM/f90/objs/3D_MT
 bash Configure.3D_MT.Intel Makefile MPI
 sed -i <span style="color: #2aa198;">"s/^F90 = ifort /F90 = mpiifort/g"</span> Makefile
 sed -i <span style="color: #2aa198;">"s|^LIBS_PATH = -L/opt/intel/Compiler/11.1/075/mkl/lib/em64t|LIBS_PATH = -L/opt/intel/mkl/10.2.5.035/lib/em64t|g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
+sed -i <span style="color: #2aa198;">"s|^LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
+sed -i <span style="color: #2aa198;">"s|^FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
 
 make
 cp Mod3DMT /opt/modem
@@ -219,8 +219,8 @@ Couldn't find source file for module MPI_main
 <pre class="src src-sh">rm Makefile
 bash Configure.2D_MT.Intel Makefile release
 sed -i <span style="color: #2aa198;">"s|^LIBS_PATH = -L/opt/intel/Compiler/11.1/075/mkl/lib/em64t|LIBS_PATH = -L/opt/intel/mkl/10.2.5.035/lib/em64t|g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
+sed -i <span style="color: #2aa198;">"s|^LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
+sed -i <span style="color: #2aa198;">"s|^FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
 
 make
 cp Mod2DMT /opt/modem
