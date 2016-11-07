@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-11-03 Чт. 02:36 -->
+<!-- 2016-11-07 Пн. 17:38 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>Установка пакета ModEM</title>
+<title>Установка и использование пакета ModEM</title>
 <meta  name="generator" content="Org-mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -156,50 +156,31 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Установка пакета ModEM</h1>
-<div id="table-of-contents">
-<h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orgheadline1">Установочные файлы</a></li>
-<li><a href="#orgheadline6">Установка пакета</a>
-<ul>
-<li><a href="#orgheadline2">3D_MT MPI (Parallel)</a></li>
-<li><a href="#orgheadline3">3D_MT Release (Sequential)</a></li>
-<li><a href="#orgheadline4">2D_MT Release (Sequential)</a></li>
-<li><a href="#orgheadline5">2D_MT MPI (Parallel)</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline7">Использование пакета</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Установочные файлы</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<h1 class="title">Установка и использование пакета ModEM</h1>
 <p>
-В настоящее время установка осуществляется с помощью <b>modem_docs.tar.gz</b>. Доступ к серверу SVN и тестовые примеры пока отсутствуют.
+В настоящее время установка осуществляется с помощью <b>modem.tar.gz</b>. Доступ к <a href="http://blogs.oregonstate.edu/modem3dmt/?page_id=123">серверу SVN</a> и тестовые примеры отсутствуют. Без тестовых примеров предложить типичные варианты использования затруднительно.
 </p>
-
-<div class="org-src-container">
-
-<pre class="src src-sh">ls
-</pre>
-</div>
-
 <pre class="example">
 ModEM  modem_docs.tar.gz  modem.tar.gz
 </pre>
-</div>
-</div>
 
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6">Установка пакета</h2>
-<div class="outline-text-2" id="text-orgheadline6">
-</div><div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">3D_MT MPI (Parallel)</h3>
-<div class="outline-text-3" id="text-orgheadline2">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Общие команды для всех установок &lt;mkl-sse&gt;</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<div class="org-src-container">
+
+<pre class="src src-sh" id="orgsrcblock1">sed -i <span style="color: #2aa198;">"s|^LIBS_PATH = -L/opt/intel/Compiler/11.1/075/mkl/lib/em64t|LIBS_PATH = -L/opt/intel/mkl/10.2.5.035/lib/em64t|g"</span> Makefile
+sed -i <span style="color: #2aa198;">"s|^LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
+sed -i <span style="color: #2aa198;">"s|^FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
+
+make
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Установка 3D_MT MPI (Parallel)</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <div class="org-src-container">
 
 <pre class="src src-sh">tar xzvf modem.tar.gz
@@ -208,241 +189,51 @@ rm -rf ModEM/f90/objs/3D_MT
 <span style="color: #268bd2; font-weight: bold;">cd</span> ModEM/f90
 bash Configure.3D_MT.Intel Makefile MPI
 sed -i <span style="color: #2aa198;">"s/^F90 = ifort /F90 = mpiifort/g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|^LIBS_PATH = -L/opt/intel/Compiler/11.1/075/mkl/lib/em64t|LIBS_PATH = -L/opt/intel/mkl/10.2.5.035/lib/em64t|g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|^LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|^FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
-
-make
+&lt;mkl-sse&gt;
 cp Mod3DMT /opt/modem
 </pre>
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">3D_MT Release (Sequential)</h3>
-<div class="outline-text-3" id="text-orgheadline3">
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">Установка 3D_MT Release (Sequential)</h2>
+<div class="outline-text-2" id="text-orgheadline3">
 <div class="org-src-container">
 
 <pre class="src src-sh">rm Makefile
 rm -rf ModEM/f90/objs/3D_MT
 bash Configure.3D_MT.Intel Makefile release
-sed -i <span style="color: #2aa198;">"s|^LIBS_PATH = -L/opt/intel/Compiler/11.1/075/mkl/lib/em64t|LIBS_PATH = -L/opt/intel/mkl/10.2.5.035/lib/em64t|g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|^LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|^FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
-
-make
+&lt;mkl-sse&gt;
 cp Mod3DMT /opt/modem/Mod3DMT_seq
 </pre>
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">2D_MT Release (Sequential)</h3>
-<div class="outline-text-3" id="text-orgheadline4">
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">Установка 2D_MT Release (Sequential)</h2>
+<div class="outline-text-2" id="text-orgheadline4">
 <div class="org-src-container">
 
 <pre class="src src-sh">rm Makefile
 bash Configure.2D_MT.Intel Makefile release
-sed -i <span style="color: #2aa198;">"s|^LIBS_PATH = -L/opt/intel/Compiler/11.1/075/mkl/lib/em64t|LIBS_PATH = -L/opt/intel/mkl/10.2.5.035/lib/em64t|g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|^LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
-sed -i <span style="color: #2aa198;">"s|^FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
-
-make
+&lt;mkl-sse&gt;
 cp Mod2DMT /opt/modem/Mod2DMT_seq
 </pre>
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5">2D_MT MPI (Parallel)</h3>
-<div class="outline-text-3" id="text-orgheadline5">
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">Установка 2D_MT MPI (Parallel)</h2>
+<div class="outline-text-2" id="text-orgheadline5">
 <p>
-MPI-версия не тестировалась (так сказано в README) и при сборке выдает ошибку. Похоже, в кодовой базе не прописаны какие-то пути.
+MPI-версия не тестировалась (так сказано в README) и при сборке выдает ошибку. Похоже, в кодовой базе не прописаны какие-то пути:
 </p>
-
 <div class="org-src-container">
 
 <pre class="src src-raw">Couldn't find source file for module MPI_declaration
 Couldn't find source file for module MPI_main
 </pre>
 </div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7">Использование пакета</h2>
-<div class="outline-text-2" id="text-orgheadline7">
-<p>
-Без тестовых примеров предложить типичные варианты использования затруднительно.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-sh">ls -la
-</pre>
-</div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-right" />
-
-<col  class="org-left" />
-
-<col  class="org-left" />
-
-<col  class="org-right" />
-
-<col  class="org-left" />
-
-<col  class="org-right" />
-
-<col  class="org-right" />
-
-<col  class="org-left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left">total</td>
-<td class="org-right">9092</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-right">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-right">&#xa0;</td>
-<td class="org-right">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="org-left">drwxr-xr-x</td>
-<td class="org-right">2</td>
-<td class="org-left">root</td>
-<td class="org-left">root</td>
-<td class="org-right">4096</td>
-<td class="org-left">Oct</td>
-<td class="org-right">31</td>
-<td class="org-right">11:01</td>
-<td class="org-left">.</td>
-</tr>
-
-<tr>
-<td class="org-left">drwxr-xr-x</td>
-<td class="org-right">35</td>
-<td class="org-left">root</td>
-<td class="org-left">root</td>
-<td class="org-right">4096</td>
-<td class="org-left">Oct</td>
-<td class="org-right">28</td>
-<td class="org-right">11:05</td>
-<td class="org-left">..</td>
-</tr>
-
-<tr>
-<td class="org-left">-rwxr-xr-x</td>
-<td class="org-right">1</td>
-<td class="org-left">root</td>
-<td class="org-left">root</td>
-<td class="org-right">1791237</td>
-<td class="org-left">Oct</td>
-<td class="org-right">28</td>
-<td class="org-right">11:07</td>
-<td class="org-left">Mod2DMT_seq</td>
-</tr>
-
-<tr>
-<td class="org-left">-rwxr-xr-x</td>
-<td class="org-right">1</td>
-<td class="org-left">root</td>
-<td class="org-left">root</td>
-<td class="org-right">3828454</td>
-<td class="org-left">Oct</td>
-<td class="org-right">28</td>
-<td class="org-right">11:07</td>
-<td class="org-left">Mod3DMT</td>
-</tr>
-
-<tr>
-<td class="org-left">-rwxr-xr-x</td>
-<td class="org-right">1</td>
-<td class="org-left">root</td>
-<td class="org-left">root</td>
-<td class="org-right">3642385</td>
-<td class="org-left">Oct</td>
-<td class="org-right">31</td>
-<td class="org-right">10:15</td>
-<td class="org-left">Mod3DMT_seq</td>
-</tr>
-</tbody>
-</table>
-
-<div class="org-src-container">
-
-<pre class="src src-sh">./Mod2DMT_seq
-</pre>
-</div>
-
-<pre class="example">
- Copyright (c) 2004-2014 Oregon State University
- AUTHORS  Gary Egbert, Anna Kelbert &amp; Naser Meqbel
- College of Earth, Ocean and Atmospheric Sciences
- 
- Output information to files, and progress report to screen (default).
- Usage: Mod3DMT -[job] [args]
- 
- [READ_WRITE]
-  -R  rFile_Model rFile_Data [wFile_Model wFile_Data]
-   Reads your input files and checks them for validity;
-   optionally also writes them out
- [FORWARD]
-  -F  rFile_Model rFile_Data wFile_Data [wFile_EMsoln rFile_fwdCtrl]
-   Calculates the predicted data and saves the EM solution
- [INVERSE]
-  -I NLCG rFile_Model rFile_Data [lambda eps]
-   Here, lambda = the initial damping parameter for inversion
-            eps = misfit tolerance for the forward solver
- OR
-  -I NLCG rFile_Model rFile_Data [rFile_invCtrl rFile_fwdCtrl]
-   Optionally, may also supply
-       the model covariance configuration file   [rFile_Cov]
-       the starting model parameter perturbation [rFile_dModel]
-   Runs an inverse search to yield an inverse model at every iteration
- [COMPUTE_J]
-  -J  rFile_Model rFile_Data wFile_Sens [rFile_fwdCtrl]
-   Calculates and saves the full J(acobian)
- [MULT_BY_J]
-  -M  rFile_Model rFile_dModel rFile_Data wFile_Data [rFile_fwdCtrl]
-   Multiplies a model by J to create a data vector
- [MULT_BY_J_T]
-  -T  rFile_Model rFile_Data wFile_dModel [rFile_fwdCtrl]
-   Multiplies a data vector by J^T to create a model
- [MULT_BY_J_T_multi_Tx]
-  -x  rFile_Model rFile_Data wFile_dModel [rFile_fwdCtrl]
-   Multiplies a data vector by J^T to output models for each transmitter
- [APPLY_COV]
-  -C FWD rFile_Model wFile_Model [rFile_Cov rFile_Prior]
-   Applies the model covariance to produce a smooth model output
-   Optionally, also specify the prior model to compute resistivities
-   from model perturbation: m = C_m^{1/2} \\tilde{m} + m_0
- [TEST_ADJ]
-  -A  J rFile_Model rFile_dModel rFile_Data [wFile_Model wFile_Data]
-   Tests the equality d^T J m = m^T J^T d for any model and data.
-   Optionally, outputs J m and J^T d.
- [TEST_SENS]
-  -S  rFile_Model rFile_dModel rFile_Data wFile_Data [wFile_Sens]
-   Multiplies by the full Jacobian, row by row, to get d = J m.
-   Compare to the output of [MULT_BY_J] to test [COMPUTE_J]
- 
- Optional final argument -v [debug|full|regular|compact|result|none]
- indicates the desired level of output to screen and to files.
-</pre>
 </div>
 </div>
 </div>
