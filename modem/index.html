@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-11-07 Пн. 17:38 -->
+<!-- 2016-11-09 Ср. 13:05 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Установка и использование пакета ModEM</title>
@@ -157,76 +157,94 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <h1 class="title">Установка и использование пакета ModEM</h1>
-<p>
-В настоящее время установка осуществляется с помощью <b>modem.tar.gz</b>. Доступ к <a href="http://blogs.oregonstate.edu/modem3dmt/?page_id=123">серверу SVN</a> и тестовые примеры отсутствуют. Без тестовых примеров предложить типичные варианты использования затруднительно.
-</p>
-<pre class="example">
-ModEM  modem_docs.tar.gz  modem.tar.gz
-</pre>
+<div id="table-of-contents">
+<h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline5">1. Установка пакета ModEM</a>
+<ul>
+<li><a href="#orgheadline1">1.1. Установка 3D_MT MPI (Parallel)</a></li>
+<li><a href="#orgheadline2">1.2. Установка 3D_MT Release (Sequential)</a></li>
+<li><a href="#orgheadline3">1.3. Установка 2D_MT MPI (Parallel)</a></li>
+<li><a href="#orgheadline4">1.4. Установка 2D_MT Release (Sequential)</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline9">2. Использование пакета ModEM</a>
+<ul>
+<li><a href="#orgheadline6">2.1. Тестирование 3D_MT MPI (Parallel)</a></li>
+<li><a href="#orgheadline7">2.2. Тестирование 3D_MT Release (Sequential)</a></li>
+<li><a href="#orgheadline8">2.3. Тестирование 2D_MT MPI и 2D_MT Release</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Общие команды для всех установок &lt;mkl-sse&gt;</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5"><span class="section-number-2">1</span> Установка пакета ModEM</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Получив доступ к серверу SVN<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> (сменить пароль и осуществить другие настройки можно через web интерфейс<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>), используем репозиторий для установки пакета:
+</p>
 <div class="org-src-container">
 
-<pre class="src src-sh" id="orgsrcblock1">sed -i <span style="color: #2aa198;">"s|^LIBS_PATH = -L/opt/intel/Compiler/11.1/075/mkl/lib/em64t|LIBS_PATH = -L/opt/intel/mkl/10.2.5.035/lib/em64t|g"</span> Makefile
+<pre class="src src-sh">svn checkout http://ohm.coas.oregonstate.edu/svn/ModEM/branches/stable ModEM
+<span style="color: #657b83; font-weight: bold;">cd</span> ModEM/f90
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> Установка 3D_MT MPI (Parallel)</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Предварительно устанавливается путь библиотеки <b>MKL</b>, для подключения <b>lapack</b> и <b>blas</b> используется ключ <b>-lmkl_rt</b>.Также, удаляется ключ <b>-xSSE4.2</b> для предотвращения ошибки:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">Please verify that both the operating system and the processor support Intel(R) SSE4_2 and POPCNT instructions
+</pre>
+</div>
+<div class="org-src-container">
+<label class="org-src-name">Общие команды для всех установок <b>&lt;mkl-sse&gt;</b></label>
+<pre class="src src-sh">sed -i <span style="color: #2aa198;">"s|^LIBS_PATH = -L/opt/intel/Compiler/11.1/075/mkl/lib/em64t|LIBS_PATH = -L/opt/intel/mkl/10.2.5.035/lib/em64t|g"</span> Makefile
 sed -i <span style="color: #2aa198;">"s|^LIBS = -llapack -lblas |LIBS = -lmkl_rt |g"</span> Makefile
 sed -i <span style="color: #2aa198;">"s|^FFLAGS = -O3 -w  -xSSE4.2 -std03|FFLAGS = -O3 -w -std03|g"</span> Makefile
 
 make
 </pre>
 </div>
-</div>
-</div>
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">Установка 3D_MT MPI (Parallel)</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<p>
+Для параллельных версий используется компилятор <b>mpiifort</b>:
+</p>
 <div class="org-src-container">
 
-<pre class="src src-sh">tar xzvf modem.tar.gz
-rm -rf ModEM/f90/objs/2D_MT
-rm -rf ModEM/f90/objs/3D_MT
-<span style="color: #268bd2; font-weight: bold;">cd</span> ModEM/f90
-bash Configure.3D_MT.Intel Makefile MPI
+<pre class="src src-sh">bash Configure.3D_MT.Intel Makefile MPI
 sed -i <span style="color: #2aa198;">"s/^F90 = ifort /F90 = mpiifort/g"</span> Makefile
 &lt;mkl-sse&gt;
-cp Mod3DMT /opt/modem
+cp Mod3DMT /opt/modem/Mod3DMT_MPI
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">Установка 3D_MT Release (Sequential)</h2>
-<div class="outline-text-2" id="text-orgheadline3">
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> Установка 3D_MT Release (Sequential)</h3>
+<div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 
 <pre class="src src-sh">rm Makefile
-rm -rf ModEM/f90/objs/3D_MT
+rm -rf objs/3D_MT
 bash Configure.3D_MT.Intel Makefile release
 &lt;mkl-sse&gt;
-cp Mod3DMT /opt/modem/Mod3DMT_seq
+cp Mod3DMT /opt/modem/Mod3DMT
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4">Установка 2D_MT Release (Sequential)</h2>
-<div class="outline-text-2" id="text-orgheadline4">
-<div class="org-src-container">
-
-<pre class="src src-sh">rm Makefile
-bash Configure.2D_MT.Intel Makefile release
-&lt;mkl-sse&gt;
-cp Mod2DMT /opt/modem/Mod2DMT_seq
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">Установка 2D_MT MPI (Parallel)</h2>
-<div class="outline-text-2" id="text-orgheadline5">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">1.3</span> Установка 2D_MT MPI (Parallel)</h3>
+<div class="outline-text-3" id="text-1-3">
 <p>
-MPI-версия не тестировалась (так сказано в README) и при сборке выдает ошибку. Похоже, в кодовой базе не прописаны какие-то пути:
+Чтобы исправить ошибку
 </p>
 <div class="org-src-container">
 
@@ -234,8 +252,185 @@ MPI-версия не тестировалась (так сказано в READM
 Couldn't find source file for module MPI_main
 </pre>
 </div>
+<p>
+добавляется путь <b>"MPI:"</b> в файле Configure.2D_MT.Intel
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">rm Makefile
+sed -i <span style="color: #2aa198;">"s|^-p .:INV:LAPACK:|-p .:INV:MPI:LAPACK:|g"</span> Configure.2D_MT.Intel
+bash Configure.2D_MT.Intel Makefile MPI
+sed -i <span style="color: #2aa198;">"s/^F90 = ifort /F90 = mpiifort/g"</span> Makefile
+&lt;mkl-sse&gt;
+cp Mod2DMT /opt/modem/Mod2DMT_MPI
+</pre>
 </div>
 </div>
 </div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">1.4</span> Установка 2D_MT Release (Sequential)</h3>
+<div class="outline-text-3" id="text-1-4">
+<div class="org-src-container">
+
+<pre class="src src-sh">rm Makefile
+rm -rf objs/2D_MT
+bash Configure.2D_MT.Intel Makefile release
+&lt;mkl-sse&gt;
+cp Mod2DMT /opt/modem/Mod2DMT
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9"><span class="section-number-2">2</span> Использование пакета ModEM</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Продемонстрируем типичное использование пакета на тестовых примерах, доступных из репозитория.
+</p>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6"><span class="section-number-3">2.1</span> Тестирование 3D_MT MPI (Parallel)</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Пример <b>Cascadia</b>.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">cd</span> ../examples/3D_MT/Cascadia
+qsub job.qsub
+</pre>
+</div>
+<div class="org-src-container">
+<label class="org-src-name">Файл job.qsub</label>
+<pre class="src src-sh"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -k oe</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -l nodes=1:ppn=8</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -r n</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -M boykov@as.khb.ru</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -m abe</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -q vl_mercury</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -N ModEM_cascadia</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/bin/sh</span>
+
+<span style="color: #657b83; font-weight: bold;">cd</span> /home/boykov/install/ModEM/examples/3D_MT/Cascadia/
+
+mpirun ./job
+
+<span style="color: #859900; font-weight: bold;">exit</span> 0
+</pre>
+</div>
+<div class="org-src-container">
+<label class="org-src-name">Файл job</label>
+<pre class="src src-sh">/opt/modem/Mod3DMT_MPI -I NLCG cascad_half_prior.ws cascad_errfl5.dat 1e1 1e-6 cascad_half.cov &lt; /dev/null &gt;&amp; ModEM_NLCG.out &amp;
+</pre>
+</div>
+<p>
+Результат выполнения - <b>неуспешный</b> (затраченное время - 20 часов):
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">Completed NLCG iteration   119
+     with: f=3.396029E+00 m2=5.931925E+00 rms=   1.842832 lambda=1.000000E-08 alpha=6.586403E+01
+ The norm of the last gradient is 9.259412E-03
+ The value of line search step alpha updated to 1.079982E+02
+       Unable to get out of a local minimum. Exiting...
+  elapsed time (mins)   -71.73756
+</pre>
+</div>
+<p>
+Пример <b>ObliqueOne FWD</b>.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">cd</span> ../examples/3D_MT/ObliqueOne/FWD
+qsub job.qsub
+</pre>
+</div>
+<div class="org-src-container">
+<label class="org-src-name">Файл job.qsub</label>
+<pre class="src src-sh"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -k oe</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -l nodes=1:ppn=8</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -r n</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -M boykov@as.khb.ru</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -m abe</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -q vl_mercury</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">PBS -N ModEM_obliqueone_fwd</span>
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/bin/sh</span>
+
+<span style="color: #657b83; font-weight: bold;">cd</span> ~/install/ModEM/examples/3D_MT/ObliqueOne/FWD/
+
+mpirun ./job
+
+<span style="color: #859900; font-weight: bold;">exit</span> 0
+</pre>
+</div>
+<div class="org-src-container">
+<label class="org-src-name">Файл job</label>
+<pre class="src src-sh">/opt/modem/Mod3DMT_MPI -F ObliqueOne.mod ZT_100sites_16periods.dat FWD_ObliqueOne_ZT.dat ObliqueOne.esoln FWD_para.dat
+</pre>
+</div>
+<p>
+Результат выполнения - <b>успешный</b>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">Saving the EM solution...
+E-fields written to ObliqueOne.esoln
+elapsed time (mins)    57.04173
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">2.2</span> Тестирование 3D_MT Release (Sequential)</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Пример <b>BLOCK2</b>.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">cd</span> ../BLOCK2
+./run.sh
+</pre>
+</div>
+<div class="org-src-container">
+<label class="org-src-name">Файл run.sh</label>
+<pre class="src src-sh">/opt/modem/Mod3DMT -I NLCG pr.ws de.dat block2.inv
+</pre>
+</div>
+<p>
+Результат выполнения - <b>успешный</b>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">Completed NLCG iteration    36
+     with: f=1.109136E+00 m2=7.751236E-01 rms=   1.049469 lambda=1.000000E-02 alpha=3.055134E+01
+         NLCG iterations:   36    function evaluations:   72
+  elapsed time (mins)    9.798568
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">2.3</span> Тестирование 2D_MT MPI и 2D_MT Release</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Осуществить не удается, поскольку примеры для 2D_MT неполны: отсутствуют команды. Вероятно, разработчики не добавили их в репозиторий.
+</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#1057;&#1085;&#1086;&#1089;&#1082;&#1080;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><a href="http://blogs.oregonstate.edu/modem3dmt/">http://blogs.oregonstate.edu/modem3dmt/</a></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><a href="http://ohm.coas.oregonstate.edu:3343/">http://ohm.coas.oregonstate.edu:3343/</a></div></div>
+
+
+</div>
+</div></div>
 </body>
 </html>
