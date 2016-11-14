@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-11-11 Пт. 17:08 -->
+<!-- 2016-11-14 Пн. 17:35 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -681,7 +681,7 @@ yum install -y openldap migrationtools sudo
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,301</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.7/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -706,7 +706,7 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.7/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.4/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
 <span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
@@ -778,7 +778,7 @@ yum install -y openldap migrationtools sudo
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> uri ldap://127.0.0.1/</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
 <span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
@@ -806,7 +806,7 @@ yum install -y openldap migrationtools sudo
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLS_CACERTDIR /etc/openldap/certs</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #93a1a1;">/etc/pam.d/fingerprint-auth</span>
 <span style="background-color: #fdf6e3;">8c8</span>
@@ -897,13 +897,13 @@ yum install -y openldap migrationtools sudo
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">289a290,293</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
 <span style="color: #93a1a1;">/etc/sudo-ldap.conf</span>
 <span style="background-color: #fdf6e3;">86a87,90</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
@@ -1499,7 +1499,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$fYRKlQRJ$KSwm.DKhtE6Z0p4Eir3qo0
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1517,7 +1517,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1535,7 +1535,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1553,7 +1553,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1571,7 +1571,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1589,7 +1589,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1607,7 +1607,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1625,7 +1625,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1643,7 +1643,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1661,7 +1661,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1678,7 +1678,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1696,7 +1696,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1714,7 +1714,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1732,7 +1732,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1750,7 +1750,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1768,7 +1768,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1786,7 +1786,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1804,7 +1804,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1822,7 +1822,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1840,7 +1840,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17116
+shadowLastChange: 17119
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
