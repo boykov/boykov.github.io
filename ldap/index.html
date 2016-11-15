@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-11-14 Пн. 17:35 -->
+<!-- 2016-11-15 Вт. 23:43 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -165,7 +165,7 @@ for the JavaScript code in this tag.
 <li><a href="#install-and-config">1. Установка и настройка сервера OpenLDAP</a>
 <ul>
 <li><a href="#install-openldap">1.1. Установка OpenLDAP</a></li>
-<li><a href="#configure-bdb">1.2. Настройка базы данных BDB</a></li>
+<li><a href="#configure-hdb">1.2. Настройка базы данных HDB</a></li>
 <li><a href="#configure-slapd">1.3. Предварительная настройка схемы БД LDAP</a></li>
 </ul>
 </li>
@@ -343,8 +343,8 @@ IP-адреса машин в подсети 172.17.0.x определяются
 </div>
 
 <div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="configure-bdb"><a id="orgheadline3"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a><span class="section-number-3">1.2</span> Настройка базы данных BDB</h3>
-<div class="outline-text-3" id="text-configure-bdb">
+<h3 id="configure-hdb"><a id="orgheadline3"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a><span class="section-number-3">1.2</span> Настройка базы данных HDB</h3>
+<div class="outline-text-3" id="text-configure-hdb">
 <p>
 Для запуска сервиса <b>ldap</b> (<b>slapd</b>) необходимо подготовить каталог и файл конфигурации базы данных. Расположение образца файла настройки, в <b>5/2.3</b>
 </p>
@@ -465,7 +465,7 @@ include: file:///etc/openldap/schema/sudo.ldif
 </p>
 
 <p>
-Кроме того, добавим минимально необходимые настройки для <b>monitor</b> и <b>bdb</b>
+Кроме того, добавим минимально необходимые настройки для <b>monitor</b> и <b>hdb</b>
 </p>
 
 <div class="org-src-container">
@@ -482,15 +482,15 @@ include: file:///etc/openldap/schema/sudo.ldif
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>slapd.ldif</b>: конфигурирование базы данных <b>bdb</b> и включение мониторинга баз данных</label>
+<label class="org-src-name"><b>slapd.ldif</b>: конфигурирование базы данных <b>hdb</b> и включение мониторинга баз данных</label>
 <pre class="src src-ldif" id="orgsrcblock1"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase=monitor,cn=config</span>
 objectClass: olcDatabaseConfig
 olcDatabase: monitor
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase=bdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase=hdb,cn=config</span>
 objectClass: olcDatabaseConfig
-objectClass: olcBdbConfig
-olcDatabase: bdb
+objectClass: olcHdbConfig
+olcDatabase: hdb
 olcSuffix: dc=my-domain,dc=com
 olcRootDN: cn=Manager,dc=my-domain,dc=com
 olcDbDirectory: /var/lib/ldap
@@ -579,6 +579,8 @@ yum install -y openldap migrationtools sudo
 
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/ldap.conf
 </pre>
 </div>
 <p>
@@ -595,6 +597,18 @@ yum install -y openldap migrationtools sudo
 <span style="color: #657b83; font-weight: bold;">echo</span> base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/sudo-ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/sudo-ldap.conf
+
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/pam_ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/pam_ldap.conf
+
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/nslcd.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/nslcd.conf
+
+/etc/init.d/nslcd stop
+rm /var/run/nslcd/*
+/etc/init.d/nslcd start
 </pre>
 </div>
 </div>
@@ -680,13 +694,15 @@ yum install -y openldap migrationtools sudo
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
-<span style="background-color: #fdf6e3;">295a296,301</span>
+<span style="background-color: #fdf6e3;">295a296,303</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 <span style="color: #93a1a1;">/etc/nsswitch.conf</span>
 <span style="background-color: #fdf6e3;">33,35c33,35</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
@@ -774,7 +790,7 @@ yum install -y openldap migrationtools sudo
 <div class="org-src-container">
 
 <pre class="src src-diff"><span style="color: #93a1a1;">/etc/nslcd.conf</span>
-<span style="background-color: #fdf6e3;">131,132c131,134</span>
+<span style="background-color: #fdf6e3;">131,132c131,136</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> uri ldap://127.0.0.1/</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -782,6 +798,8 @@ yum install -y openldap migrationtools sudo
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 <span style="color: #93a1a1;">/etc/nsswitch.conf</span>
 <span style="background-color: #fdf6e3;">33,35c33,35</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
@@ -896,17 +914,21 @@ yum install -y openldap migrationtools sudo
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
-<span style="background-color: #fdf6e3;">289a290,293</span>
+<span style="background-color: #fdf6e3;">289a290,295</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 <span style="color: #93a1a1;">/etc/sudo-ldap.conf</span>
-<span style="background-color: #fdf6e3;">86a87,90</span>
+<span style="background-color: #fdf6e3;">86a87,92</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 <span style="color: #93a1a1;">/etc/sysconfig/authconfig</span>
 <span style="background-color: #fdf6e3;">0a1,26</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> IPADOMAINJOINED=no</span>
@@ -970,7 +992,7 @@ yum install -y openldap migrationtools sudo
 
 <tr>
 <td class="org-left"><b>slapd.ldif</b></td>
-<td class="org-left">конфигурирование базы данных <b>bdb</b> и включение мониторинга баз данных</td>
+<td class="org-left">конфигурирование базы данных <b>hdb</b> и включение мониторинга баз данных</td>
 </tr>
 
 <tr>
@@ -980,7 +1002,7 @@ yum install -y openldap migrationtools sudo
 
 <tr>
 <td class="org-left"><b>domain.ldif</b></td>
-<td class="org-left">установка суффикса, менеджера и ACL для <b>bdb</b></td>
+<td class="org-left">установка суффикса, менеджера и ACL для <b>hdb</b></td>
 </tr>
 
 <tr>
@@ -1048,7 +1070,7 @@ yum install -y openldap migrationtools sudo
 <p>
 Чтобы получить минимально работоспособный сервер LDAP, позволяющий
 осуществлять аутентификацию для клиентских систем, внесем необходимые
-изменения в схему. В частности, <a href="#orgsrcblock3">сконфигурируем</a> базу <b>bdb</b> для
+изменения в схему. В частности, <a href="#orgsrcblock3">сконфигурируем</a> базу <b>hdb</b> для
 доменного имени <b>dc=mercury,dc=febras,dc=net</b>, определим менеджера
 домена <b>cn=Manager,dc=mercury,dc=febras,dc=net</b> и его пароль.  Также,
 добавим в <b>domain.ldif</b> правила доступа к атрибутам <b>userPassword</b> и
@@ -1080,38 +1102,34 @@ ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>domain.ldif</b>: установка суффикса, менеджера и ACL для <b>bdb</b></label>
-<pre class="src src-ldif" id="orgsrcblock3"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<label class="org-src-name"><b>domain.ldif</b>: установка суффикса, менеджера и ACL для <b>hdb</b></label>
+<pre class="src src-ldif" id="orgsrcblock3"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcSuffix</span>
 olcSuffix: dc=mercury,dc=febras,dc=net
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcRootDN</span>
 olcRootDN: cn=Manager,dc=mercury,dc=febras,dc=net
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcRootPW</span>
 olcRootPW: %LDAP_MANAGER_PASSWORD%
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}bdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcAccess</span>
-olcAccess: {0}to attrs=userPassword,shadowLastChange
-  by dn="cn=Manager,dc=mercury,dc=febras,dc=net" write
+olcAccess: {0}to attrs=userPassword,shadowLastChange,loginShell,gecos
   by anonymous auth
+  by dn="cn=authenticator,dc=mercury,dc=febras,dc=net" auth
   by self write
   by * none
-olcAccess: {1}to attrs=loginShell,gecos
-  by dn="cn=Manager,dc=mercury,dc=febras,dc=net" write
-  by self write
+olcAccess: {1}to dn.base="ou=people,dc=mercury,dc=febras,dc=net"
   by * read
-olcAccess: {2}to dn.base=""
-  by * read
-olcAccess: {3}to *
-  by dn="cn=Manager,dc=mercury,dc=febras,dc=net" write
-  by * read
+olcAccess: {2}to *
+  by dn="cn=authenticator,dc=mercury,dc=febras,dc=net" read
+  by * none
 </pre>
 </div>
 
@@ -1136,6 +1154,13 @@ ou: people
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=groups,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
 ou: groups
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+objectClass: person
+cn: authenticator
+sn: authenticator
+description: Used for authentication to LDAP
+userPassword: secret
 </pre>
 </div>
 
@@ -1499,7 +1524,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$fYRKlQRJ$KSwm.DKhtE6Z0p4Eir3qo0
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1517,7 +1542,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1535,7 +1560,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1553,7 +1578,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1571,7 +1596,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1589,7 +1614,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1607,7 +1632,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1625,7 +1650,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1643,7 +1668,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1661,7 +1686,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1678,7 +1703,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1696,7 +1721,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1714,7 +1739,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1732,7 +1757,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1750,7 +1775,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1768,7 +1793,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1786,7 +1811,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1804,7 +1829,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1822,7 +1847,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -1840,7 +1865,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17119
+shadowLastChange: 17120
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
