@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-11-24 Чт. 17:23 -->
+<!-- 2016-11-25 Пт. 17:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -181,9 +181,9 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgheadline12">2.4.1. PAM: необходимые сведения</a></li>
 <li><a href="#orgheadline13">2.4.2. Опции, связанные с conf-файлами для <b>5/2.3</b></a></li>
-<li><a href="#orgheadline14">2.4.3. Опции, связанные с system-auth для <b>5/2.3</b></a></li>
+<li><a href="#orgheadline14">2.4.3. Опции, связанные с файлом system-auth для <b>5/2.3</b></a></li>
 <li><a href="#orgheadline15">2.4.4. Опции, связанные с conf-файлами для <b>6/2.4</b></a></li>
-<li><a href="#orgheadline16">2.4.5. Опции, связанные с system-auth для <b>6/2.4</b></a></li>
+<li><a href="#orgheadline16">2.4.5. Опции, связанные с файлом system-auth для <b>6/2.4</b></a></li>
 </ul>
 </li>
 </ul>
@@ -212,7 +212,7 @@ for the JavaScript code in this tag.
 <h2 id="intro"><a id="orgheadline1"></a><a id="ID-be7bb1b4-d8e8-4b5f-8aa3-754d148fa6ba"></a>Введение</h2>
 <div class="outline-text-2" id="text-intro">
 <p>
-В процессе написания использовались материалы
+В процессе написания использовались материалы:
 </p>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -333,7 +333,7 @@ for the JavaScript code in this tag.
 
 <div class="note">
 <p>
-Команды и конфигурационные файлы прошли проверку на работоспособность в тестовом программном окружении, доступном в проекте <a href="https://github.com/boykov/cc-ldap-centos">cc-ldap-centos</a>.
+Команды и конфигурационные файлы прошли проверку на работоспособность в тестовом программном окружении, доступном в проекте cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 </p>
 
 </div>
@@ -427,23 +427,23 @@ for the JavaScript code in this tag.
 Конфигурация <b>6/2.4</b> поставляется с тремя вариантами базовых настроек,
 осуществляемых через файлы <b>slapd.conf.obsolete</b>, <b>slapd.ldif.example</b>
 и, доступным по умолчанию, предварительно сформированным каталогом
-<b>slapd.d</b>. При этом, настройка с помощью <b>slapd.ldif.example</b>
+<b>slapd.d</b>. При этом, настройка с помощью файла <b>slapd.ldif.example</b>
 подразумевает использование утилиты <b>slapadd</b>, как это рекомендуется в
-разделе руководства "быстрый
-старт"<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>. Конфигурация
+разделе "быстрый старт"
+руководства<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>. Конфигурация
 <b>5/2.3</b> по умолчанию настраивается только файлом <b>slapd.conf</b>,
 предварительно сформированный каталог <b>slapd.d</b> в формате <b>ldif</b>
 отсутствует. Такой подход считается устаревшим,
-рекомендуется<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>
-использовать <b>ldif</b> формат и преобразовывать <b>slapd.conf</b> файл
+рекомендуется<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>
+использовать <b>ldif</b> формат и преобразовывать файл <b>slapd.conf</b>
 настройки в каталог <b>slapd.d</b> с помощью утилиты <b>slaptest</b>.
 </p>
 
 <p>
-Все варианты настроек разделяются на два существенно отличающихся
-способа. Первый включает в себя настройку через <b>conf</b> файлы (
-конвертация через <b>slaptest</b>) и предварительно сформированный каталог
-<b>slapd.d</b> (только для версии <b>2.4</b>). Эти варианты являются
+Все варианты настроек разделяются на два существенно различающихся
+способа. Первый способ включает в себя настройку с помощью <b>conf</b> файла
+(конвертация через <b>slaptest</b>) и предварительно сформированный каталог
+<b>slapd.d</b> (только для версии <b>2.4</b>). Эти два варианта являются
 взаимозаменяемыми и формируют практически идентичные результирующие
 файлы каталога <b>slapd.d</b>. Второй способ заключается в использовании
 файла <b>slapd.ldif</b> и утилиты <b>slapdd</b>. В этом случае, содержимое
@@ -452,7 +452,7 @@ for the JavaScript code in this tag.
 файлах каталога <b>slapd.d</b> присутствует большое количество
 дополнительных параметров (явно не указанных в файле <b>slapd.conf</b>), а
 при использовании второго &#x2014; только те, которые явно прописываются в
-файле <b>slapd.ldif</b>. Хотя, здесь обнаружилось и небольшое исключение для записи <b>frontend</b>.
+файле <b>slapd.ldif</b>.
 </p>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -503,11 +503,25 @@ for the JavaScript code in this tag.
 Какой вариант настройки выбрать? Если требуется наличие тех
 дополнительных параметров, которые разработчики посчитали нужным
 включить в настройки по умолчанию, то выбирается первый способ
-настройки &#x2014; основной. При этом, если выбирается <b>2.3</b> версия
-<b>OpenLDAP</b>, то используются <b>slapd.conf</b> файл и утилита <b>slaptest</b>. А
-если <b>2.4</b> версия, то можно в качестве равноценной альтернативы воспользоваться
+настройки &#x2014; основной. При этом, если выбирается
+<b>OpenLDAP 2.3</b>, то используются файл <b>slapd.conf</b> и утилита <b>slaptest</b>. А
+если версия <b>2.4</b>, то можно в качестве равноценной альтернативы воспользоваться
 предварительно сформированным каталогом <b>slapd.d</b>.
 </p>
+
+<div class="note">
+<p>
+Первичный доступ к схемам LDAP, использующим только предварительно
+сформированный каталог <b>slapd.d</b> без <b>conf</b>-файла, осуществляется при
+помощи <b>ldapi</b> интерфейса, когда в качестве <b>rootdn</b> выступает
+системный пользователь <b>root</b> (при этом его <b>dn</b> выглядит как
+<b>gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth</b>). В случае
+использования <b>conf</b>-файла необходимо указать пароль для
+<b>rootdn</b>. Пользователь <b>rootdn</b> имеет права на чтение и запись для
+всего содержимого.
+</p>
+
+</div>
 
 <p>
 Если же потребуется тщательно настраивать конфигурацию с нуля,
@@ -521,8 +535,8 @@ for the JavaScript code in this tag.
 <h3 id="configure-slapd-conf"><a id="orgheadline6"></a><a id="ID-fd3e3e26-d416-4cc5-9dfa-554caeaf7830"></a><span class="section-number-3">1.5</span> Предварительная настройка схемы БД LDAP</h3>
 <div class="outline-text-3" id="text-configure-slapd-conf">
 <p>
-Продемонстрируем первый способ настройки. Внесем небольшие изменения в
-конфигурационный файл для <b>5/2.3</b>
+Продемонстрируем первый способ настройки. Внесем небольшие
+изменения в конфигурационный файл для <b>5/2.3</b>
 </p>
 
 <div align="right">
@@ -657,7 +671,7 @@ for the JavaScript code in this tag.
 <span style="background-color: #fdf6e3;">83a85,87</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}GJsR+eNVKIwqK4ef6lmAo58pHjgLkIx+</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}tQb09Ri4Y9Zn1KFymtX4nqjNT7Yl+EP6</span>
 <span style="background-color: #fdf6e3;">85c89,91</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -845,7 +859,7 @@ for the JavaScript code in this tag.
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/sudo.schema</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}aAS4N23RBN7Bl7DNO0S4TykVh5v9YY6G</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}FzQvhkzkAh8IW57lETtsE81eP392f+OH</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -926,11 +940,10 @@ for the JavaScript code in this tag.
 Конфигурация <b>5/2.3</b> поставляется со схемами только в <b>schema</b>
 формате, а <b>6/2.4</b> &#x2014; как в <b>schema</b>, так и в <b>ldif</b> формате. Файл
 <b>sudo.schema</b> доступен только в <b>schema</b> формате. С помощью скрипта
-<b>2.5-schema-ldif.sh</b><sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>
+<b>2.5-schema-ldif.sh</b><sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>
 преобразуем необходимые схемы. Чтобы иметь доступ к серверу LDAP для
 конфигурирования схемы БД LDAP, пропишем пароль менеджера схемы
-<b>cn=Manager,cn=config</b>. Пользователь <b>rootdn</b> имеет права на чтение и
-запись для всего содержимого. Кроме того, добавим минимальные
+<b>cn=Manager,cn=config</b>. Кроме того, добавим минимальные
 настройки для <b>monitor</b> и настроим базу <b>hdb</b>. Используем
 "оффлайновую" утилиту <b>slapadd</b> для создания минимума конфигурационных
 настроек, позволяющих запустить сервер.
@@ -1020,10 +1033,7 @@ olcDbIndex: nisMapName,nisMapEntry            eq,pres,sub
 <b>5/2.3</b> требуется добавить настройки <b>frontend</b> базы, а для <b>6/2.4</b>
 эти настройки добавляются автоматически из исходного кода <b>OpenLDAP</b>
 (что, кстати говоря, несколько нарушает прозрачность &#x2014; появляется то,
-что явно не указано в <b>slapd.ldif</b> файле). Вероятно, это потому, что версия
-<b>2.4</b> официально поддерживает конфигурирование с помощью <b>slapadd</b> и
-<b>ldif</b> формат. Для версии <b>2.3</b> официально поддерживаемым является
-способ конфигурирования через <b>conf</b> файл. Все дальнейшие изменения
+что явно не указано в файле <b>slapd.ldif</b>). Все дальнейшие изменения
 уже осуществляются с помощью "онлайновых" утилит <b>ldapadd</b> и
 <b>ldapmodify</b>.
 </p>
@@ -1037,7 +1047,9 @@ olcDbIndex: nisMapName,nisMapEntry            eq,pres,sub
 </div>
 
 <p>
-Специальная база данных <b>frontend</b> содержит настройки, которые применяются глобально ко всем остальным базам данных. В нашем случае это база <b>hdb</b>.
+Специальная база данных <b>frontend</b> содержит настройки, которые
+применяются глобально ко всем остальным базам данных. В нашем случае в
+наличии одна база <b>hdb</b> и никаких специальных настроек для <b>frontend</b>.
 </p>
 
 <div class="org-src-container">
@@ -1122,10 +1134,11 @@ yum install -y openldap migrationtools sudo
 </p>
 
 <p>
-В конфигурации <b>5/2.3</b> приходится использовать параметр
-<b>enableshadow</b>, поскольку эта функциональность отключена по
-умолчанию. Отдельно укажем параметр <b>sudoers_base</b> и параметры
-<b>binddn</b> и <b>bindpw</b> в настройках для <b>pam_ldap</b>.
+В <b>5/2.3</b> приходится использовать параметр <b>enableshadow</b>, поскольку
+эта функциональность отключена по умолчанию. Отдельно укажем параметр
+<b>sudoers_base</b> и параметры <b>binddn</b> и <b>bindpw</b> в настройках для
+<b>pam_ldap</b> (см. также настроки для <b>authenticator</b> в разделе
+<a href="#minimal-schema">3.2</a>).
 </p>
 
 <div class="org-src-container">
@@ -1141,11 +1154,11 @@ yum install -y openldap migrationtools sudo
 </div>
 
 <p>
-Для конфигурации <b>6/2.4</b> приходится отдельно прописывать параметр
-<b>sudoers</b> для <b>nsswitch.conf</b>, а в конфигурации <b>5/2.3</b> он уже
-появляется после установки пакетов, еще до запуска <b>authconfig</b>. Для
+Для <b>6/2.4</b> приходится отдельно прописывать параметр
+<b>sudoers</b> для <b>nsswitch.conf</b>, а в <b>5/2.3</b> он уже
+установлен еще до запуска <b>authconfig</b>. Для
 настройки <b>sudo</b> дополнительно указываются параметры <b>uri</b> и <b>base</b>,
-поскольку файл теперь другой &#x2014; <b>sudo-ldap.conf</b>. А параметры
+поскольку файл настроек теперь отдельный &#x2014; <b>sudo-ldap.conf</b>. А параметры
 <b>binddn</b> и <b>bindpw</b> необходимо указать в 3х файлах: <b>nslcd.conf</b>,
 <b>pam_ldap.conf</b> и <b>sudo-ldap.conf</b>.
 </p>
@@ -1194,7 +1207,7 @@ rm /var/run/nslcd/*
 общесистемных настроек ldap-клиентов.</li>
 <li><b>system-auth</b> &#x2014; назначением этого файла является
 обеспечение общей конфигурации для всех приложений и сервисов,
-вызывающих библиотеку <b>PAM</b>.</li>
+вызывающих библиотеку PAM.</li>
 </ul>
 
 <div class="org-src-container">
@@ -1216,14 +1229,14 @@ rm /var/run/nslcd/*
 
 <p>
 Здесь в файлах <b>group</b>, <b>group-</b>, <b>gshadow</b>, <b>shadow</b>, <b>passwd-</b>,
-<b>passwd</b> &#x2014; несущественные изменения, связанные с опцией
-<b>enableshadow</b> и с добавлением ldap; <b>system-auth-ac</b> и
-<b>system-auth</b> это один и тот же файл; файл <b>authconfig</b> просто
-содержит все опции, указанные при конфигурировании.
+<b>passwd</b> &#x2014; несущественные изменения, связанные с опциями
+<b>enableshadow</b> и <b>enableldap</b>; <b>system-auth-ac</b> и <b>system-auth</b> это
+один и тот же файл; файл <b>authconfig</b> содержит все опции, указанные
+при конфигурировании.
 </p>
 
 <p>
-Для конфигурации <b>6/2.4</b>, кроме файлов <b>nsswitch.conf</b>,
+Для <b>6/2.4</b>, кроме файлов <b>nsswitch.conf</b>,
 <b>/etc/openldap/ldap.conf</b> и <b>system-auth</b>, задействуются:
 </p>
 
@@ -1236,8 +1249,7 @@ rm /var/run/nslcd/*
 полностью идентично содержимому <b>system-auth</b>.</li>
 <li><b>pam_ldap.conf</b> &#x2014; конфигурационный файл для <b>pam_ldap</b>.</li>
 <li><b>sudo-ldap.conf</b> &#x2014; ldap-специфичная конфигурация для <b>sudo</b>. В
-случае конфигурации <b>5/2.3</b> для этого использовался файл
-<b>/etc/ldap.conf</b>.</li>
+случае <b>5/2.3</b> <b>sudo</b> использует файл <b>/etc/ldap.conf</b>.</li>
 </ul>
 
 <div class="org-src-container">
@@ -1271,7 +1283,7 @@ rm /var/run/nslcd/*
 <h4 id="orgheadline12"><a id="ID-e8f37bcc-b065-41f2-9398-80816656d325"></a><span class="section-number-4">2.4.1</span> PAM: необходимые сведения</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <p>
-Утилита <b>authconfig</b> осуществляет необходимую модификацию <b>PAM</b>
+Утилита <b>authconfig</b> осуществляет необходимую модификацию PAM
 (Pluggable Authentication Modules), добавляя библиотеку <b>pam_ldap.so</b>
 и дополнительные настройки, обеспечивающие поддержку механизма
 аутентификации средствами LDAP. PAM &#x2014; это стандартный интерфейс,
@@ -1280,7 +1292,7 @@ rm /var/run/nslcd/*
 </p>
 
 <p>
-С точки зрения PAM, аутентификация состоит из нескольких независимых задач:
+С точки зрения PAM, аутентификация состоит из нескольких независимых задач<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>:
 </p>
 <ul class="org-ul">
 <li><b>account</b> (управление учетными записями) &#x2014; описывает службу
@@ -1305,7 +1317,9 @@ rm /var/run/nslcd/*
 </ul>
 
 <p>
-Поведение модулей аутентификации в стеке:
+Определение поведения PAM в случае, если модуль примет решение об
+отказе в аутентификации (допустим, сочтет пароль неверным). Возможные
+варианты действий:
 </p>
 <ul class="org-ul">
 <li><b>requisite</b> &#x2014; отказ приводит к немедленному прекращению аутентификации;</li>
@@ -1328,7 +1342,7 @@ rm /var/run/nslcd/*
 <h4 id="orgheadline13"><a id="ID-2cffdc55-f975-415c-a4df-0b8ba3dab1b7"></a><span class="section-number-4">2.4.2</span> Опции, связанные с conf-файлами для <b>5/2.3</b></h4>
 <div class="outline-text-4" id="text-2-4-2">
 <p>
-<b>/etc/ldap.conf</b>. Параметр <b>host</b> не рекомендуется к использованию,
+Файл <b>/etc/ldap.conf</b>. Параметр <b>host</b> не рекомендуется к использованию,
 используется параметр <b>uri</b>, который указывает адрес LDAP сервера и
 протокол, по которому осуществляется взаимодействие. Остальные
 параметры понятны: SSL не используется, ожидается <b>md5</b> шифрование для
@@ -1336,7 +1350,7 @@ rm /var/run/nslcd/*
 </p>
 
 <p>
-<b>nsswitch.conf</b>. Для баз данных <b>passwd</b>, <b>shadow</b>, <b>group</b>,
+Файл <b>nsswitch.conf</b>. Для баз данных <b>passwd</b>, <b>shadow</b>, <b>group</b>,
 <b>netgroup</b> и <b>automount</b> добавляется спецификация службы <b>ldap</b>.
 </p>
 
@@ -1352,7 +1366,7 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,303</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -1379,7 +1393,7 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.4/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
 </pre>
@@ -1388,28 +1402,10 @@ rm /var/run/nslcd/*
 </div>
 
 <div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14"><a id="ID-0c82d86b-ddc5-43c1-b4ea-a58af035d923"></a><span class="section-number-4">2.4.3</span> Опции, связанные с system-auth для <b>5/2.3</b></h4>
+<h4 id="orgheadline14"><a id="ID-0c82d86b-ddc5-43c1-b4ea-a58af035d923"></a><span class="section-number-4">2.4.3</span> Опции, связанные с файлом system-auth для <b>5/2.3</b></h4>
 <div class="outline-text-4" id="text-2-4-3">
-<p>
-<b>system-auth</b>. Наибольшее количество изменений вносится в этот файл.
-</p>
-<ul class="org-ul">
-<li><b>auth</b>
-<ul class="org-ul">
-<li>sufficient <b>pam_unix.so</b>: порядок опций не важен. Без изменения.</li>
-<li>requisite <b>pam_succeed_if.so</b>: проверяет характеристику <b>uid</b> аккаунта, не
-записывая ничего в системный log-файл</li>
-<li>sufficient <b>pam_ldap.so</b>: pam_ldap должен всегда использовать
-первый пароль, доступный в аутентификационном стеке</li>
-</ul></li>
-<li><b>account</b>
-<ul class="org-ul">
-<li>required <b>pam_unix.so</b>: игнорируются ошибки чтения shadow информации</li>
-<li>sufficient <b>pam_succeed_if.so</b>:</li>
-</ul></li>
-</ul>
 <div class="org-src-container">
-<label class="org-src-name">Опции, выставляемые в файлах для <b>5/2.3</b> (б)</label>
+<label class="org-src-name">Опции, выставляемые в файле <b>system-auth</b> для <b>5/2.3</b></label>
 <pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
 <span style="background-color: #fdf6e3;">5c5,7</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
@@ -1449,7 +1445,7 @@ rm /var/run/nslcd/*
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name">Опции, выставляемые в файлах для <b>6/2.4</b> (а)</label>
+<label class="org-src-name">Опции, выставляемые в файлах <b>nslcd.conf</b>, <b>nsswitch.conf</b> и <b>/etc/openldap/ldap.conf</b> для <b>6/2.4</b></label>
 <pre class="src src-diff"><span style="color: #93a1a1;">/etc/nslcd.conf</span>
 <span style="background-color: #fdf6e3;">131,132c131,136</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> uri ldap://127.0.0.1/</span>
@@ -1493,10 +1489,10 @@ rm /var/run/nslcd/*
 </div>
 
 <div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16"><a id="ID-5bedb39f-f4fd-416b-9c11-ebba1119ac1a"></a><span class="section-number-4">2.4.5</span> Опции, связанные с system-auth для <b>6/2.4</b></h4>
+<h4 id="orgheadline16"><a id="ID-5bedb39f-f4fd-416b-9c11-ebba1119ac1a"></a><span class="section-number-4">2.4.5</span> Опции, связанные с файлом system-auth для <b>6/2.4</b></h4>
 <div class="outline-text-4" id="text-2-4-5">
 <div class="org-src-container">
-<label class="org-src-name">Опции, выставляемые в файлах для <b>6/2.4</b> (б)</label>
+<label class="org-src-name">Опции, выставляемые файлах <b>system-auth</b>, <b>pam_ldap.conf</b> и <b>sudo-ldap.conf</b> для <b>6/2.4</b></label>
 <pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
 <span style="background-color: #fdf6e3;">5c5,7</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
@@ -1562,9 +1558,9 @@ rm /var/run/nslcd/*
 </blockquote>
 
 <p>
-Использование только <b>ldif</b> формата позволяет единообразно
-конфигурировать схему <b>LDAP</b>, начиная с корневой записи DIT (Directory
-Information Tree) <b>cn=config</b> и заканчивая листьями этого дерева &#x2014;
+Использование только <b>ldif</b> (см. раздел см. раздел <a href="#configure-slapd">1.6</a>) формата позволяет единообразно
+конфигурировать схему БД LDAP, начиная с корневой записи DIT (Directory
+Information Tree) <b>cn=config</b> (см. раздел <a href="#minimal-schema">3.2</a>) и заканчивая листьями (см. раздел <a href="#new-user-ldap">4.1</a>) этого дерева &#x2014;
 записями, содержащими нужную информацию:
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -1598,20 +1594,20 @@ Information Tree) <b>cn=config</b> и заканчивая листьями эт
 
 <tr>
 <td class="org-left"><b>sudo.ldif</b></td>
-<td class="org-left">настройка организационной единицы <b>sudoers</b>, добавление группы <b>wheel</b></td>
+<td class="org-left">настройка организационной единицы <b>sudoers</b>, настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>user.ldif</b></td>
-<td class="org-left">создание нового пользователя</td>
+<td class="org-left">создание нового пользователя, принадлежащего к группе <b>wheel</b></td>
 </tr>
 </tbody>
 </table>
 
 <p>
 Если же используется <b>conf</b> формат, то надо иметь в виду, что
-просто стартовая часть этого стройного ряда
-конфигурационных файлов заменяется на <b>slapd.conf</b>.
+стартовая часть этого ряда конфигурационных файлов
+заменяется на <b>slapd.conf</b> (см. раздел <a href="#configure-slapd-conf">1.5</a>).
 </p>
 </div>
 
@@ -1619,38 +1615,40 @@ Information Tree) <b>cn=config</b> и заканчивая листьями эт
 <h3 id="ldap-possibilities"><a id="orgheadline19"></a><a id="ID-4f9ddacc-3908-4cd1-b091-3f00c31aa8a7"></a><span class="section-number-3">3.1</span> Возможности LDAP</h3>
 <div class="outline-text-3" id="text-ldap-possibilities">
 <p>
-Возможности протокола LDAP значительно определяются схемами, которые можно подключить с помощью директивы <b>include</b>. Помня об основной цели, рассмотрим типичные задачи, которые можно решить с их помощью. В первую очередь нас интересуют уже готовые схемы, входящие в дистрибутив <b>OpenLDAP</b> или разработанные сторонними поставщиками.
+Возможности протокола LDAP значительно определяются схемами, которые
+можно подключить с помощью директивы <b>include</b>. Помня об основной
+цели, рассмотрим типичные задачи, которые можно решить с их помощью. В
+первую очередь, нас интересуют уже готовые схемы, входящие в
+дистрибутив <b>OpenLDAP</b> или разработанные сторонними поставщиками.
 </p>
 
-<ul class="org-ul">
-<li><a href="http://pro-ldap.ru/books/openldap-ubuntu-in-practice/index.html">OpenLDAP и Ubuntu на практике</a>
+<p>
+Примеры использования<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup> OpenLDAP:
+</p>
 <ul class="org-ul">
 <li>Управление пользователями и группами в <b>OpenLDAP</b></li>
 <li>Настройка аутентификации пользователей через <b>OpenLDAP</b> на клиенте</li>
 <li>Настройка <b>OpenLDAP</b> в качестве хранилища правил <b>sudo</b> (sudo.schema)</li>
 <li><b>OpenLDAP</b> как хранилище карт автоматического монтирования для <b>autofs</b> (autofs.schema)</li>
-<li>Репозиторий <b>NFS netgroup</b> на основе <b>OpenLDAP</b> для <b>autofs</b> (расширение возможностей стандартной схемы nis.schema)</li>
-</ul></li>
+<li>Репозиторий <b>NFS netgroup</b> на основе <b>OpenLDAP</b> для <b>autofs</b> (nis.schema)</li>
+</ul>
 
-<li><a href="https://www.fusiondirectory.org/user_management/">FusionDirectory</a>
+<p>
+Расширенные возможности систем<sup><a id="fnr.7" class="footref" href="#fn.7">7</a></sup> на базе OpenLDAP:
+</p>
 <ul class="org-ul">
 <li>Управление пользователями
 <ul class="org-ul">
 <li>Управление квотами пользователей</li>
-<li>Управление <b>ssh</b> ключами, сертификатами пользователей</li>
-<li>Управление учетными записями сервисов почты, <b>Samba</b>, <b>Nagios</b>,
-<b>Squid</b> и т.д.</li>
+<li>Управление ssh ключами, сертификатами пользователей</li>
+<li>Управление пользователями систем и сервисов</li>
 </ul></li>
-<li>Управление системами
+<li>Управление сервисами и системами
 <ul class="org-ul">
-<li>Тонкие клиенты, десктопы, серверы, voip, сетевые и мобильные
-устройства</li>
-</ul></li>
-<li>Управление сервисами
-<ul class="org-ul">
-<li>Управление сервисами <b>DHCP</b>, <b>DNS</b>, <b>Web management interface</b></li>
-<li>Управление репозиториями</li>
-</ul></li>
+<li>Управление сервисами почты, доступа к данным, мониторинга, имен,
+печати, резервного копирования, сети, прокси, репозиториев и Web</li>
+<li>Управление системами: тонкие клиенты, десктопы, VDI, BYOD,
+серверы, VoIP, сетевые и мобильные устройства, узлы кластера</li>
 </ul></li>
 </ul>
 </div>
@@ -1668,8 +1666,8 @@ Information Tree) <b>cn=config</b> и заканчивая листьями эт
 его пароль. Также, добавим в <b>domain.ldif</b> правила доступа к атрибутам
 <b>userPassword</b>, <b>shadowLastChange</b> и <b>loginShell</b>: для владельца
 записи &#x2014; write и для неавторизованного пользователя &#x2014; auth.
-Анонимный доступ будет разрешен только для подразделения
-<b>people</b>. Используем учетную запись <b>authenticator</b> для ограничения
+Анонимный доступ будет разрешен только для базовой записи подразделения
+<b>people</b>. Используем учетную запись <b>authenticator</b> (см. раздел <a href="#client-commands">2.2</a>) для ограничения
 доступа к остальным атрибутам.
 </p>
 
@@ -1761,7 +1759,7 @@ userPassword: secret
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>sudo.ldif</b>: настройка организационной единицы <b>sudoers</b>, добавление группы <b>wheel</b></label>
+<label class="org-src-name"><b>sudo.ldif</b>: настройка организационной единицы <b>sudoers</b>, настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></label>
 <pre class="src src-ldif" id="orgsrcblock5"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=sudoers,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
 ou: sudoers
@@ -1821,7 +1819,7 @@ LDAP. Предложить CLI (или GUI WEB) интерфейс для вып
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>user.ldif</b>: создание нового пользователя</label>
+<label class="org-src-name"><b>user.ldif</b>: создание нового пользователя, принадлежащего к группе <b>wheel</b></label>
 <pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=username,ou=people,dc=mercury,dc=febras,dc=net</span>
 cn: User Name
 userPassword: p@ssw0rd
@@ -2120,7 +2118,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$z9Z3EWQ0$YOqB8odzPaJP/TDgpsDUo/
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2138,7 +2136,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2156,7 +2154,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2174,7 +2172,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2192,7 +2190,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2210,7 +2208,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2228,7 +2226,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2246,7 +2244,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2264,7 +2262,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2282,7 +2280,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2299,7 +2297,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2317,7 +2315,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2335,7 +2333,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2353,7 +2351,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2371,7 +2369,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2389,7 +2387,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2407,7 +2405,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2425,7 +2423,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2443,7 +2441,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2461,7 +2459,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17128
+shadowLastChange: 17130
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2709,11 +2707,19 @@ gidNumber: 55
 <h2 class="footnotes">&#1057;&#1085;&#1086;&#1089;&#1082;&#1080;: </h2>
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><a href="http://pro-ldap.ru/tr/admin24/quickstart.html">http://pro-ldap.ru/tr/admin24/quickstart.html</a></div></div>
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><a href="https://github.com/boykov/cc-ldap-centos">https://github.com/boykov/cc-ldap-centos</a></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><a href="http://pro-ldap.ru/tr/admin24/slapdconf2.html#Converting%20old%20style%20slapd.conf%20file%20to%20cn=config%20format">http://pro-ldap.ru/tr/admin24/slapdconf2.html#Converting%20old%20style%20slapd.conf%20file%20to%20cn=config%20format</a></div></div>
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><a href="http://pro-ldap.ru/tr/admin24/quickstart.html">http://pro-ldap.ru/tr/admin24/quickstart.html</a></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><a href="https://github.com/boykov/cc-ldap-centos/blob/master/ldap-server/2.5-schema-ldif.sh">https://github.com/boykov/cc-ldap-centos/blob/master/ldap-server/2.5-schema-ldif.sh</a></div></div>
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><a href="http://pro-ldap.ru/tr/admin24/slapdconf2.html#Converting%20old%20style%20slapd.conf%20file%20to%20cn=config%20format">http://pro-ldap.ru/tr/admin24/slapdconf2.html#Converting%20old%20style%20slapd.conf%20file%20to%20cn=config%20format</a></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><a href="https://github.com/boykov/cc-ldap-centos/blob/master/ldap-server/2.5-schema-ldif.sh">https://github.com/boykov/cc-ldap-centos/blob/master/ldap-server/2.5-schema-ldif.sh</a></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><a href="http://www.intuit.ru/studies/courses/73/73/lecture/2202?page=2">http://www.intuit.ru/studies/courses/73/73/lecture/2202?page=2</a></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara"><a href="http://pro-ldap.ru/books/openldap-ubuntu-in-practice/index.html">http://pro-ldap.ru/books/openldap-ubuntu-in-practice/index.html</a></div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7">7</a></sup> <div class="footpara"><a href="https://www.fusiondirectory.org/user_management/">https://www.fusiondirectory.org/user_management/</a></div></div>
 
 
 </div>
