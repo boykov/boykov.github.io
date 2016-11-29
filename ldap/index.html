@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-11-28 Пн. 16:46 -->
+<!-- 2016-11-29 Вт. 16:04 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -671,7 +671,7 @@ for the JavaScript code in this tag.
 <span style="background-color: #fdf6e3;">83a85,87</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}Nj+b0ceAAGO4yJAOURuTK7JrMxlyzGUv</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}6M2gyR83gvbSekrnGtSUqFiOLRk6WC37</span>
 <span style="background-color: #fdf6e3;">85c89,91</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -859,7 +859,7 @@ for the JavaScript code in this tag.
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/sudo.schema</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}oFIS0pVTS/q/dijpMwIhx02PpFJ47JEE</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}yJEFcN1dOBSU+Wd2OlEyOXKjhjLSxtke</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -969,7 +969,7 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 <div class="org-src-container">
-<label class="org-src-name"><b>slapd.ldif</b>: формирование корневой записи DIT и контейнера для наборов схем данных; конфигурирование базы данных <b>hdb</b> и подключение мониторинга баз данных</label>
+<label class="org-src-name"><b>slapd.ldif</b>: формирование корневой записи DIT и контейнера для схем данных; конфигурирование базы данных <b>hdb</b> и подключение мониторинга баз данных</label>
 <pre class="src src-ldif" id="orgsrcblock1"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=config</span>
 objectClass: olcGlobal
 olcPidFile: /var/run/openldap/slapd.pid
@@ -1148,7 +1148,7 @@ yum install -y openldap migrationtools sudo
 
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/ldap.conf
-<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/ldap.conf
 </pre>
 </div>
@@ -1174,13 +1174,13 @@ yum install -y openldap migrationtools sudo
 <span style="color: #657b83; font-weight: bold;">echo</span> base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/sudo-ldap.conf
-<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/sudo-ldap.conf
 
-<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/pam_ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/pam_ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/pam_ldap.conf
 
-<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/nslcd.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/nslcd.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/nslcd.conf
 
 /etc/init.d/nslcd stop
@@ -1366,13 +1366,13 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,303</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 <span style="color: #93a1a1;">/etc/nsswitch.conf</span>
 <span style="background-color: #fdf6e3;">33,35c33,35</span>
@@ -1393,7 +1393,7 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.4/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.3/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
 </pre>
@@ -1455,7 +1455,7 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 <span style="color: #93a1a1;">/etc/nsswitch.conf</span>
 <span style="background-color: #fdf6e3;">33,35c33,35</span>
@@ -1531,7 +1531,7 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 <span style="color: #93a1a1;">/etc/sudo-ldap.conf</span>
 <span style="background-color: #fdf6e3;">86a87,92</span>
@@ -1539,7 +1539,7 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 </pre>
 </div>
@@ -1576,7 +1576,7 @@ rm /var/run/nslcd/*
 <tbody>
 <tr>
 <td class="org-left"><b>slapd.ldif</b></td>
-<td class="org-left">формирование корневой записи DIT и контейнера для наборов схем данных; конфигурирование базы данных <b>hdb</b> и подключение мониторинга баз данных</td>
+<td class="org-left">формирование корневой записи DIT и контейнера для схем данных; конфигурирование базы данных <b>hdb</b> и подключение мониторинга баз данных</td>
 </tr>
 
 <tr>
@@ -1586,17 +1586,17 @@ rm /var/run/nslcd/*
 
 <tr>
 <td class="org-left"><b>domain.ldif</b></td>
-<td class="org-left">установка суффикса, менеджера базы <b>hdb</b> и его пароля, и ACL для базы <b>hdb</b></td>
+<td class="org-left">привязка суффикса, менеджера домена и его пароля, списка контроля доступа ACL к базе <b>hdb</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>base.ldif</b></td>
-<td class="org-left">настройка корневого суффикса, менеджера, организационных единиц и пользователя <b>authenticator</b></td>
+<td class="org-left">создание суффикса, менеджера домена, организационных единиц и учетной записи <b>authenticator</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>sudo.ldif</b></td>
-<td class="org-left">настройка организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></td>
+<td class="org-left">создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></td>
 </tr>
 
 <tr>
@@ -1709,7 +1709,7 @@ ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>domain.ldif</b>: установка суффикса, менеджера базы <b>hdb</b> и его пароля, и ACL для базы <b>hdb</b></label>
+<label class="org-src-name"><b>domain.ldif</b>: привязка суффикса, менеджера домена и его пароля, списка контроля доступа ACL к базе <b>hdb</b></label>
 <pre class="src src-ldif" id="orgsrcblock3"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcSuffix</span>
@@ -1736,7 +1736,7 @@ olcAccess: {1}to attrs=loginShell
 olcAccess: {2}to dn.base="ou=public,dc=mercury,dc=febras,dc=net"
   by * read
 olcAccess: {3}to *
-  by dn="cn=authenticator,dc=mercury,dc=febras,dc=net" read
+  by dn="cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net" read
   by * none
 </pre>
 </div>
@@ -1744,7 +1744,7 @@ olcAccess: {3}to *
 <p>
 Далее, пропишем (см. расп. <a href="#orgsrcblock4">28</a>) необходимые атрибуты, начиная с
 корневого узла <b>dn: dc=mercury,dc=febras,dc=net</b>, добавим
-подразделения <b>people</b>, <b>groups</b> и <b>public</b>, а также пользователя
+подразделения <b>users</b>, <b>groups</b>, <b>system</b> и <b>public</b>, а также пользователя
 <b>authenticator</b>. Создадим подразделение <b>sudoers</b>, одну posix-группу
 <b>wheel</b> и сконфигурируем <b>sudoers</b> так, чтобы разрешить выполнение
 <b>sudo</b> команд без ввода пароля для членов этой группы
@@ -1752,7 +1752,7 @@ olcAccess: {3}to *
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>base.ldif</b>: настройка корневого суффикса, менеджера, организационных единиц и пользователя <b>authenticator</b></label>
+<label class="org-src-name"><b>base.ldif</b>: создание суффикса, менеджера домена, организационных единиц и учетной записи <b>authenticator</b></label>
 <pre class="src src-ldif" id="orgsrcblock4"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=mercury,dc=febras,dc=net</span>
 objectClass: top
 objectClass: dcObject
@@ -1769,15 +1769,19 @@ description: Directory Manager
 objectClass: organizationalUnit
 ou: public
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=people,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=users,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
-ou: people
+ou: users
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=groups,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
 ou: groups
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=authenticator,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=system,dc=mercury,dc=febras,dc=net</span>
+objectClass: organizationalUnit
+ou: system
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
 objectClass: person
 cn: authenticator
 sn: authenticator
@@ -1787,7 +1791,7 @@ userPassword: secret
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>sudo.ldif</b>: настройка организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></label>
+<label class="org-src-name"><b>sudo.ldif</b>: создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></label>
 <pre class="src src-ldif" id="orgsrcblock5"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=sudoers,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
 ou: sudoers
@@ -1849,7 +1853,7 @@ LDAP. Предложить CLI (или GUI WEB) интерфейс для вып
 
 <div class="org-src-container">
 <label class="org-src-name"><b>user.ldif</b>: создание нового пользователя, принадлежащего к группе <b>wheel</b></label>
-<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=username,ou=people,dc=mercury,dc=febras,dc=net</span>
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=username,ou=users,dc=mercury,dc=febras,dc=net</span>
 uid: username
 cn: User Name
 objectClass: account
@@ -1931,7 +1935,7 @@ gidNumber: 1050
 работу со схемой БД LDAP.
 </p>
 <div align="right">
-<a onclick="toggleDiv2('shadow',$(this));" class="fa fa-caret-right">custom-ShadowAccount.xml</a>
+<a onclick="toggleDiv2('shadow',$(this));" class="fa fa-caret-right">Файлы custom-*.xml</a>
 </div>
 <div id="shadow" style="display:none">
 <div class="org-src-container">
@@ -1979,7 +1983,7 @@ gidNumber: 1050
 &lt;/<span style="color: #268bd2;">attribute</span>&gt;
 &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">uid</span><span style="color: #2aa198;">"</span>&gt;
         &lt;<span style="color: #268bd2;">display</span>&gt;User ID&lt;/<span style="color: #268bd2;">display</span>&gt;
-        &lt;<span style="color: #268bd2;">onchange</span>&gt;=autoFill(homeDirectory;/home/users/%uid%)&lt;/<span style="color: #268bd2;">onchange</span>&gt;
+        &lt;<span style="color: #268bd2;">onchange</span>&gt;=autoFill(homeDirectory;/home/%uid%)&lt;/<span style="color: #268bd2;">onchange</span>&gt;
         &lt;<span style="color: #268bd2;">order</span>&gt;4&lt;/<span style="color: #268bd2;">order</span>&gt;
         &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
         &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
@@ -2062,6 +2066,52 @@ gidNumber: 1050
 &lt;/<span style="color: #268bd2;">template</span>&gt;
 </pre>
 </div>
+<div class="org-src-container">
+<label class="org-src-name">xml-файл шаблона <b>Posix Group</b> браузера схемы</label>
+<pre class="src src-xml">&lt;?<span style="color: #859900; font-weight: bold;">xml</span> <span style="color: #268bd2;">version</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">1.0</span><span style="color: #2aa198;">"</span> <span style="color: #268bd2;">encoding</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">UTF-8</span><span style="color: #2aa198;">"</span> <span style="color: #268bd2;">standalone</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">no</span><span style="color: #2aa198;">"</span>?&gt;
+&lt;!<span style="color: #859900; font-weight: bold;">DOCTYPE</span> template <span style="color: #859900; font-weight: bold;">SYSTEM</span> <span style="color: #2aa198;">"</span><span style="color: #2aa198;">template.dtd</span><span style="color: #2aa198;">"</span>&gt;
+
+&lt;<span style="color: #268bd2;">template</span>&gt;
+&lt;<span style="color: #268bd2;">askcontainer</span>&gt;1&lt;/<span style="color: #268bd2;">askcontainer</span>&gt;
+&lt;<span style="color: #268bd2;">description</span>&gt;New Posix Group&lt;/<span style="color: #268bd2;">description</span>&gt;
+&lt;<span style="color: #268bd2;">icon</span>&gt;ldap-ou.png&lt;/<span style="color: #268bd2;">icon</span>&gt;
+&lt;<span style="color: #268bd2;">invalid</span>&gt;0&lt;/<span style="color: #268bd2;">invalid</span>&gt;
+&lt;<span style="color: #268bd2;">rdn</span>&gt;cn&lt;/<span style="color: #268bd2;">rdn</span>&gt;
+<span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;"> &lt;regexp&gt;^ou=.*,&lt;/regexp&gt; </span><span style="color: #93a1a1;">--&gt;</span>
+&lt;<span style="color: #268bd2;">title</span>&gt;Generic: Posix Group&lt;/<span style="color: #268bd2;">title</span>&gt;
+&lt;<span style="color: #268bd2;">visible</span>&gt;1&lt;/<span style="color: #268bd2;">visible</span>&gt;
+
+&lt;<span style="color: #268bd2;">objectClasses</span>&gt;
+&lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">posixGroup</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
+&lt;/<span style="color: #268bd2;">objectClasses</span>&gt;
+
+&lt;<span style="color: #268bd2;">attributes</span>&gt;
+&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">cn</span><span style="color: #2aa198;">"</span>&gt;
+        &lt;<span style="color: #268bd2;">display</span>&gt;Group&lt;/<span style="color: #268bd2;">display</span>&gt;
+        &lt;<span style="color: #268bd2;">order</span>&gt;1&lt;/<span style="color: #268bd2;">order</span>&gt;
+        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+&lt;/<span style="color: #268bd2;">attribute</span>&gt;
+&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">gidNumber</span><span style="color: #2aa198;">"</span>&gt;
+        &lt;<span style="color: #268bd2;">display</span>&gt;GID Number&lt;/<span style="color: #268bd2;">display</span>&gt;
+        &lt;<span style="color: #268bd2;">order</span>&gt;2&lt;/<span style="color: #268bd2;">order</span>&gt;
+        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+        &lt;<span style="color: #268bd2;">readonly</span>&gt;1&lt;/<span style="color: #268bd2;">readonly</span>&gt;
+        &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
+        &lt;<span style="color: #268bd2;">value</span>&gt;=php.GetNextNumber(/;gidNumber)&lt;/<span style="color: #268bd2;">value</span>&gt;
+        <span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;"> &lt;value&gt;&lt;![CDATA[=php.GetNextNumber(/;gidNumber;false;(&amp;(objectClass=posixGroup));*2,+1000)]]&gt;&lt;/value&gt; </span><span style="color: #93a1a1;">--&gt;</span>
+&lt;/<span style="color: #268bd2;">attribute</span>&gt;
+&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">memberUid</span><span style="color: #2aa198;">"</span>&gt;
+        &lt;<span style="color: #268bd2;">display</span>&gt;Users&lt;/<span style="color: #268bd2;">display</span>&gt;
+        &lt;<span style="color: #268bd2;">hidden</span>&gt;0&lt;/<span style="color: #268bd2;">hidden</span>&gt;
+        &lt;<span style="color: #268bd2;">order</span>&gt;3&lt;/<span style="color: #268bd2;">order</span>&gt;
+        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+        &lt;<span style="color: #268bd2;">value</span>&gt;&lt;![<span style="color: #657b83; font-weight: bold;">CDATA</span>[=php.MultiList(/;(&amp;(objectClass=posixAccount));uid;%cn% (%uid|-4%))]]&gt;&lt;/<span style="color: #268bd2;">value</span>&gt;
+&lt;/<span style="color: #268bd2;">attribute</span>&gt;
+&lt;/<span style="color: #268bd2;">attributes</span>&gt;
+
+&lt;/<span style="color: #268bd2;">template</span>&gt;
+</pre>
+</div>
 </div>
 
 
@@ -2128,19 +2178,30 @@ gidNumber: 1050
 
 <div class="org-src-container">
 <label class="org-src-name">Изменение пользователем своего пароля с помощью утилиты <b>ldappasswd</b></label>
-<pre class="src src-sh">ldappasswd -h $(<span style="color: #6c71c4; font-weight: bold;">ip</span>) -x -D <span style="color: #2aa198;">"uid=username,ou=people,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd -s new_p@ssw0rd
+<pre class="src src-sh">ldappasswd -h $(<span style="color: #6c71c4; font-weight: bold;">ip</span>) -x -D <span style="color: #2aa198;">"uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd -s new_p@ssw0rd
 </pre>
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name">Изменение пользователем значения <b>loginShell</b> с помощью утилиты <b>ldapmodify</b>, аутентификация проводится с использованием нового пароля</label>
-<pre class="src src-sh">    ldapmodify -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"uid=username,ou=people,dc=mercury,dc=febras,dc=net"</span> -w new_p@ssw0rd &lt;&lt;EOF
-<span style="color: #b58900; font-weight: bold;">dn: uid=username,ou=people,dc=mercury,dc=febras,dc=net</span>
+<label class="org-src-name">Изменение пользователем значения <b>loginShell</b> с помощью утилиты <b>ldapmodify</b></label>
+<pre class="src src-sh"><span style="color: #859900; font-weight: bold;">function</span> <span style="color: #268bd2;">modify</span>() {
+    ldapmodify -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd &lt;&lt;EOF
+<span style="color: #b58900; font-weight: bold;">dn: uid=username,ou=users,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #b58900; font-weight: bold;">changetype: modify</span>
 <span style="color: #b58900; font-weight: bold;">replace: loginShell</span>
 <span style="color: #b58900; font-weight: bold;">loginShell: /bin/sh</span>
 <span style="color: #b58900; font-weight: bold;">-</span>
 <span style="color: #b58900; font-weight: bold;">EOF</span>
+    ldapsearch -x -h $<span style="color: #268bd2;">1</span> -LLL -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -b <span style="color: #2aa198;">'dc=mercury,dc=febras,dc=net'</span> <span style="color: #2aa198;">'(loginShell=*)'</span> -w manager | grep loginShell
+}
+
+<span style="color: #859900; font-weight: bold;">function</span> <span style="color: #268bd2;">modify_out</span>() {
+cat &lt;&lt;EOF
+<span style="color: #b58900; font-weight: bold;">modifying entry "uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span>
+
+<span style="color: #b58900; font-weight: bold;">loginShell: /bin/sh</span>
+<span style="color: #b58900; font-weight: bold;">EOF</span>
+}
 </pre>
 </div>
 </div>
@@ -2154,6 +2215,8 @@ gidNumber: 1050
 <pre class="src src-sh"><span style="color: #268bd2;">LDAP_BASEDN</span>=<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net
 /usr/share/openldap/migration/migrate_passwd.pl /etc/passwd &gt; /gen/mercury.ldif
 /usr/share/openldap/migration/migrate_group.pl /etc/group &gt;&gt; /gen/mercury.ldif
+sed -i <span style="color: #2aa198;">"s|ou=People|ou=users|g"</span> mercury.ldif
+sed -i <span style="color: #2aa198;">"s|ou=Group|ou=groups|g"</span> mercury.ldif
 </pre>
 </div>
 
@@ -2162,13 +2225,15 @@ gidNumber: 1050
 <pre class="src src-sh"><span style="color: #268bd2;">LDAP_BASEDN</span>=<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net
 /usr/share/migrationtools/migrate_passwd.pl /etc/passwd &gt; /gen/mercury.ldif
 /usr/share/migrationtools/migrate_group.pl /etc/group &gt;&gt; /gen/mercury.ldif
+sed -i <span style="color: #2aa198;">"s|ou=People|ou=users|g"</span> mercury.ldif
+sed -i <span style="color: #2aa198;">"s|ou=Group|ou=groups|g"</span> mercury.ldif
 </pre>
 </div>
 
 <div class="note">
 <p>
 Файл <b>/etc/shadow</b> считывается утилитой <b>migrate_passwd.pl</b> при
-наличии достаточных прав доступа, класс <b>shadowAccount</b>, поля
+наличии прав доступа, класс <b>shadowAccount</b>, поля
 <b>shadowLastChange</b> и т.п. будут добавлены.
 </p>
 
@@ -2176,7 +2241,7 @@ gidNumber: 1050
 
 <div class="org-src-container">
 <label class="org-src-name"><b>mercury.ldif</b>: пример результата миграции пользователей и групп с помощью утилит <b>migrationtools</b></label>
-<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=abinit1,ou=people,dc=mercury,dc=febras,dc=net</span>
+<pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=abinit1,ou=users,dc=mercury,dc=febras,dc=net</span>
 uid: abinit1
 cn: abinit1
 objectClass: account
@@ -2188,7 +2253,7 @@ uidNumber: 693
 gidNumber: 691
 homeDirectory: /home/gridxxx/abinit1
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=ngrid1,ou=people,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=ngrid1,ou=users,dc=mercury,dc=febras,dc=net</span>
 uid: ngrid1
 cn: ngrid1
 objectClass: account
@@ -2200,7 +2265,7 @@ uidNumber: 671
 gidNumber: 681
 homeDirectory: /home/gridxxx/ngrid1
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=ngrid,ou=people,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=ngrid,ou=users,dc=mercury,dc=febras,dc=net</span>
 uid: ngrid
 cn: ngrid
 objectClass: account
@@ -2241,7 +2306,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$z9Z3EWQ0$YOqB8odzPaJP/TDgpsDUo/
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2259,7 +2324,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2277,7 +2342,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2295,7 +2360,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2313,7 +2378,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2331,7 +2396,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2349,7 +2414,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2367,7 +2432,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2385,7 +2450,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2403,7 +2468,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2420,7 +2485,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2438,7 +2503,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2456,7 +2521,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2474,7 +2539,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2492,7 +2557,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2510,7 +2575,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2528,7 +2593,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2546,7 +2611,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2564,7 +2629,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2582,7 +2647,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17133
+shadowLastChange: 17134
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
