@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-11-29 Вт. 16:04 -->
+<!-- 2016-11-30 Ср. 17:42 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -166,7 +166,7 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#install-openldap">1.1. Установка OpenLDAP</a></li>
 <li><a href="#configure-hdb">1.2. Добавление файлов конфигурации базы данных HDB</a></li>
-<li><a href="#add-schemas">1.3. Добавление файлов схем</a></li>
+<li><a href="#add-schemas">1.3. Добавление файлов схем данных</a></li>
 <li><a href="#choose-setup">1.4. Выбор варианта настройки схемы БД LDAP</a></li>
 <li><a href="#configure-slapd-conf">1.5. Предварительная настройка схемы БД LDAP</a></li>
 <li><a href="#configure-slapd">1.6. Дополнительно. Предварительная настройка схемы БД LDAP с помощью ldif формата</a></li>
@@ -179,19 +179,22 @@ for the JavaScript code in this tag.
 <li><a href="#client-files">2.3. Изменяемые файлы&nbsp;<sup><i class="fa fa-star"></i></sup></a></li>
 <li><a href="#client-options">2.4. Описание опций&nbsp;<sup><i class="fa fa-star"></i></sup></a>
 <ul>
-<li><a href="#orgheadline12">2.4.1. PAM: необходимые сведения</a></li>
-<li><a href="#orgheadline13">2.4.2. Опции, связанные с conf-файлами для <b>5/2.3</b></a></li>
-<li><a href="#orgheadline14">2.4.3. Опции, связанные с файлом system-auth для <b>5/2.3</b></a></li>
-<li><a href="#orgheadline15">2.4.4. Опции, связанные с conf-файлами для <b>6/2.4</b></a></li>
-<li><a href="#orgheadline16">2.4.5. Опции, связанные с файлом system-auth для <b>6/2.4</b></a></li>
+<li><a href="#orgheadline12">2.4.1. Опции, связанные с conf-файлами для <b>5/2.3</b></a></li>
+<li><a href="#orgheadline13">2.4.2. Опции, связанные с файлом system-auth для <b>5/2.3</b></a></li>
+<li><a href="#orgheadline14">2.4.3. Опции, связанные с conf-файлами для <b>6/2.4</b></a></li>
+<li><a href="#orgheadline15">2.4.4. Опции, связанные с файлом system-auth для <b>6/2.4</b></a></li>
+<li><a href="#orgheadline16">2.4.5. Дополнительно. PAM: необходимые сведения</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a href="#schema">3. Схема БД LDAP</a>
 <ul>
-<li><a href="#ldap-possibilities">3.1. Возможности LDAP</a></li>
-<li><a href="#minimal-schema">3.2. Подготовка к тестированию аутентификации при помощи LDAP</a></li>
+<li><a href="#minimal-schema">3.1. Установка схемы базы данных LDAP</a></li>
+<li><a href="#hdb-domain-config">3.2. Связывание базы данных HDB с доменом и настройка ACL</a></li>
+<li><a href="#root-domain">3.3. Создание корневой записи домена</a></li>
+<li><a href="#create-sudoers">3.4. Формирование подразделения sudoers</a></li>
+<li><a href="#ldap-possibilities">3.5. Дополнительно. Возможности LDAP</a></li>
 </ul>
 </li>
 <li><a href="#new-user">4. Процесс добавления нового пользователя в систему</a>
@@ -281,59 +284,76 @@ for the JavaScript code in this tag.
 <thead>
 <tr>
 <th scope="col" class="org-left">Роль</th>
-<th scope="col" class="org-left">Имя контейнера</th>
+<th scope="col" class="org-left">Имя хоста</th>
 <th scope="col" class="org-left">ОС</th>
-<th scope="col" class="org-left">Способ конфигурации <b>OpenLDAP</b></th>
+<th scope="col" class="org-left">Конфигурация хоста</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td class="org-left"><b>Docker Engine</b></td>
+<td class="org-left">kairos</td>
+<td class="org-left"><b>Ubuntu 14.04</b></td>
+<td class="org-left"><b>Docker version 1.12.3</b></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
 <td class="org-left"><b>Сервер каталогов</b></td>
 <td class="org-left">server-ldif5</td>
-<td class="org-left"><b>Centos 5</b></td>
+<td class="org-left"><b>CentOS 5</b></td>
 <td class="org-left"><b>OpenLDAP 2.3</b> server, <b>ldif</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>Сервер каталогов</b></td>
 <td class="org-left">server-ldif6</td>
-<td class="org-left"><b>Centos 6</b></td>
+<td class="org-left"><b>CentOS 6</b></td>
 <td class="org-left"><b>OpenLDAP 2.4</b> server, <b>ldif</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>Сервер каталогов</b></td>
 <td class="org-left">server-conf5</td>
-<td class="org-left"><b>Centos 5</b></td>
+<td class="org-left"><b>CentOS 5</b></td>
 <td class="org-left"><b>OpenLDAP 2.3</b> server, <b>conf</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>Сервер каталогов</b></td>
 <td class="org-left">server-conf6</td>
-<td class="org-left"><b>Centos 6</b></td>
+<td class="org-left"><b>CentOS 6</b></td>
 <td class="org-left"><b>OpenLDAP 2.4</b> server, <b>conf</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>Клиентский хост</b></td>
 <td class="org-left">client5</td>
-<td class="org-left"><b>Centos 5</b></td>
+<td class="org-left"><b>CentOS 5</b></td>
 <td class="org-left"><b>OpenLDAP 2.3</b> client</td>
 </tr>
 
 <tr>
 <td class="org-left"><b>Клиентский хост</b></td>
 <td class="org-left">client6</td>
-<td class="org-left"><b>Centos 6</b></td>
+<td class="org-left"><b>CentOS 6</b></td>
 <td class="org-left"><b>OpenLDAP 2.4</b> client</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>Клиентский хост</b></td>
+<td class="org-left">gui</td>
+<td class="org-left"><b>Debian 8</b></td>
+<td class="org-left"><b>phpLDAPadmin 1.2.3</b>, custom</td>
 </tr>
 </tbody>
 </table>
 
 <div class="note">
 <p>
-Команды и конфигурационные файлы прошли проверку на работоспособность в тестовом программном окружении, доступном в проекте cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
+Команды и конфигурационные файлы прошли проверку на работоспособность
+в тестовом программном окружении, доступном в проекте
+cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 </p>
 
 </div>
@@ -353,6 +373,12 @@ for the JavaScript code in this tag.
 <div id="outline-container-orgheadline2" class="outline-3">
 <h3 id="install-openldap"><a id="orgheadline2"></a><a id="ID-cdb77a09-a1eb-4db8-ad05-e45c3b49418c"></a><span class="section-number-3">1.1</span> Установка OpenLDAP</h3>
 <div class="outline-text-3" id="text-install-openldap">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>server-&#x2026;..</b>
+</p>
+</blockquote>
+
 <p>
 Базовые репозитории дистрибутивов <b>CentOS 5</b> и <b>CentOS 6</b> содержат <b>2.3</b> и <b>2.4</b> версию <b>OpenLDAP</b>, соответственно. Выполнив стандартную установку
 </p>
@@ -371,8 +397,16 @@ for the JavaScript code in this tag.
 <div id="outline-container-orgheadline3" class="outline-3">
 <h3 id="configure-hdb"><a id="orgheadline3"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a><span class="section-number-3">1.2</span> Добавление файлов конфигурации базы данных HDB</h3>
 <div class="outline-text-3" id="text-configure-hdb">
+<blockquote>
 <p>
-Для запуска сервиса <b>ldap</b> (<b>slapd</b>) необходимо подготовить каталог и файл конфигурации базы данных. Расположение образца файла настройки, в <b>5/2.3</b>
+Где работаем: контейнеры <b>server-&#x2026;..</b>
+</p>
+</blockquote>
+
+<p>
+Для запуска сервиса <b>ldap</b> (<b>slapd</b>) необходимо подготовить каталог и
+файл конфигурации базы данных. Расположение образца файла настройки, в
+<b>5/2.3</b>
 </p>
 <div class="org-src-container">
 <label class="org-src-name">Конфигурация БД для <b>5/2.3</b></label>
@@ -390,20 +424,38 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 <p>
-Используем настройки без изменений в обеих конфигурациях.
+Используем настройки без изменений в обеих конфигурациях. В подразделе
+<a href="#hdb-domain-config">3.2</a> будет осуществлено связывание базы данных <b>HDB</b> и
+точки ветвления дерева DIT, соответствующей домену
+<b>dc=mercury,dc=febras,dc=net</b>.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="add-schemas"><a id="orgheadline4"></a><a id="ID-6638ce89-fc58-4610-aa0a-ab3ade7d3825"></a><span class="section-number-3">1.3</span> Добавление файлов схем</h3>
-<div class="outline-text-3" id="text-add-schemas">
+
+<div class="tip">
 <p>
-Общая схема БД LDAP, в том числе, содержит раздел <b>cn=schema</b>, куда
-подключаются дополнительные специфические схемы.  Подготовим
+В случае использования <b>OpenLDAP</b> версии <b>2.4</b> вместо базы данных
+<b>HDB</b> в качестве бэкенда можно использовать отображаемую в памяти базу
+данных <b>MDB</b>. Версия <b>2.3</b> не поддерживает <b>MDB</b>.
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="add-schemas"><a id="orgheadline4"></a><a id="ID-6638ce89-fc58-4610-aa0a-ab3ade7d3825"></a><span class="section-number-3">1.3</span> Добавление файлов схем данных</h3>
+<div class="outline-text-3" id="text-add-schemas">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>server-&#x2026;..</b>
+</p>
+</blockquote>
+<p>
+База данных LDAP содержит раздел <b>cn=schema</b>, куда
+подключаются дополнительные специфические схемы данных. Подготовим
 необходимые файлы (не включенные в поставку <b>OpenLDAP</b>), для <b>5/2.3</b>
 </p>
 <div class="org-src-container">
-<label class="org-src-name">Добавление файлов схем для <b>5/2.3</b></label>
+<label class="org-src-name">Добавление файлов схем данных для <b>5/2.3</b></label>
 <pre class="src src-sh">    cp /usr/share/doc/sudo-1.7.2p1/schema.OpenLDAP /etc/openldap/schema/sudo.schema
     chown ldap. /etc/openldap/schema/sudo.schema
 </pre>
@@ -412,10 +464,30 @@ for the JavaScript code in this tag.
 и для <b>6/2.4</b>
 </p>
 <div class="org-src-container">
-<label class="org-src-name">Добавление файлов схем для <b>6/2.4</b></label>
+<label class="org-src-name">Добавление файлов схем данных для <b>6/2.4</b></label>
 <pre class="src src-sh">    cp /usr/share/doc/sudo-1.8.6p3/schema.OpenLDAP /etc/openldap/schema/sudo.schema
     chown ldap. /etc/openldap/schema/sudo.schema
 </pre>
+</div>
+
+<p>
+В подразделе <a href="#create-sudoers">3.4</a> для создания подразделения <b>sudoers</b>
+используется класс из файла <b>sudo.schema</b>.
+</p>
+
+<div class="note">
+<p>
+В данном руководстве слово "схема" используется в выражении <i>схема
+данных</i>, означающим файл с расширением <b>schema</b> или <b>ldif</b>, содержащий
+описание классов и атрибутов. Также, оно используется в выражении
+<i>схема базы данных LDAP</i>, т.е. для описания содержания, структуры и
+ограничений целостности базы данных LDAP. В литературе выражение
+<i>схема базы данных</i> применительно к базе данных LDAP не встречается,
+оно применяется для реляционных баз данных. Кроме того, <i>"база данных
+LDAP"</i> использует <i>базу данных <b>HDB</b></i> в качестве конечного хранилища
+данных.
+</p>
+
 </div>
 </div>
 </div>
@@ -534,6 +606,12 @@ for the JavaScript code in this tag.
 <div id="outline-container-orgheadline6" class="outline-3">
 <h3 id="configure-slapd-conf"><a id="orgheadline6"></a><a id="ID-fd3e3e26-d416-4cc5-9dfa-554caeaf7830"></a><span class="section-number-3">1.5</span> Предварительная настройка схемы БД LDAP</h3>
 <div class="outline-text-3" id="text-configure-slapd-conf">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>server-conf.</b>
+</p>
+</blockquote>
+
 <p>
 Продемонстрируем первый способ настройки. Внесем небольшие
 изменения в конфигурационный файл для <b>5/2.3</b>
@@ -671,7 +749,7 @@ for the JavaScript code in this tag.
 <span style="background-color: #fdf6e3;">83a85,87</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}6M2gyR83gvbSekrnGtSUqFiOLRk6WC37</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}cvbuP23fXpEXgVF/Mz7fHKt8D1qU3Kkx</span>
 <span style="background-color: #fdf6e3;">85c89,91</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -859,7 +937,7 @@ for the JavaScript code in this tag.
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/sudo.schema</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}yJEFcN1dOBSU+Wd2OlEyOXKjhjLSxtke</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}SJyKGTUVF2uoTnLJBUk63ZzsDsoAlCvU</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -932,6 +1010,12 @@ for the JavaScript code in this tag.
 <div id="outline-container-orgheadline7" class="outline-3">
 <h3 id="configure-slapd"><a id="orgheadline7"></a><a id="ID-fd3e3e26-d416-4cc5-9dfa-554caeaf7830"></a><span class="section-number-3">1.6</span> Дополнительно. Предварительная настройка схемы БД LDAP с помощью ldif формата</h3>
 <div class="outline-text-3" id="text-configure-slapd">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>server-ldif.</b>
+</p>
+</blockquote>
+
 <p>
 Продемонстрируем второй способ настройки для обеих конфигураций.
 </p>
@@ -944,7 +1028,7 @@ for the JavaScript code in this tag.
 преобразуем необходимые схемы. Чтобы иметь доступ к серверу LDAP для
 конфигурирования схемы БД LDAP, пропишем пароль менеджера схемы
 <b>cn=Manager,cn=config</b>. Кроме того, добавим минимальные
-настройки для <b>monitor</b> и настроим базу <b>hdb</b>. Используем
+настройки для <b>monitor</b> и настроим базу <b>HDB</b>. Используем
 "оффлайновую" утилиту <b>slapadd</b> для создания минимума конфигурационных
 настроек, позволяющих запустить сервер.
 </p>
@@ -969,7 +1053,7 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 <div class="org-src-container">
-<label class="org-src-name"><b>slapd.ldif</b>: формирование корневой записи DIT и контейнера для схем данных; конфигурирование базы данных <b>hdb</b> и подключение мониторинга баз данных</label>
+<label class="org-src-name"><b>slapd.ldif</b>: формирование корневой записи DIT и контейнера для схем данных; конфигурирование базы данных <b>HDB</b> и подключение мониторинга баз данных</label>
 <pre class="src src-ldif" id="orgsrcblock1"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=config</span>
 objectClass: olcGlobal
 olcPidFile: /var/run/openldap/slapd.pid
@@ -1049,7 +1133,7 @@ olcDbIndex: nisMapName,nisMapEntry            eq,pres,sub
 <p>
 Специальная база данных <b>frontend</b> содержит настройки, которые
 применяются глобально ко всем остальным базам данных. В нашем случае в
-наличии одна база <b>hdb</b> и никаких специальных настроек для <b>frontend</b>.
+наличии одна база <b>HDB</b> и никаких специальных настроек для <b>frontend</b>.
 </p>
 
 <div class="org-src-container">
@@ -1102,6 +1186,12 @@ olcDatabase: {-1}frontend
 <div id="outline-container-orgheadline9" class="outline-3">
 <h3 id="client-packages"><a id="orgheadline9"></a><a id="ID-a4da4894-117b-40b6-a6c7-1447f083d6e1"></a><span class="section-number-3">2.1</span> Требуемые пакеты</h3>
 <div class="outline-text-3" id="text-client-packages">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>client.</b>
+</p>
+</blockquote>
+
 <p>
 Для настройки клиентского подключения в <b>5/2.3</b> понадобятся следующие пакеты
 </p>
@@ -1129,6 +1219,12 @@ yum install -y openldap migrationtools sudo
 <div id="outline-container-orgheadline10" class="outline-3">
 <h3 id="client-commands"><a id="orgheadline10"></a><a id="ID-6e7a8278-7334-46f7-b289-07da7f2b6d14"></a><span class="section-number-3">2.2</span> Используемые команды&nbsp;<sup><i class="fa fa-star"></i></sup></h3>
 <div class="outline-text-3" id="text-client-commands">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>client.</b>
+</p>
+</blockquote>
+
 <p>
 Воспользуемся утилитой <b>authconfig</b> для настройки аутентификации пользователей при помощи LDAP.
 </p>
@@ -1137,8 +1233,8 @@ yum install -y openldap migrationtools sudo
 В <b>5/2.3</b> приходится использовать параметр <b>enableshadow</b>, поскольку
 эта функциональность отключена по умолчанию. Отдельно укажем параметр
 <b>sudoers_base</b> и параметры <b>binddn</b> и <b>bindpw</b> в настройках для
-<b>pam_ldap</b> (см. также настроки для <b>authenticator</b> в разделе
-<a href="#minimal-schema">3.2</a>).
+<b>pam_ldap</b> (см. также настроки для <b>authenticator</b> в подразделе
+<a href="#minimal-schema">3.1</a>).
 </p>
 
 <div class="org-src-container">
@@ -1148,7 +1244,7 @@ yum install -y openldap migrationtools sudo
 
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/ldap.conf
-<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">uid</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/ldap.conf
 </pre>
 </div>
@@ -1174,13 +1270,13 @@ yum install -y openldap migrationtools sudo
 <span style="color: #657b83; font-weight: bold;">echo</span> base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_base <span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers_debug 0 &gt;&gt; /etc/sudo-ldap.conf
-<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">uid</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/sudo-ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/sudo-ldap.conf
 
-<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/pam_ldap.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">uid</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/pam_ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/pam_ldap.conf
 
-<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">cn</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/nslcd.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">uid</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/nslcd.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/nslcd.conf
 
 /etc/init.d/nslcd stop
@@ -1195,7 +1291,7 @@ rm /var/run/nslcd/*
 <h3 id="client-files"><a id="orgheadline11"></a><a id="ID-386e40de-d1f2-4dc8-994b-5870d4ec42fb"></a><span class="section-number-3">2.3</span> Изменяемые файлы&nbsp;<sup><i class="fa fa-star"></i></sup></h3>
 <div class="outline-text-3" id="text-client-files">
 <p>
-Файлы, которые были модифицированы настройками раздела <a href="#client-commands">2.2</a> в случае <b>5/2.3</b>
+Файлы, которые были модифицированы настройками подраздела <a href="#client-commands">2.2</a> в случае <b>5/2.3</b>
 </p>
 
 <ul class="org-ul">
@@ -1280,8 +1376,216 @@ rm /var/run/nslcd/*
 </div>
 
 <div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12"><a id="ID-e8f37bcc-b065-41f2-9398-80816656d325"></a><span class="section-number-4">2.4.1</span> PAM: необходимые сведения</h4>
+<h4 id="orgheadline12"><a id="ID-2cffdc55-f975-415c-a4df-0b8ba3dab1b7"></a><span class="section-number-4">2.4.1</span> Опции, связанные с conf-файлами для <b>5/2.3</b></h4>
 <div class="outline-text-4" id="text-2-4-1">
+<p>
+Файл <b>/etc/ldap.conf</b>. Параметр <b>host</b> не рекомендуется к использованию,
+используется параметр <b>uri</b>, который указывает адрес LDAP сервера и
+протокол, по которому осуществляется взаимодействие. Остальные
+параметры понятны: SSL не используется, ожидается <b>md5</b> шифрование для
+паролей в PAM.
+</p>
+
+<p>
+Файл <b>nsswitch.conf</b>. Для баз данных <b>passwd</b>, <b>shadow</b>, <b>group</b>,
+<b>netgroup</b> и <b>automount</b> добавляется спецификация службы <b>ldap</b>.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name">Опции, выставляемые в файлах для <b>5/2.3</b> (а)</label>
+<pre class="src src-diff"><span style="color: #93a1a1;">/etc/ldap.conf</span>
+<span style="background-color: #fdf6e3;">17c17</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> host 127.0.0.1</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> #host 127.0.0.1</span>
+<span style="background-color: #fdf6e3;">20c20</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
+<span style="background-color: #fdf6e3;">295a296,303</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
+<span style="color: #93a1a1;">/etc/nsswitch.conf</span>
+<span style="background-color: #fdf6e3;">33,35c33,35</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> shadow:     files</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> group:      files</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> passwd:     files ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> shadow:     files ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> group:      files ldap</span>
+<span style="background-color: #fdf6e3;">57c57</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> netgroup:   nisplus</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> netgroup:   files ldap</span>
+<span style="background-color: #fdf6e3;">61c61</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> automount:  files nisplus</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
+<span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
+<span style="background-color: #fdf6e3;">13a14,16</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.3/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13"><a id="ID-0c82d86b-ddc5-43c1-b4ea-a58af035d923"></a><span class="section-number-4">2.4.2</span> Опции, связанные с файлом system-auth для <b>5/2.3</b></h4>
+<div class="outline-text-4" id="text-2-4-2">
+<div class="org-src-container">
+<label class="org-src-name">Опции, выставляемые в файле <b>system-auth</b> для <b>5/2.3</b></label>
+<pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
+<span style="background-color: #fdf6e3;">5c5,7</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_unix.so nullok try_first_pass</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_ldap.so use_first_pass</span>
+<span style="background-color: #fdf6e3;">8c10,13</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_permit.so</span>
+<span style="background-color: #fdf6e3;">10,11c15,17</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    required      pam_cracklib.so try_first_pass retry=3</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    sufficient    pam_unix.so try_first_pass use_authtok nullok md5</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    requisite     pam_cracklib.so try_first_pass retry=3</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_ldap.so use_authtok</span>
+<span style="background-color: #fdf6e3;">15a22</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so</span>
+<span style="background-color: #fdf6e3;">17a25</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14"><a id="ID-bffd7a17-e40c-4550-92d4-2d4ece369ca3"></a><span class="section-number-4">2.4.3</span> Опции, связанные с conf-файлами для <b>6/2.4</b></h4>
+<div class="outline-text-4" id="text-2-4-3">
+<p>
+В файлах <b>nslcd.conf</b>, <b>pam_ldap.conf</b> и <b>sudo-ldap.conf</b> дублируются
+стандартные опции.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name">Опции, выставляемые в файлах <b>nslcd.conf</b>, <b>nsswitch.conf</b> и <b>/etc/openldap/ldap.conf</b> для <b>6/2.4</b></label>
+<pre class="src src-diff"><span style="color: #93a1a1;">/etc/nslcd.conf</span>
+<span style="background-color: #fdf6e3;">131,132c131,136</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> uri ldap://127.0.0.1/</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.2/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
+<span style="color: #93a1a1;">/etc/nsswitch.conf</span>
+<span style="background-color: #fdf6e3;">33,35c33,35</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> shadow:     files</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> group:      files</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> passwd:     files ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> shadow:     files ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> group:      files ldap</span>
+<span style="background-color: #fdf6e3;">57c57</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> netgroup:   nisplus</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> netgroup:   files ldap</span>
+<span style="background-color: #fdf6e3;">61c61</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> automount:  files nisplus</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
+<span style="background-color: #fdf6e3;">63a64</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers: files ldap</span>
+<span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
+<span style="background-color: #fdf6e3;">15c15,17</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLS_CACERTDIR /etc/openldap/certs</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.2/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15"><a id="ID-5bedb39f-f4fd-416b-9c11-ebba1119ac1a"></a><span class="section-number-4">2.4.4</span> Опции, связанные с файлом system-auth для <b>6/2.4</b></h4>
+<div class="outline-text-4" id="text-2-4-4">
+<div class="org-src-container">
+<label class="org-src-name">Опции, выставляемые файлах <b>system-auth</b>, <b>pam_ldap.conf</b> и <b>sudo-ldap.conf</b> для <b>6/2.4</b></label>
+<pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
+<span style="background-color: #fdf6e3;">5c5,7</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_unix.so nullok try_first_pass</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_ldap.so use_first_pass</span>
+<span style="background-color: #fdf6e3;">8c10,14</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_localuser.so</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_permit.so</span>
+<span style="background-color: #fdf6e3;">11c17,18</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_ldap.so use_authtok</span>
+<span style="background-color: #fdf6e3;">15a23</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so umask=0077</span>
+<span style="background-color: #fdf6e3;">17a26</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
+<span style="color: #93a1a1;">/etc/pam_ldap.conf</span>
+<span style="background-color: #fdf6e3;">17c17</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> host 127.0.0.1</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> #host 127.0.0.1</span>
+<span style="background-color: #fdf6e3;">20c20</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
+<span style="background-color: #fdf6e3;">289a290,295</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.2/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
+<span style="color: #93a1a1;">/etc/sudo-ldap.conf</span>
+<span style="background-color: #fdf6e3;">86a87,92</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.2/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16"><a id="ID-e8f37bcc-b065-41f2-9398-80816656d325"></a><span class="section-number-4">2.4.5</span> Дополнительно. PAM: необходимые сведения</h4>
+<div class="outline-text-4" id="text-2-4-5">
 <p>
 Утилита <b>authconfig</b> осуществляет необходимую модификацию PAM
 (Pluggable Authentication Modules), добавляя библиотеку <b>pam_ldap.so</b>
@@ -1337,219 +1641,11 @@ rm /var/run/nslcd/*
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgheadline13" class="outline-4">
-<h4 id="orgheadline13"><a id="ID-2cffdc55-f975-415c-a4df-0b8ba3dab1b7"></a><span class="section-number-4">2.4.2</span> Опции, связанные с conf-файлами для <b>5/2.3</b></h4>
-<div class="outline-text-4" id="text-2-4-2">
-<p>
-Файл <b>/etc/ldap.conf</b>. Параметр <b>host</b> не рекомендуется к использованию,
-используется параметр <b>uri</b>, который указывает адрес LDAP сервера и
-протокол, по которому осуществляется взаимодействие. Остальные
-параметры понятны: SSL не используется, ожидается <b>md5</b> шифрование для
-паролей в PAM.
-</p>
-
-<p>
-Файл <b>nsswitch.conf</b>. Для баз данных <b>passwd</b>, <b>shadow</b>, <b>group</b>,
-<b>netgroup</b> и <b>automount</b> добавляется спецификация службы <b>ldap</b>.
-</p>
-
-<div class="org-src-container">
-<label class="org-src-name">Опции, выставляемые в файлах для <b>5/2.3</b> (а)</label>
-<pre class="src src-diff"><span style="color: #93a1a1;">/etc/ldap.conf</span>
-<span style="background-color: #fdf6e3;">17c17</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> host 127.0.0.1</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> #host 127.0.0.1</span>
-<span style="background-color: #fdf6e3;">20c20</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
-<span style="background-color: #fdf6e3;">295a296,303</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
-<span style="color: #93a1a1;">/etc/nsswitch.conf</span>
-<span style="background-color: #fdf6e3;">33,35c33,35</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> shadow:     files</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> group:      files</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> passwd:     files ldap</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> shadow:     files ldap</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> group:      files ldap</span>
-<span style="background-color: #fdf6e3;">57c57</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> netgroup:   nisplus</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> netgroup:   files ldap</span>
-<span style="background-color: #fdf6e3;">61c61</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> automount:  files nisplus</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
-<span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.3/</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
-</pre>
-</div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14"><a id="ID-0c82d86b-ddc5-43c1-b4ea-a58af035d923"></a><span class="section-number-4">2.4.3</span> Опции, связанные с файлом system-auth для <b>5/2.3</b></h4>
-<div class="outline-text-4" id="text-2-4-3">
-<div class="org-src-container">
-<label class="org-src-name">Опции, выставляемые в файле <b>system-auth</b> для <b>5/2.3</b></label>
-<pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">5c5,7</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_unix.so nullok try_first_pass</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_ldap.so use_first_pass</span>
-<span style="background-color: #fdf6e3;">8c10,13</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_permit.so</span>
-<span style="background-color: #fdf6e3;">10,11c15,17</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    required      pam_cracklib.so try_first_pass retry=3</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    sufficient    pam_unix.so try_first_pass use_authtok nullok md5</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    requisite     pam_cracklib.so try_first_pass retry=3</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_ldap.so use_authtok</span>
-<span style="background-color: #fdf6e3;">15a22</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so</span>
-<span style="background-color: #fdf6e3;">17a25</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline15" class="outline-4">
-<h4 id="orgheadline15"><a id="ID-bffd7a17-e40c-4550-92d4-2d4ece369ca3"></a><span class="section-number-4">2.4.4</span> Опции, связанные с conf-файлами для <b>6/2.4</b></h4>
-<div class="outline-text-4" id="text-2-4-4">
-<p>
-В файлах <b>nslcd.conf</b>, <b>pam_ldap.conf</b> и <b>sudo-ldap.conf</b> дублируются
-стандартные опции.
-</p>
-
-<div class="org-src-container">
-<label class="org-src-name">Опции, выставляемые в файлах <b>nslcd.conf</b>, <b>nsswitch.conf</b> и <b>/etc/openldap/ldap.conf</b> для <b>6/2.4</b></label>
-<pre class="src src-diff"><span style="color: #93a1a1;">/etc/nslcd.conf</span>
-<span style="background-color: #fdf6e3;">131,132c131,136</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> uri ldap://127.0.0.1/</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.2/</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
-<span style="color: #93a1a1;">/etc/nsswitch.conf</span>
-<span style="background-color: #fdf6e3;">33,35c33,35</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> shadow:     files</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> group:      files</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> passwd:     files ldap</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> shadow:     files ldap</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> group:      files ldap</span>
-<span style="background-color: #fdf6e3;">57c57</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> netgroup:   nisplus</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> netgroup:   files ldap</span>
-<span style="background-color: #fdf6e3;">61c61</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> automount:  files nisplus</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
-<span style="background-color: #fdf6e3;">63a64</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers: files ldap</span>
-<span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">15c15,17</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLS_CACERTDIR /etc/openldap/certs</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.2/</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16"><a id="ID-5bedb39f-f4fd-416b-9c11-ebba1119ac1a"></a><span class="section-number-4">2.4.5</span> Опции, связанные с файлом system-auth для <b>6/2.4</b></h4>
-<div class="outline-text-4" id="text-2-4-5">
-<div class="org-src-container">
-<label class="org-src-name">Опции, выставляемые файлах <b>system-auth</b>, <b>pam_ldap.conf</b> и <b>sudo-ldap.conf</b> для <b>6/2.4</b></label>
-<pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">5c5,7</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_unix.so nullok try_first_pass</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_ldap.so use_first_pass</span>
-<span style="background-color: #fdf6e3;">8c10,14</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> account     required      pam_unix.so</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_unix.so broken_shadow</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_localuser.so</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     sufficient    pam_succeed_if.so uid &lt; 500 quiet</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     [default=bad success=ok user_unknown=ignore] pam_ldap.so</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> account     required      pam_permit.so</span>
-<span style="background-color: #fdf6e3;">11c17,18</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> password    sufficient    pam_unix.so try_first_pass use_authtok nullok sha512 shadow</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> password    sufficient    pam_ldap.so use_authtok</span>
-<span style="background-color: #fdf6e3;">15a23</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_mkhomedir.so umask=0077</span>
-<span style="background-color: #fdf6e3;">17a26</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> session     optional      pam_ldap.so</span>
-<span style="color: #93a1a1;">/etc/pam_ldap.conf</span>
-<span style="background-color: #fdf6e3;">17c17</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> host 127.0.0.1</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> #host 127.0.0.1</span>
-<span style="background-color: #fdf6e3;">20c20</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
-<span style="background-color: #fdf6e3;">289a290,295</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.2/</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
-<span style="color: #93a1a1;">/etc/sudo-ldap.conf</span>
-<span style="background-color: #fdf6e3;">86a87,92</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.2/</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline21" class="outline-2">
-<h2 id="schema"><a id="orgheadline21"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a><span class="section-number-2">3</span> Схема БД LDAP</h2>
+<div id="outline-container-orgheadline24" class="outline-2">
+<h2 id="schema"><a id="orgheadline24"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a><span class="section-number-2">3</span> Схема БД LDAP</h2>
 <div class="outline-text-2" id="text-schema">
 <blockquote>
 <p>
@@ -1558,10 +1654,11 @@ rm /var/run/nslcd/*
 </blockquote>
 
 <p>
-Использование только <b>ldif</b> (см. раздел см. раздел <a href="#configure-slapd">1.6</a>)
+Использование только <b>ldif</b> (см. подраздел <a href="#configure-slapd">1.6</a>)
 формата позволяет единообразно конфигурировать схему БД LDAP, начиная
-с корневой записи DIT (Directory Information Tree) <b>cn=config</b>
-(см. раздел <a href="#minimal-schema">3.2</a>) и заканчивая листьями (см. разделы
+с корневой записи DIT (Directory Information Tree)
+*cn=config*(см. подраздел <a href="#minimal-schema">3.1</a>), корневой записи домена
+(см. подраздел <a href="#root-domain">3.3</a>) и заканчивая листьями (см. подразделы
 <a href="#new-user-ldap">4.1</a>, <a href="#add-users">4.5</a>) этого дерева &#x2014; записями, содержащими
 нужную информацию:
 </p>
@@ -1616,22 +1713,203 @@ rm /var/run/nslcd/*
 стартовая часть этого ряда конфигурационных файлов
 заменяется на <b>slapd.conf</b> (см. раздел <a href="#configure-slapd-conf">1.5</a>).
 </p>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="minimal-schema"><a id="orgheadline19"></a><a id="ID-3446a07c-3649-4e85-84c1-044e78c340dc"></a><span class="section-number-3">3.1</span> Установка схемы базы данных LDAP</h3>
+<div class="outline-text-3" id="text-minimal-schema">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>server-&#x2026;..</b>
+</p>
+</blockquote>
 
 <p>
 В разделе <a href="#authentication">2</a> перечислены три задачи, возникающие при
 настройке аутентификации пользователей при помощи LDAP, и
 продемонстрирована реализация клиентской части. Серверная часть &#x2014;
 схема БД LDAP &#x2014; должна обеспечивать поддержку данной
-функциональности. Нам потребуются два контейнера для хранения учетных
+функциональности. Нам потребуются контейнеры для хранения учетных
 данных пользователей и групп. Разрешим доступ к данным пользователей
-только для клиентских систем cо специальной учетной записью, запретим
-анонимный доступ. Добавим класс учетных записей пользователей,
-обладающих правами <b>sudo</b>.
+только для клиентских систем со специальной учетной записью, запретим
+анонимный доступ. Добавим тип учетных записей пользователей,
+обладающих разрешениями <b>sudo</b>.
 </p>
+
+<p>
+Чтобы получить минимально работоспособный сервер LDAP, позволяющий
+осуществлять аутентификацию для клиентских систем, внесем необходимые
+изменения в схему.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">cd</span> /schema
+
+cp domain.ldif domain+.ldif
+<span style="color: #268bd2;">MANAGER_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span>)
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Use bash variable substitution to escape special chars http://stackoverflow.com/a/14339705</span>
+sed -i <span style="color: #2aa198;">"s+%LDAP_MANAGER_PASSWORD%+${MANAGER_PWD//+/\\+}+"</span> domain+.ldif
+ldapmodify -v -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">cn</span>=config -f domain+.ldif -x -w $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>
+rm domain+.ldif
+ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f base.ldif
+ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f sudo.ldif
+</pre>
+</div>
+</div>
 </div>
 
-<div id="outline-container-orgheadline19" class="outline-3">
-<h3 id="ldap-possibilities"><a id="orgheadline19"></a><a id="ID-4f9ddacc-3908-4cd1-b091-3f00c31aa8a7"></a><span class="section-number-3">3.1</span> Возможности LDAP</h3>
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="hdb-domain-config"><a id="orgheadline20"></a><a id="ID-d8a0d9fc-cb9b-46c3-b6f8-abd2f6766517"></a><span class="section-number-3">3.2</span> Связывание базы данных HDB с доменом и настройка ACL</h3>
+<div class="outline-text-3" id="text-hdb-domain-config">
+<p>
+В подразделе <a href="#configure-hdb">1.2</a> была подготовлена база данных
+<b>HDB</b>. Сконфигурируем (см. расп. <a href="#orgsrcblock3">27</a>) её для доменного имени
+<b>dc=mercury,dc=febras,dc=net</b>, определим менеджера домена
+<b>cn=Manager,dc=mercury,dc=febras,dc=net</b> и его пароль. Также, добавим
+правила доступа к атрибутам <b>userPassword</b> и <b>shadowLastChange</b>
+(см. подраздел <a href="#new-user-ldap">4.1</a>): для владельца записи &#x2014; <i>write</i> и для
+неавторизованного пользователя &#x2014; <i>auth</i>. Анонимный доступ будет разрешен только для
+заголовочной части записи подразделения <b>public</b>, но не для ее
+содержимого. Для доступа к записям пользователей и остальным атрибутам
+используем учетную запись <b>authenticator</b> (см. подраздел
+<a href="#client-commands">2.2</a>).
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><b>domain.ldif</b>: связывание суффикса, менеджера домена и его пароля с базой <b>HDB</b>; установка списка контроля доступа ACL</label>
+<pre class="src src-ldif" id="orgsrcblock3"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcSuffix</span>
+olcSuffix: dc=mercury,dc=febras,dc=net
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcRootDN</span>
+olcRootDN: cn=Manager,dc=mercury,dc=febras,dc=net
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcRootPW</span>
+olcRootPW: %LDAP_MANAGER_PASSWORD%
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcAccess</span>
+olcAccess: {0}to attrs=userPassword,shadowLastChange
+  by self write
+  by * auth
+olcAccess: {1}to dn.base="ou=public,dc=mercury,dc=febras,dc=net"
+  by * read
+olcAccess: {2}to *
+  by dn="uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net" read
+  by * none
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="root-domain"><a id="orgheadline21"></a><a id="ID-98673b98-df88-4fb4-859f-9f8283c1346c"></a><span class="section-number-3">3.3</span> Создание корневой записи домена</h3>
+<div class="outline-text-3" id="text-root-domain">
+<p>
+В подразделе <a href="#configure-slapd">1.6</a> было продемонстрировано создание корневой
+записи дерева DIT средствами протокола <b>ldif</b> (эквивалентную настройку
+можно осуществить при помощи файла конфигурации <b>conf</b>, как это
+показано в подразделе <a href="#configure-slapd-conf">1.5</a>). Теперь создадим корневую
+запись домена, добавим необходимые атрибуты (см. расп. <a href="#orgsrcblock4">28</a>),
+корневой узел <b>dn: dc=mercury,dc=febras,dc=net</b>,
+подразделения <b>users</b>, <b>groups</b>, <b>system</b> и <b>public</b>, а также
+пользователя <b>authenticator</b>.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><b>base.ldif</b>: создание суффикса, менеджера домена, организационных единиц и учетной записи <b>authenticator</b></label>
+<pre class="src src-ldif" id="orgsrcblock4"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=mercury,dc=febras,dc=net</span>
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+dc: mercury
+o: mercury
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=Manager,dc=mercury,dc=febras,dc=net</span>
+objectClass: organizationalRole
+cn: Manager
+description: Directory Manager
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=public,dc=mercury,dc=febras,dc=net</span>
+objectClass: organizationalUnit
+ou: public
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=users,dc=mercury,dc=febras,dc=net</span>
+objectClass: organizationalUnit
+ou: users
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=groups,dc=mercury,dc=febras,dc=net</span>
+objectClass: organizationalUnit
+ou: groups
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=system,dc=mercury,dc=febras,dc=net</span>
+objectClass: organizationalUnit
+ou: system
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
+objectClass: account
+objectClass: simpleSecurityObject
+uid: authenticator
+description: Used for authentication to LDAP
+userPassword: secret
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="create-sudoers"><a id="orgheadline22"></a><a id="ID-22a6415e-716f-4045-aab4-2535b7bdff12"></a><span class="section-number-3">3.4</span> Формирование подразделения sudoers</h3>
+<div class="outline-text-3" id="text-create-sudoers">
+<p>
+Создадим подразделение <b>sudoers</b>, одну posix-группу <b>wheel</b> и
+сконфигурируем <b>sudoers</b> так, чтобы разрешить выполнение <b>sudo</b> команд
+без ввода пароля для членов этой группы (см. расп. <a href="#orgsrcblock5">29</a>). Класс
+<b>sudoRole</b> содержится в файле <b>sudo.schema</b>, подключенном в подразделе
+<a href="#add-schemas">1.3</a>.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><b>sudo.ldif</b>: создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></label>
+<pre class="src src-ldif" id="orgsrcblock5"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=sudoers,dc=mercury,dc=febras,dc=net</span>
+objectClass: organizationalUnit
+ou: sudoers
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=wheel,ou=groups,dc=mercury,dc=febras,dc=net</span>
+cn: wheel
+objectClass: posixGroup
+objectClass: top
+gidNumber: 1030
+memberUid: username
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=admins,ou=sudoers,dc=mercury,dc=febras,dc=net</span>
+objectClass: sudoRole
+objectClass: top
+cn: admins
+sudoCommand: ALL
+sudoRunAs: ALL
+sudoHost: ALL
+sudoUser: %wheel
+sudoOption: !authenticate
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=defaults,ou=sudoers,dc=mercury,dc=febras,dc=net</span>
+objectClass: sudoRole
+objectClass: top
+cn: defaults
+sudoOption: ignore_local_sudoers
+sudoOption: env_reset
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="ldap-possibilities"><a id="orgheadline23"></a><a id="ID-4f9ddacc-3908-4cd1-b091-3f00c31aa8a7"></a><span class="section-number-3">3.5</span> Дополнительно. Возможности LDAP</h3>
 <div class="outline-text-3" id="text-ldap-possibilities">
 <p>
 Возможности протокола LDAP значительно определяются схемами, которые
@@ -1672,161 +1950,10 @@ rm /var/run/nslcd/*
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgheadline20" class="outline-3">
-<h3 id="minimal-schema"><a id="orgheadline20"></a><a id="ID-3446a07c-3649-4e85-84c1-044e78c340dc"></a><span class="section-number-3">3.2</span> Подготовка к тестированию аутентификации при помощи LDAP</h3>
-<div class="outline-text-3" id="text-minimal-schema">
-<p>
-Чтобы получить минимально работоспособный сервер LDAP, позволяющий
-осуществлять аутентификацию для клиентских систем, внесем необходимые
-изменения в схему. В частности, сконфигурируем (см. расп. <a href="#orgsrcblock3">27</a>)
-базу <b>hdb</b> для доменного имени <b>dc=mercury,dc=febras,dc=net</b>,
-определим менеджера домена <b>cn=Manager,dc=mercury,dc=febras,dc=net</b> и
-его пароль. Также, добавим в <b>domain.ldif</b> правила доступа к атрибутам
-<b>userPassword</b> и <b>shadowLastChange</b>: для владельца записи &#x2014; <i>write</i>
-и для неавторизованного пользователя &#x2014; <i>auth</i>. Значение атрибута
-<b>loginShell</b> установим для любого пользователя системы &#x2014; <i>read</i>, а
-для владельца &#x2014; <i>write</i>. Анонимный доступ будет разрешен только для
-заголовочной части записи подразделения <b>public</b>, но не для ее
-содержимого. Для доступа к записям пользователей и остальным атрибутам
-используем учетную запись <b>authenticator</b> (см. раздел
-<a href="#client-commands">2.2</a>).
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">cd</span> /schema
-
-cp domain.ldif domain+.ldif
-<span style="color: #268bd2;">MANAGER_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span>)
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Use bash variable substitution to escape special chars http://stackoverflow.com/a/14339705</span>
-sed -i <span style="color: #2aa198;">"s+%LDAP_MANAGER_PASSWORD%+${MANAGER_PWD//+/\\+}+"</span> domain+.ldif
-ldapmodify -v -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">cn</span>=config -f domain+.ldif -x -w $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>
-rm domain+.ldif
-ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f base.ldif
-ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f sudo.ldif
-</pre>
 </div>
 
-<div class="org-src-container">
-<label class="org-src-name"><b>domain.ldif</b>: привязка суффикса, менеджера домена и его пароля, списка контроля доступа ACL к базе <b>hdb</b></label>
-<pre class="src src-ldif" id="orgsrcblock3"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
-<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
-<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcSuffix</span>
-olcSuffix: dc=mercury,dc=febras,dc=net
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
-<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
-<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcRootDN</span>
-olcRootDN: cn=Manager,dc=mercury,dc=febras,dc=net
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
-<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
-<span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcRootPW</span>
-olcRootPW: %LDAP_MANAGER_PASSWORD%
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
-<span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcAccess</span>
-olcAccess: {0}to attrs=userPassword,shadowLastChange
-  by self write
-  by * auth
-olcAccess: {1}to attrs=loginShell
-  by self write
-  by users read
-olcAccess: {2}to dn.base="ou=public,dc=mercury,dc=febras,dc=net"
-  by * read
-olcAccess: {3}to *
-  by dn="cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net" read
-  by * none
-</pre>
-</div>
-
-<p>
-Далее, пропишем (см. расп. <a href="#orgsrcblock4">28</a>) необходимые атрибуты, начиная с
-корневого узла <b>dn: dc=mercury,dc=febras,dc=net</b>, добавим
-подразделения <b>users</b>, <b>groups</b>, <b>system</b> и <b>public</b>, а также пользователя
-<b>authenticator</b>. Создадим подразделение <b>sudoers</b>, одну posix-группу
-<b>wheel</b> и сконфигурируем <b>sudoers</b> так, чтобы разрешить выполнение
-<b>sudo</b> команд без ввода пароля для членов этой группы
-(см. расп. <a href="#orgsrcblock5">29</a>).
-</p>
-
-<div class="org-src-container">
-<label class="org-src-name"><b>base.ldif</b>: создание суффикса, менеджера домена, организационных единиц и учетной записи <b>authenticator</b></label>
-<pre class="src src-ldif" id="orgsrcblock4"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=mercury,dc=febras,dc=net</span>
-objectClass: top
-objectClass: dcObject
-objectClass: organization
-dc: mercury
-o: mercury
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=Manager,dc=mercury,dc=febras,dc=net</span>
-objectClass: organizationalRole
-cn: Manager
-description: Directory Manager
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=public,dc=mercury,dc=febras,dc=net</span>
-objectClass: organizationalUnit
-ou: public
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=users,dc=mercury,dc=febras,dc=net</span>
-objectClass: organizationalUnit
-ou: users
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=groups,dc=mercury,dc=febras,dc=net</span>
-objectClass: organizationalUnit
-ou: groups
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=system,dc=mercury,dc=febras,dc=net</span>
-objectClass: organizationalUnit
-ou: system
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
-objectClass: person
-cn: authenticator
-sn: authenticator
-description: Used for authentication to LDAP
-userPassword: secret
-</pre>
-</div>
-
-<div class="org-src-container">
-<label class="org-src-name"><b>sudo.ldif</b>: создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></label>
-<pre class="src src-ldif" id="orgsrcblock5"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=sudoers,dc=mercury,dc=febras,dc=net</span>
-objectClass: organizationalUnit
-ou: sudoers
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=wheel,ou=groups,dc=mercury,dc=febras,dc=net</span>
-cn: wheel
-objectClass: posixGroup
-objectClass: top
-gidNumber: 1030
-memberUid: username
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=admins,ou=sudoers,dc=mercury,dc=febras,dc=net</span>
-objectClass: sudoRole
-objectClass: top
-cn: admins
-sudoCommand: ALL
-sudoRunAs: ALL
-sudoHost: ALL
-sudoUser: %wheel
-sudoOption: !authenticate
-
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=defaults,ou=sudoers,dc=mercury,dc=febras,dc=net</span>
-objectClass: sudoRole
-objectClass: top
-cn: defaults
-sudoOption: ignore_local_sudoers
-sudoOption: env_reset
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline27" class="outline-2">
-<h2 id="new-user"><a id="orgheadline27"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a><span class="section-number-2">4</span> Процесс добавления нового пользователя в систему</h2>
+<div id="outline-container-orgheadline30" class="outline-2">
+<h2 id="new-user"><a id="orgheadline30"></a><a id="ID-6fe3c37d-639a-4656-9675-bdc7a6c5ddb2"></a><span class="section-number-2">4</span> Процесс добавления нового пользователя в систему</h2>
 <div class="outline-text-2" id="text-new-user">
 <blockquote>
 <p>
@@ -1838,9 +1965,15 @@ LDAP. Предложить CLI (или GUI WEB) интерфейс для вып
 </blockquote>
 </div>
 
-<div id="outline-container-orgheadline22" class="outline-3">
-<h3 id="new-user-ldap"><a id="orgheadline22"></a><a id="ID-6e8437bc-7e1f-489a-9afb-44f3d67d49ab"></a><span class="section-number-3">4.1</span> Добавление пользователя с помощью CLI интерфейса</h3>
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="new-user-ldap"><a id="orgheadline25"></a><a id="ID-6e8437bc-7e1f-489a-9afb-44f3d67d49ab"></a><span class="section-number-3">4.1</span> Добавление пользователя с помощью CLI интерфейса</h3>
 <div class="outline-text-3" id="text-new-user-ldap">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>server-&#x2026;..</b>
+</p>
+</blockquote>
+
 <p>
 Используем утилиту <b>ldapadd</b> для добавления записи пользователя в формате <b>ldif</b>
 </p>
@@ -1880,17 +2013,23 @@ gidNumber: 1050
 </div>
 
 <p>
-Полученные в разделе <a href="#add-users">4.5</a> в результате миграции учетные записи
-пользователей кластера добавляются аналогично. Необходимая нам функциональность
-учетной записи пользователя определяется классами <b>posixAccount</b> и
-<b>shadowAccount</b>.
+Полученные в подразделе <a href="#add-users">4.5</a> в результате миграции учетные записи
+пользователей кластера добавляются аналогично. Необходимая нам
+функциональность учетной записи пользователя определяется классами
+<b>posixAccount</b> и <b>shadowAccount</b>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline23" class="outline-3">
-<h3 id="new-user-php"><a id="orgheadline23"></a><a id="ID-6de9e6dc-04f2-429d-b22e-55caa2e270ee"></a><span class="section-number-3">4.2</span> Добавление пользователя с помощью GUI Web интерфейса</h3>
+<div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="new-user-php"><a id="orgheadline26"></a><a id="ID-6de9e6dc-04f2-429d-b22e-55caa2e270ee"></a><span class="section-number-3">4.2</span> Добавление пользователя с помощью GUI Web интерфейса</h3>
 <div class="outline-text-3" id="text-new-user-php">
+<blockquote>
+<p>
+Где работаем: контейнер <b>gui</b>
+</p>
+</blockquote>
+
 <p>
 Как мы видели, добавление записи в БД LDAP с помощью <b>ldif</b>-файла
 сопровождается некоторым дублированием информации и мелкими
@@ -1912,7 +2051,9 @@ gidNumber: 1050
 изменения. Чуть большее неудобство таит в себе поле <b>gidNumber</b>,
 поскольку приходится узнавать и прописывать номер группы. Впрочем, при
 небольшом количестве групп, а тем более при наличии одной группы, это
-не является проблемой.
+не является проблемой. В нашем случае используется группа, номер
+<b>gidNumber</b> которой обычно совпадает с номером <b>uidNumber</b>
+пользователя, как это принято в Unix.
 </p>
 
 <p>
@@ -1929,7 +2070,7 @@ gidNumber: 1050
 </p>
 
 <p>
-Эти и другие проблемы призван решить GUI интерфейс, который позволяет
+Эти и другие проблемы может решить GUI интерфейс, который позволяет
 с помощью доступных шаблонов и средств описания GUI, реализовывать
 нужную функциональность, в некоторых случаях значительно облегчая
 работу со схемой БД LDAP.
@@ -2118,17 +2259,23 @@ gidNumber: 1050
 <div id="orgparagraph1" class="figure">
 <p><img src="./php01.png" alt="php01.png" />
 </p>
-<p><span class="figure-number">&#1056;&#1080;&#1089;. 1.:</span> Создание пользователя с использованием шаблона phpLDAPadmin</p>
+<p><span class="figure-number">&#1056;&#1080;&#1089;. 1.:</span> Создание пользователя и его группы с использованием шаблона phpLDAPadmin</p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline24" class="outline-3">
-<h3 id="test-client"><a id="orgheadline24"></a><a id="ID-061371a3-a5d6-4fa2-9e15-2d8adef5caf0"></a><span class="section-number-3">4.3</span> Тестирование клиентского подключения</h3>
+<div id="outline-container-orgheadline27" class="outline-3">
+<h3 id="test-client"><a id="orgheadline27"></a><a id="ID-061371a3-a5d6-4fa2-9e15-2d8adef5caf0"></a><span class="section-number-3">4.3</span> Тестирование клиентского подключения</h3>
 <div class="outline-text-3" id="text-test-client">
+<blockquote>
+<p>
+Где работаем: контейнеры <b>client.</b>
+</p>
+</blockquote>
+
 <p>
 Для проверки возможности аутентификации будем использовать запись
-(см. раздел <a href="#new-user-ldap">4.1</a>) <b>username</b>. Протестируем подключение с
+ <b>username</b> (см. подраздел <a href="#new-user-ldap">4.1</a>). Протестируем подключение с
 помощью команды
 </p>
 <div class="org-src-container">
@@ -2145,6 +2292,12 @@ gidNumber: 1050
 <pre class="src src-conf-colon"><span style="color: #268bd2;">username</span>:x:1050:1050:User Name:/home/webminder:/bin/bash
 </pre>
 </div>
+
+<blockquote>
+<p>
+Где работаем: локальная сеть контейнеров
+</p>
+</blockquote>
 
 <p>
 Убедимся, что механизм <b>sudoers</b> задействован. Вывод команды
@@ -2166,8 +2319,8 @@ gidNumber: 1050
 </div>
 </div>
 
-<div id="outline-container-orgheadline25" class="outline-3">
-<h3 id="standard-commands"><a id="orgheadline25"></a><a id="ID-84d40fcf-c285-40e6-9f13-11685889a085"></a><span class="section-number-3">4.4</span> Стандартные команды администрирования пользователей в случае использования LDAP</h3>
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="standard-commands"><a id="orgheadline28"></a><a id="ID-84d40fcf-c285-40e6-9f13-11685889a085"></a><span class="section-number-3">4.4</span> Стандартные команды администрирования пользователей в случае использования LDAP</h3>
 <div class="outline-text-3" id="text-standard-commands">
 <blockquote>
 <p>
@@ -2176,6 +2329,18 @@ gidNumber: 1050
 </p>
 </blockquote>
 
+<blockquote>
+<p>
+Где работаем: любой хост в локальной сети контейнеров с установленными утилитами openldap-client
+</p>
+</blockquote>
+
+<p>
+В подразделе <a href="#hdb-domain-config">3.2</a>
+устанавливаются разрешения для полей <b>userPassword</b> и
+<b>shadowLastChange</b>, чтобы пользователь имел право на смену пароля.
+</p>
+
 <div class="org-src-container">
 <label class="org-src-name">Изменение пользователем своего пароля с помощью утилиты <b>ldappasswd</b></label>
 <pre class="src src-sh">ldappasswd -h $(<span style="color: #6c71c4; font-weight: bold;">ip</span>) -x -D <span style="color: #2aa198;">"uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd -s new_p@ssw0rd
@@ -2183,9 +2348,9 @@ gidNumber: 1050
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name">Изменение пользователем значения <b>loginShell</b> с помощью утилиты <b>ldapmodify</b></label>
+<label class="org-src-name">Изменение менеджером домена значения <b>loginShell</b> с помощью утилиты <b>ldapmodify</b></label>
 <pre class="src src-sh"><span style="color: #859900; font-weight: bold;">function</span> <span style="color: #268bd2;">modify</span>() {
-    ldapmodify -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd &lt;&lt;EOF
+    ldapmodify -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"cn=Manager,dc=mercury,dc=febras,dc=net"</span> -w manager &lt;&lt;EOF
 <span style="color: #b58900; font-weight: bold;">dn: uid=username,ou=users,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #b58900; font-weight: bold;">changetype: modify</span>
 <span style="color: #b58900; font-weight: bold;">replace: loginShell</span>
@@ -2207,16 +2372,16 @@ cat &lt;&lt;EOF
 </div>
 </div>
 
-<div id="outline-container-orgheadline26" class="outline-3">
-<h3 id="add-users"><a id="orgheadline26"></a><a id="ID-3c998117-af2e-4965-94c7-3ebfb31d7691"></a><span class="section-number-3">4.5</span> Миграция пользователей и групп</h3>
+<div id="outline-container-orgheadline29" class="outline-3">
+<h3 id="add-users"><a id="orgheadline29"></a><a id="ID-3c998117-af2e-4965-94c7-3ebfb31d7691"></a><span class="section-number-3">4.5</span> Миграция пользователей и групп</h3>
 <div class="outline-text-3" id="text-add-users">
 <div class="org-src-container">
 <label class="org-src-name">Миграция пользователей и групп для <b>5/2.3</b></label>
 <pre class="src src-sh"><span style="color: #268bd2;">LDAP_BASEDN</span>=<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net
 /usr/share/openldap/migration/migrate_passwd.pl /etc/passwd &gt; /gen/mercury.ldif
 /usr/share/openldap/migration/migrate_group.pl /etc/group &gt;&gt; /gen/mercury.ldif
-sed -i <span style="color: #2aa198;">"s|ou=People|ou=users|g"</span> mercury.ldif
-sed -i <span style="color: #2aa198;">"s|ou=Group|ou=groups|g"</span> mercury.ldif
+sed -i <span style="color: #2aa198;">"s|ou=People|ou=users|g"</span> /gen/mercury.ldif
+sed -i <span style="color: #2aa198;">"s|ou=Group|ou=groups|g"</span> /gen/mercury.ldif
 </pre>
 </div>
 
@@ -2225,8 +2390,8 @@ sed -i <span style="color: #2aa198;">"s|ou=Group|ou=groups|g"</span> mercury.ldi
 <pre class="src src-sh"><span style="color: #268bd2;">LDAP_BASEDN</span>=<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net
 /usr/share/migrationtools/migrate_passwd.pl /etc/passwd &gt; /gen/mercury.ldif
 /usr/share/migrationtools/migrate_group.pl /etc/group &gt;&gt; /gen/mercury.ldif
-sed -i <span style="color: #2aa198;">"s|ou=People|ou=users|g"</span> mercury.ldif
-sed -i <span style="color: #2aa198;">"s|ou=Group|ou=groups|g"</span> mercury.ldif
+sed -i <span style="color: #2aa198;">"s|ou=People|ou=users|g"</span> /gen/mercury.ldif
+sed -i <span style="color: #2aa198;">"s|ou=Group|ou=groups|g"</span> /gen/mercury.ldif
 </pre>
 </div>
 
@@ -2306,7 +2471,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$z9Z3EWQ0$YOqB8odzPaJP/TDgpsDUo/
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2324,7 +2489,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2342,7 +2507,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2360,7 +2525,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2378,7 +2543,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2396,7 +2561,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2414,7 +2579,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2432,7 +2597,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2450,7 +2615,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2468,7 +2633,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2485,7 +2650,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2503,7 +2668,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2521,7 +2686,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2539,7 +2704,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2557,7 +2722,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2575,7 +2740,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2593,7 +2758,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2611,7 +2776,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2629,7 +2794,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2647,7 +2812,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17134
+shadowLastChange: 17135
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2886,8 +3051,8 @@ gidNumber: 55
 </div>
 </div>
 
-<div id="outline-container-orgheadline28" class="outline-2">
-<h2 id="cluster"><a id="orgheadline28"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a><span class="section-number-2">5</span> Перевести аутентификацию пользователей кластера на использование LDAP</h2>
+<div id="outline-container-orgheadline31" class="outline-2">
+<h2 id="cluster"><a id="orgheadline31"></a><a id="ID-db5bc4cf-74c3-40e0-b8b3-d57f3f32e338"></a><span class="section-number-2">5</span> Перевести аутентификацию пользователей кластера на использование LDAP</h2>
 <div class="outline-text-2" id="text-cluster">
 </div>
 </div>
