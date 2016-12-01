@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-11-30 Ср. 17:42 -->
+<!-- 2016-12-01 Чт. 16:51 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -166,10 +166,10 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#install-openldap">1.1. Установка OpenLDAP</a></li>
 <li><a href="#configure-hdb">1.2. Добавление файлов конфигурации базы данных HDB</a></li>
-<li><a href="#add-schemas">1.3. Добавление файлов схем данных</a></li>
-<li><a href="#choose-setup">1.4. Выбор варианта настройки схемы БД LDAP</a></li>
-<li><a href="#configure-slapd-conf">1.5. Предварительная настройка схемы БД LDAP</a></li>
-<li><a href="#configure-slapd">1.6. Дополнительно. Предварительная настройка схемы БД LDAP с помощью ldif формата</a></li>
+<li><a href="#add-schemas">1.3. Добавление файлов наборов схем данных</a></li>
+<li><a href="#choose-setup">1.4. Выбор варианта настройки схемы каталога LDAP</a></li>
+<li><a href="#configure-slapd-conf">1.5. Предварительная настройка схемы каталога LDAP</a></li>
+<li><a href="#configure-slapd">1.6. Дополнительно. Предварительная настройка схемы каталога LDAP с помощью ldif формата</a></li>
 </ul>
 </li>
 <li><a href="#authentication">2. Настройка аутентификации пользователей при помощи LDAP&nbsp;<sup><i class="fa fa-star-half-o"></i></sup></a>
@@ -188,9 +188,9 @@ for the JavaScript code in this tag.
 </li>
 </ul>
 </li>
-<li><a href="#schema">3. Схема БД LDAP</a>
+<li><a href="#schema">3. Схема каталога LDAP</a>
 <ul>
-<li><a href="#minimal-schema">3.1. Установка схемы базы данных LDAP</a></li>
+<li><a href="#minimal-schema">3.1. Настройка каталога LDAP</a></li>
 <li><a href="#hdb-domain-config">3.2. Связывание базы данных HDB с доменом и настройка ACL</a></li>
 <li><a href="#root-domain">3.3. Создание корневой записи домена</a></li>
 <li><a href="#create-sudoers">3.4. Формирование подразделения sudoers</a></li>
@@ -299,49 +299,49 @@ for the JavaScript code in this tag.
 </tbody>
 <tbody>
 <tr>
-<td class="org-left"><b>Сервер каталогов</b></td>
+<td class="org-left"><b>Служба каталогов</b></td>
 <td class="org-left">server-ldif5</td>
 <td class="org-left"><b>CentOS 5</b></td>
 <td class="org-left"><b>OpenLDAP 2.3</b> server, <b>ldif</b></td>
 </tr>
 
 <tr>
-<td class="org-left"><b>Сервер каталогов</b></td>
+<td class="org-left"><b>Служба каталогов</b></td>
 <td class="org-left">server-ldif6</td>
 <td class="org-left"><b>CentOS 6</b></td>
 <td class="org-left"><b>OpenLDAP 2.4</b> server, <b>ldif</b></td>
 </tr>
 
 <tr>
-<td class="org-left"><b>Сервер каталогов</b></td>
+<td class="org-left"><b>Служба каталогов</b></td>
 <td class="org-left">server-conf5</td>
 <td class="org-left"><b>CentOS 5</b></td>
 <td class="org-left"><b>OpenLDAP 2.3</b> server, <b>conf</b></td>
 </tr>
 
 <tr>
-<td class="org-left"><b>Сервер каталогов</b></td>
+<td class="org-left"><b>Служба каталогов</b></td>
 <td class="org-left">server-conf6</td>
 <td class="org-left"><b>CentOS 6</b></td>
 <td class="org-left"><b>OpenLDAP 2.4</b> server, <b>conf</b></td>
 </tr>
 
 <tr>
-<td class="org-left"><b>Клиентский хост</b></td>
+<td class="org-left"><b>Клиент службы каталогов</b></td>
 <td class="org-left">client5</td>
 <td class="org-left"><b>CentOS 5</b></td>
 <td class="org-left"><b>OpenLDAP 2.3</b> client</td>
 </tr>
 
 <tr>
-<td class="org-left"><b>Клиентский хост</b></td>
+<td class="org-left"><b>Клиент службы каталогов</b></td>
 <td class="org-left">client6</td>
 <td class="org-left"><b>CentOS 6</b></td>
 <td class="org-left"><b>OpenLDAP 2.4</b> client</td>
 </tr>
 
 <tr>
-<td class="org-left"><b>Клиентский хост</b></td>
+<td class="org-left"><b>Клиент службы каталогов</b></td>
 <td class="org-left">gui</td>
 <td class="org-left"><b>Debian 8</b></td>
 <td class="org-left"><b>phpLDAPadmin 1.2.3</b>, custom</td>
@@ -373,11 +373,9 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <div id="outline-container-orgheadline2" class="outline-3">
 <h3 id="install-openldap"><a id="orgheadline2"></a><a id="ID-cdb77a09-a1eb-4db8-ad05-e45c3b49418c"></a><span class="section-number-3">1.1</span> Установка OpenLDAP</h3>
 <div class="outline-text-3" id="text-install-openldap">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>server-&#x2026;..</b>
+<p class="verse">
+Где работаем: контейнеры <b>server-&#x2026;..</b><br  />
 </p>
-</blockquote>
 
 <p>
 Базовые репозитории дистрибутивов <b>CentOS 5</b> и <b>CentOS 6</b> содержат <b>2.3</b> и <b>2.4</b> версию <b>OpenLDAP</b>, соответственно. Выполнив стандартную установку
@@ -385,9 +383,10 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 
 <div class="org-src-container">
 <label class="org-src-name">Установка сервера <b>OpenLDAP</b> для <b>5/2.3</b> и <b>6/2.4</b></label>
-<pre class="src src-sh">yum -y install openldap openldap-servers openldap-clients sudo
+<pre class="src src-org">    yum -y install openldap openldap-servers openldap-clients sudo
 </pre>
 </div>
+
 <p>
 получаем две конфигурации, различающиеся в некоторых деталях. Например, название сервиса: <b>ldap</b> в случае <b>CentOS 5/2.3 OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 OpenLDAP</b> (<b>6/2.4</b>).
 </p>
@@ -397,14 +396,12 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <div id="outline-container-orgheadline3" class="outline-3">
 <h3 id="configure-hdb"><a id="orgheadline3"></a><a id="ID-af4bb15a-67f0-4e1a-8ce6-18c118ff10cd"></a><span class="section-number-3">1.2</span> Добавление файлов конфигурации базы данных HDB</h3>
 <div class="outline-text-3" id="text-configure-hdb">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>server-&#x2026;..</b>
+<p class="verse">
+Где работаем: контейнеры <b>server-&#x2026;..</b><br  />
 </p>
-</blockquote>
 
 <p>
-Для запуска сервиса <b>ldap</b> (<b>slapd</b>) необходимо подготовить каталог и
+Для запуска сервиса <b>ldap</b> (<b>slapd</b>) необходимо подготовить директорию и
 файл конфигурации базы данных. Расположение образца файла настройки, в
 <b>5/2.3</b>
 </p>
@@ -442,16 +439,16 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 </div>
 
 <div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="add-schemas"><a id="orgheadline4"></a><a id="ID-6638ce89-fc58-4610-aa0a-ab3ade7d3825"></a><span class="section-number-3">1.3</span> Добавление файлов схем данных</h3>
+<h3 id="add-schemas"><a id="orgheadline4"></a><a id="ID-6638ce89-fc58-4610-aa0a-ab3ade7d3825"></a><span class="section-number-3">1.3</span> Добавление файлов наборов схем данных</h3>
 <div class="outline-text-3" id="text-add-schemas">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>server-&#x2026;..</b>
+<p class="verse">
+Где работаем: контейнеры <b>server-&#x2026;..</b><br  />
 </p>
-</blockquote>
 <p>
-База данных LDAP содержит раздел <b>cn=schema</b>, куда
-подключаются дополнительные специфические схемы данных. Подготовим
+Каталог LDAP имеет раздел <b>cn=schema</b>, содержащий все определения
+системной схемы данных, которые вкомилированы в <b>ldap</b> (<b>slapd</b>). Сюда
+же подключаются дополнительные специфические схемы данных,
+см. расп. <a href="#orgsrcblock1">14</a>. Подготовим
 необходимые файлы (не включенные в поставку <b>OpenLDAP</b>), для <b>5/2.3</b>
 </p>
 <div class="org-src-container">
@@ -474,61 +471,46 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 В подразделе <a href="#create-sudoers">3.4</a> для создания подразделения <b>sudoers</b>
 используется класс из файла <b>sudo.schema</b>.
 </p>
-
-<div class="note">
-<p>
-В данном руководстве слово "схема" используется в выражении <i>схема
-данных</i>, означающим файл с расширением <b>schema</b> или <b>ldif</b>, содержащий
-описание классов и атрибутов. Также, оно используется в выражении
-<i>схема базы данных LDAP</i>, т.е. для описания содержания, структуры и
-ограничений целостности базы данных LDAP. В литературе выражение
-<i>схема базы данных</i> применительно к базе данных LDAP не встречается,
-оно применяется для реляционных баз данных. Кроме того, <i>"база данных
-LDAP"</i> использует <i>базу данных <b>HDB</b></i> в качестве конечного хранилища
-данных.
-</p>
-
-</div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="choose-setup"><a id="orgheadline5"></a><a id="ID-cb0ed9d0-14cc-4969-897d-a398e2f1ea65"></a><span class="section-number-3">1.4</span> Выбор варианта настройки схемы БД LDAP</h3>
+<h3 id="choose-setup"><a id="orgheadline5"></a><a id="ID-cb0ed9d0-14cc-4969-897d-a398e2f1ea65"></a><span class="section-number-3">1.4</span> Выбор варианта настройки схемы каталога LDAP</h3>
 <div class="outline-text-3" id="text-choose-setup">
 <p>
 Конфигурация <b>6/2.4</b> поставляется с тремя вариантами базовых настроек,
 осуществляемых через файлы <b>slapd.conf.obsolete</b>, <b>slapd.ldif.example</b>
-и, доступным по умолчанию, предварительно сформированным каталогом
+и, доступной по умолчанию, предварительно сформированной директорией
 <b>slapd.d</b>. При этом, настройка с помощью файла <b>slapd.ldif.example</b>
 подразумевает использование утилиты <b>slapadd</b>, как это рекомендуется в
 разделе "быстрый старт"
 руководства<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>. Конфигурация
 <b>5/2.3</b> по умолчанию настраивается только файлом <b>slapd.conf</b>,
-предварительно сформированный каталог <b>slapd.d</b> в формате <b>ldif</b>
+предварительно сформированная директория <b>slapd.d</b> в формате <b>ldif</b>
 отсутствует. Такой подход считается устаревшим,
 рекомендуется<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>
 использовать <b>ldif</b> формат и преобразовывать файл <b>slapd.conf</b>
-настройки в каталог <b>slapd.d</b> с помощью утилиты <b>slaptest</b>.
+настройки в директорию <b>slapd.d</b> с помощью утилиты <b>slaptest</b>.
 </p>
 
 <p>
 Все варианты настроек разделяются на два существенно различающихся
 способа. Первый способ включает в себя настройку с помощью <b>conf</b> файла
-(конвертация через <b>slaptest</b>) и предварительно сформированный каталог
+(конвертация через <b>slaptest</b>) и предварительно сформированную директорию
 <b>slapd.d</b> (только для версии <b>2.4</b>). Эти два варианта являются
 взаимозаменяемыми и формируют практически идентичные результирующие
-файлы каталога <b>slapd.d</b>. Второй способ заключается в использовании
+файлы директории <b>slapd.d</b>. Второй способ заключается в использовании
 файла <b>slapd.ldif</b> и утилиты <b>slapdd</b>. В этом случае, содержимое
-файлов каталога <b>slapd.d</b> существенно отличается, по сравнению с
+файлов директории <b>slapd.d</b> существенно отличается, по сравнению с
 первым способом. Дело в том, что при использовании первого способа в
-файлах каталога <b>slapd.d</b> присутствует большое количество
+файлах директории <b>slapd.d</b> присутствует большое количество
 дополнительных параметров (явно не указанных в файле <b>slapd.conf</b>), а
 при использовании второго &#x2014; только те, которые явно прописываются в
 файле <b>slapd.ldif</b>.
 </p>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1.:</span> Поддержка способов настройки схемы БД LDAP различными версиями <b>OpenLDAP</b></caption>
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1.:</span> Поддержка способов настройки схемы каталога LDAP различными версиями <b>OpenLDAP</b></caption>
 
 <colgroup>
 <col  class="org-left" />
@@ -563,7 +545,7 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 </tr>
 
 <tr>
-<td class="org-left">Предварительно сформированный каталог <b>slapd.d</b></td>
+<td class="org-left">Предварительно сформированная директория <b>slapd.d</b></td>
 <td class="org-left">да</td>
 <td class="org-left">нет</td>
 <td class="org-left">да</td>
@@ -578,13 +560,13 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 настройки &#x2014; основной. При этом, если выбирается
 <b>OpenLDAP 2.3</b>, то используются файл <b>slapd.conf</b> и утилита <b>slaptest</b>. А
 если версия <b>2.4</b>, то можно в качестве равноценной альтернативы воспользоваться
-предварительно сформированным каталогом <b>slapd.d</b>.
+предварительно сформированной директорией <b>slapd.d</b>.
 </p>
 
 <div class="note">
 <p>
-Первичный доступ к схемам LDAP, использующим только предварительно
-сформированный каталог <b>slapd.d</b> без <b>conf</b>-файла, осуществляется при
+Первичный доступ к каталогу LDAP, использующему только предварительно
+сформированную директорию <b>slapd.d</b> без <b>conf</b>-файла, осуществляется при
 помощи <b>ldapi</b> интерфейса, когда в качестве <b>rootdn</b> выступает
 системный пользователь <b>root</b> (при этом его <b>dn</b> выглядит как
 <b>gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth</b>). В случае
@@ -597,20 +579,18 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 
 <p>
 Если же потребуется тщательно настраивать конфигурацию с нуля,
-полностью контролируя все параметры, которые будут задействованы, то
+полностью контролируя все параметры которые будут задействованы, то
 нужно воспользоваться вторым способом &#x2014; дополнительным.
 </p>
 </div>
 </div>
 
 <div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="configure-slapd-conf"><a id="orgheadline6"></a><a id="ID-fd3e3e26-d416-4cc5-9dfa-554caeaf7830"></a><span class="section-number-3">1.5</span> Предварительная настройка схемы БД LDAP</h3>
+<h3 id="configure-slapd-conf"><a id="orgheadline6"></a><a id="ID-fd3e3e26-d416-4cc5-9dfa-554caeaf7830"></a><span class="section-number-3">1.5</span> Предварительная настройка схемы каталога LDAP</h3>
 <div class="outline-text-3" id="text-configure-slapd-conf">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>server-conf.</b>
+<p class="verse">
+Где работаем: контейнеры <b>server-conf.</b><br  />
 </p>
-</blockquote>
 
 <p>
 Продемонстрируем первый способ настройки. Внесем небольшие
@@ -749,7 +729,7 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 <span style="background-color: #fdf6e3;">83a85,87</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}cvbuP23fXpEXgVF/Mz7fHKt8D1qU3Kkx</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}1Y2Y8gPV5nQn26m4igW03Vd8sLqX6LDt</span>
 <span style="background-color: #fdf6e3;">85c89,91</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -937,7 +917,7 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/sudo.schema</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}SJyKGTUVF2uoTnLJBUk63ZzsDsoAlCvU</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}XXkE5E2oB0yqnyyxCQkVSysmW1LC8KtR</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -961,10 +941,10 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 </div>
 
 <p>
-<a id="orgtarget1"></a>Теперь для обеих конфигураций можно осуществить переход к <b>cn=config</b> формату и избавиться от <b>slapd.conf</b>
+<a id="orgtarget1"></a>Теперь для обеих конфигураций можно осуществить переход к <b>ldif</b> формату и избавиться от <b>slapd.conf</b>
 </p>
 <div class="org-src-container">
-<label class="org-src-name">Преобразование к <b>cn=config</b> формату для <b>5/2.3</b> и <b>6/2.4</b></label>
+<label class="org-src-name">Преобразование к <b>ldif</b> формату для <b>5/2.3</b> и <b>6/2.4</b></label>
 <pre class="src src-sh">    sleep 3
 
     <span style="color: #657b83; font-weight: bold;">kill</span> -INT <span style="color: #6c71c4; font-weight: bold;">`cat /var/run/openldap/slapd.pid`</span>
@@ -1008,13 +988,11 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 </div>
 </div>
 <div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="configure-slapd"><a id="orgheadline7"></a><a id="ID-fd3e3e26-d416-4cc5-9dfa-554caeaf7830"></a><span class="section-number-3">1.6</span> Дополнительно. Предварительная настройка схемы БД LDAP с помощью ldif формата</h3>
+<h3 id="configure-slapd"><a id="orgheadline7"></a><a id="ID-5e011bb7-7966-4613-8327-da484b6fd319"></a><span class="section-number-3">1.6</span> Дополнительно. Предварительная настройка схемы каталога LDAP с помощью ldif формата</h3>
 <div class="outline-text-3" id="text-configure-slapd">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>server-ldif.</b>
+<p class="verse">
+Где работаем: контейнеры <b>server-ldif.</b><br  />
 </p>
-</blockquote>
 
 <p>
 Продемонстрируем второй способ настройки для обеих конфигураций.
@@ -1025,8 +1003,8 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 формате, а <b>6/2.4</b> &#x2014; как в <b>schema</b>, так и в <b>ldif</b> формате. Файл
 <b>sudo.schema</b> доступен только в <b>schema</b> формате. С помощью скрипта
 <b>2.5-schema-ldif.sh</b><sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>
-преобразуем необходимые схемы. Чтобы иметь доступ к серверу LDAP для
-конфигурирования схемы БД LDAP, пропишем пароль менеджера схемы
+преобразуем необходимые схемы. Чтобы иметь доступ к каталогу LDAP для
+конфигурирования схемы, пропишем пароль менеджера схемы
 <b>cn=Manager,cn=config</b>. Кроме того, добавим минимальные
 настройки для <b>monitor</b> и настроим базу <b>HDB</b>. Используем
 "оффлайновую" утилиту <b>slapadd</b> для создания минимума конфигурационных
@@ -1053,7 +1031,7 @@ LDAP"</i> использует <i>базу данных <b>HDB</b></i> в кач
 </pre>
 </div>
 <div class="org-src-container">
-<label class="org-src-name"><b>slapd.ldif</b>: формирование корневой записи DIT и контейнера для схем данных; конфигурирование базы данных <b>HDB</b> и подключение мониторинга баз данных</label>
+<label class="org-src-name"><b>slapd.ldif</b>: формирование корневой записи DIT и контейнера для наборов схем данных; конфигурирование базы данных <b>HDB</b> и подключение мониторинга баз данных</label>
 <pre class="src src-ldif" id="orgsrcblock1"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=config</span>
 objectClass: olcGlobal
 olcPidFile: /var/run/openldap/slapd.pid
@@ -1186,11 +1164,9 @@ olcDatabase: {-1}frontend
 <div id="outline-container-orgheadline9" class="outline-3">
 <h3 id="client-packages"><a id="orgheadline9"></a><a id="ID-a4da4894-117b-40b6-a6c7-1447f083d6e1"></a><span class="section-number-3">2.1</span> Требуемые пакеты</h3>
 <div class="outline-text-3" id="text-client-packages">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>client.</b>
+<p class="verse">
+Где работаем: контейнеры <b>client.</b><br  />
 </p>
-</blockquote>
 
 <p>
 Для настройки клиентского подключения в <b>5/2.3</b> понадобятся следующие пакеты
@@ -1198,8 +1174,8 @@ olcDatabase: {-1}frontend
 
 <div class="org-src-container">
 <label class="org-src-name">Установка клиента для <b>5/2.3</b></label>
-<pre class="src src-sh">yum install -y openssh-server openldap-clients nss_ldap authconfig
-yum install -y openldap openldap-servers sudo
+<pre class="src src-org">yum install -y openssh-server openldap-clients nss_ldap authconfig
+yum install -y openldap openldap-servers finger sudo
 </pre>
 </div>
 
@@ -1209,8 +1185,8 @@ yum install -y openldap openldap-servers sudo
 
 <div class="org-src-container">
 <label class="org-src-name">Установка клиента для <b>6/2.4</b></label>
-<pre class="src src-sh">yum install -y openssh-server openldap-clients nss-pam-ldapd authconfig
-yum install -y openldap migrationtools sudo
+<pre class="src src-org">yum install -y openssh-server openldap-clients nss-pam-ldapd authconfig
+yum install -y openldap migrationtools finger sudo
 </pre>
 </div>
 </div>
@@ -1219,11 +1195,9 @@ yum install -y openldap migrationtools sudo
 <div id="outline-container-orgheadline10" class="outline-3">
 <h3 id="client-commands"><a id="orgheadline10"></a><a id="ID-6e7a8278-7334-46f7-b289-07da7f2b6d14"></a><span class="section-number-3">2.2</span> Используемые команды&nbsp;<sup><i class="fa fa-star"></i></sup></h3>
 <div class="outline-text-3" id="text-client-commands">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>client.</b>
+<p class="verse">
+Где работаем: контейнеры <b>client.</b><br  />
 </p>
-</blockquote>
 
 <p>
 Воспользуемся утилитой <b>authconfig</b> для настройки аутентификации пользователей при помощи LDAP.
@@ -1403,7 +1377,7 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,303</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.3/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -1430,7 +1404,7 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.3/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
 </pre>
@@ -1645,21 +1619,22 @@ rm /var/run/nslcd/*
 </div>
 
 <div id="outline-container-orgheadline24" class="outline-2">
-<h2 id="schema"><a id="orgheadline24"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a><span class="section-number-2">3</span> Схема БД LDAP</h2>
+<h2 id="schema"><a id="orgheadline24"></a><a id="ID-b64d7c36-b2b3-49ac-9620-d7c94eb9ea31"></a><span class="section-number-2">3</span> Схема каталога LDAP</h2>
 <div class="outline-text-2" id="text-schema">
 <blockquote>
 <p>
-Необходимо разработать схему БД LDAP, предназначенную для хранения учетных данных пользователей кластера.
+Необходимо разработать схему каталога LDAP, предназначенную для хранения учетных данных пользователей кластера.
 </p>
 </blockquote>
 
 <p>
-Использование только <b>ldif</b> (см. подраздел <a href="#configure-slapd">1.6</a>)
-формата позволяет единообразно конфигурировать схему БД LDAP, начиная
-с корневой записи DIT (Directory Information Tree)
-*cn=config*(см. подраздел <a href="#minimal-schema">3.1</a>), корневой записи домена
-(см. подраздел <a href="#root-domain">3.3</a>) и заканчивая листьями (см. подразделы
-<a href="#new-user-ldap">4.1</a>, <a href="#add-users">4.5</a>) этого дерева &#x2014; записями, содержащими
+Использование только <b>ldif</b> формата позволяет единообразно
+конфигурировать схему каталога LDAP, начиная с корневой записи DIT
+(Directory Information Tree) <b>cn=config</b>, включающей точку ветвления
+<b>cn=schema,cn=config</b>, которая содержит наборы схем данных
+(см. подраздел <a href="#configure-slapd">1.6</a>), переходя к корневой записи домена
+(см. подраздел <a href="#root-domain">3.3</a>) и заканчивая листьями этого дерева
+(см. подразделы <a href="#new-user-ldap">4.1</a>, <a href="#add-users">4.5</a>) &#x2014; записями, содержащими
 нужную информацию:
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -1673,7 +1648,7 @@ rm /var/run/nslcd/*
 <tbody>
 <tr>
 <td class="org-left"><b>slapd.ldif</b></td>
-<td class="org-left">формирование корневой записи DIT и контейнера для схем данных; конфигурирование базы данных <b>hdb</b> и подключение мониторинга баз данных</td>
+<td class="org-left">формирование корневой записи DIT и контейнера для наборов схем данных; конфигурирование базы данных <b>HDB</b> и подключение мониторинга баз данных</td>
 </tr>
 
 <tr>
@@ -1683,7 +1658,7 @@ rm /var/run/nslcd/*
 
 <tr>
 <td class="org-left"><b>domain.ldif</b></td>
-<td class="org-left">привязка суффикса, менеджера домена и его пароля, списка контроля доступа ACL к базе <b>hdb</b></td>
+<td class="org-left">связывание суффикса, менеджера домена и его пароля с базой <b>HDB</b>; установка списка контроля доступа ACL</td>
 </tr>
 
 <tr>
@@ -1692,7 +1667,7 @@ rm /var/run/nslcd/*
 </tr>
 
 <tr>
-<td class="org-left"><b>sudo.ldif</b></td>
+<td class="org-left"><b>sudoers.ldif</b></td>
 <td class="org-left">создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></td>
 </tr>
 
@@ -1710,25 +1685,118 @@ rm /var/run/nslcd/*
 
 <p>
 Если же используется <b>conf</b> формат, то надо иметь в виду, что
-стартовая часть этого ряда конфигурационных файлов
+первый файл из этого ряда конфигурационных файлов
 заменяется на <b>slapd.conf</b> (см. раздел <a href="#configure-slapd-conf">1.5</a>).
 </p>
+
+<div class="note">
+<p>
+В данном руководстве слово "схема" используется в выражении <i>набор
+схем данных</i> (см. подраздел <a href="#add-schemas">1.3</a>), означающим файл с
+расширением <b>schema</b> или <b>ldif</b>, содержащий "низкоуровневое" описание
+классов, атрибутов, синтаксисов атрибута и правил соответствия. Также,
+оно используется в выражении <i>схема каталога LDAP</i>, т.е. для
+"высокоуровнего" описания содержания, структуры и ограничений
+целостности каталога LDAP, по аналогии с выражением <i>схема базы
+данных</i>, применимым для реляционных баз данных. Возможности схемы
+каталога LDAP определяются подключенными наборами схем данных. Можно
+сказать, что <i>схема каталога LDAP</i> &#x2014; это полное описание каталога
+LDAP с помощью <b>ldif</b> формата. При этом, граница между схемой каталога
+и пользовательскими данными, которые также хранятся в <b>ldif</b> формате,
+становится условной. Кроме того, каталог LDAP использует <i>базу данных
+<b>HDB</b></i> в качестве хранилища данных.
+</p>
+
+</div>
+
+<p>
+В таблице <a href="#orgtable1">2</a> приведены примеры использования классов
+и атрибутов схемы каталога LDAP. В данном разделе осуществляется
+"высокоуровневая" разработка схемы каталога LDAP в <b>ldif</b> формате,
+предназначенная для хранения учетных данных пользователей
+кластера. Подключаются только указанные наборы схем данных,
+разрабатывать дополнительные "низкоуровневые" наборы схем данных нет
+необходимости.
+</p>
+
+<table id="orgtable1" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 2.:</span> Примеры наборов схем данных, классов, атрибутов и их использования</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Набор схем данных</th>
+<th scope="col" class="org-left">Классы</th>
+<th scope="col" class="org-left">Атрибуты</th>
+<th scope="col" class="org-left">Примеры использования</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">openldap hardcoded</td>
+<td class="org-left">top, olcDatabaseConfig</td>
+<td class="org-left">uid, cn, olcSchemaDN</td>
+<td class="org-left">slapd.ldif, domain.ldif, front.ldif</td>
+</tr>
+
+<tr>
+<td class="org-left">core.schema</td>
+<td class="org-left">dcObject, organizationalRole</td>
+<td class="org-left">dc, sn</td>
+<td class="org-left">base.ldif</td>
+</tr>
+
+<tr>
+<td class="org-left">cosine.schema</td>
+<td class="org-left">simpleSecurityObject, account</td>
+<td class="org-left">userPassword</td>
+<td class="org-left">base.ldif</td>
+</tr>
+
+<tr>
+<td class="org-left">inetorgperson.schema</td>
+<td class="org-left">inetOrgPerson</td>
+<td class="org-left">employeeNumber</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">nis.schema</td>
+<td class="org-left">posixAccount, posixGroup</td>
+<td class="org-left">homeDirectory, gidNumber</td>
+<td class="org-left">user.ldif, mercury.ldif</td>
+</tr>
+
+<tr>
+<td class="org-left">sudo.schema</td>
+<td class="org-left">sudoRole</td>
+<td class="org-left">sudoUser</td>
+<td class="org-left">sudoers.ldif</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 <div id="outline-container-orgheadline19" class="outline-3">
-<h3 id="minimal-schema"><a id="orgheadline19"></a><a id="ID-3446a07c-3649-4e85-84c1-044e78c340dc"></a><span class="section-number-3">3.1</span> Установка схемы базы данных LDAP</h3>
+<h3 id="minimal-schema"><a id="orgheadline19"></a><a id="ID-3446a07c-3649-4e85-84c1-044e78c340dc"></a><span class="section-number-3">3.1</span> Настройка каталога LDAP</h3>
 <div class="outline-text-3" id="text-minimal-schema">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>server-&#x2026;..</b>
+<p class="verse">
+Где работаем: контейнеры <b>server-&#x2026;..</b><br  />
 </p>
-</blockquote>
 
 <p>
 В разделе <a href="#authentication">2</a> перечислены три задачи, возникающие при
 настройке аутентификации пользователей при помощи LDAP, и
 продемонстрирована реализация клиентской части. Серверная часть &#x2014;
-схема БД LDAP &#x2014; должна обеспечивать поддержку данной
+каталог LDAP &#x2014; должна обеспечивать поддержку данной
 функциональности. Нам потребуются контейнеры для хранения учетных
 данных пользователей и групп. Разрешим доступ к данным пользователей
 только для клиентских систем со специальной учетной записью, запретим
@@ -1739,7 +1807,7 @@ rm /var/run/nslcd/*
 <p>
 Чтобы получить минимально работоспособный сервер LDAP, позволяющий
 осуществлять аутентификацию для клиентских систем, внесем необходимые
-изменения в схему.
+изменения в схему каталога.
 </p>
 
 <div class="org-src-container">
@@ -1753,7 +1821,7 @@ sed -i <span style="color: #2aa198;">"s+%LDAP_MANAGER_PASSWORD%+${MANAGER_PWD//+
 ldapmodify -v -D <span style="color: #268bd2;">cn</span>=Manager,<span style="color: #268bd2;">cn</span>=config -f domain+.ldif -x -w $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>
 rm domain+.ldif
 ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f base.ldif
-ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f sudo.ldif
+ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -w $<span style="color: #268bd2;">LDAP_MANAGER_PASSWORD</span> -f sudoers.ldif
 </pre>
 </div>
 </div>
@@ -1813,7 +1881,7 @@ olcAccess: {2}to *
 <div class="outline-text-3" id="text-root-domain">
 <p>
 В подразделе <a href="#configure-slapd">1.6</a> было продемонстрировано создание корневой
-записи дерева DIT средствами протокола <b>ldif</b> (эквивалентную настройку
+записи дерева DIT средствами формата <b>ldif</b> (эквивалентную настройку
 можно осуществить при помощи файла конфигурации <b>conf</b>, как это
 показано в подразделе <a href="#configure-slapd-conf">1.5</a>). Теперь создадим корневую
 запись домена, добавим необходимые атрибуты (см. расп. <a href="#orgsrcblock4">28</a>),
@@ -1875,7 +1943,7 @@ userPassword: secret
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>sudo.ldif</b>: создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></label>
+<label class="org-src-name"><b>sudoers.ldif</b>: создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></label>
 <pre class="src src-ldif" id="orgsrcblock5"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=sudoers,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
 ou: sudoers
@@ -1968,11 +2036,9 @@ LDAP. Предложить CLI (или GUI WEB) интерфейс для вып
 <div id="outline-container-orgheadline25" class="outline-3">
 <h3 id="new-user-ldap"><a id="orgheadline25"></a><a id="ID-6e8437bc-7e1f-489a-9afb-44f3d67d49ab"></a><span class="section-number-3">4.1</span> Добавление пользователя с помощью CLI интерфейса</h3>
 <div class="outline-text-3" id="text-new-user-ldap">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>server-&#x2026;..</b>
+<p class="verse">
+Где работаем: контейнеры <b>server-&#x2026;..</b><br  />
 </p>
-</blockquote>
 
 <p>
 Используем утилиту <b>ldapadd</b> для добавления записи пользователя в формате <b>ldif</b>
@@ -2024,11 +2090,9 @@ gidNumber: 1050
 <div id="outline-container-orgheadline26" class="outline-3">
 <h3 id="new-user-php"><a id="orgheadline26"></a><a id="ID-6de9e6dc-04f2-429d-b22e-55caa2e270ee"></a><span class="section-number-3">4.2</span> Добавление пользователя с помощью GUI Web интерфейса</h3>
 <div class="outline-text-3" id="text-new-user-php">
-<blockquote>
-<p>
-Где работаем: контейнер <b>gui</b>
+<p class="verse">
+Где работаем: контейнер <b>gui</b><br  />
 </p>
-</blockquote>
 
 <p>
 Как мы видели, добавление записи в БД LDAP с помощью <b>ldif</b>-файла
@@ -2073,7 +2137,7 @@ gidNumber: 1050
 Эти и другие проблемы может решить GUI интерфейс, который позволяет
 с помощью доступных шаблонов и средств описания GUI, реализовывать
 нужную функциональность, в некоторых случаях значительно облегчая
-работу со схемой БД LDAP.
+работу со схемой каталога LDAP.
 </p>
 <div align="right">
 <a onclick="toggleDiv2('shadow',$(this));" class="fa fa-caret-right">Файлы custom-*.xml</a>
@@ -2267,11 +2331,9 @@ gidNumber: 1050
 <div id="outline-container-orgheadline27" class="outline-3">
 <h3 id="test-client"><a id="orgheadline27"></a><a id="ID-061371a3-a5d6-4fa2-9e15-2d8adef5caf0"></a><span class="section-number-3">4.3</span> Тестирование клиентского подключения</h3>
 <div class="outline-text-3" id="text-test-client">
-<blockquote>
-<p>
-Где работаем: контейнеры <b>client.</b>
+<p class="verse">
+Где работаем: контейнеры <b>client.</b><br  />
 </p>
-</blockquote>
 
 <p>
 Для проверки возможности аутентификации будем использовать запись
@@ -2293,11 +2355,9 @@ gidNumber: 1050
 </pre>
 </div>
 
-<blockquote>
-<p>
-Где работаем: локальная сеть контейнеров
+<p class="verse">
+Где работаем: локальная сеть контейнеров<br  />
 </p>
-</blockquote>
 
 <p>
 Убедимся, что механизм <b>sudoers</b> задействован. Вывод команды
@@ -2309,7 +2369,7 @@ gidNumber: 1050
 </div>
 <p>
 демонстрирует, что пользователь <b>username</b> успешно прочитал содержимое
-каталога <b>root</b> с помощью <b>sudo</b>
+директории <b>root</b> с помощью <b>sudo</b>
 </p>
 <div class="org-src-container">
 
@@ -2329,11 +2389,9 @@ gidNumber: 1050
 </p>
 </blockquote>
 
-<blockquote>
-<p>
-Где работаем: любой хост в локальной сети контейнеров с установленными утилитами openldap-client
+<p class="verse">
+Где работаем: любой хост в локальной сети контейнеров с установленными утилитами openldap-client<br  />
 </p>
-</blockquote>
 
 <p>
 В подразделе <a href="#hdb-domain-config">3.2</a>
@@ -2343,14 +2401,13 @@ gidNumber: 1050
 
 <div class="org-src-container">
 <label class="org-src-name">Изменение пользователем своего пароля с помощью утилиты <b>ldappasswd</b></label>
-<pre class="src src-sh">ldappasswd -h $(<span style="color: #6c71c4; font-weight: bold;">ip</span>) -x -D <span style="color: #2aa198;">"uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd -s new_p@ssw0rd
+<pre class="src src-sh">    ldappasswd -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd -s new_p@ssw0rd
 </pre>
 </div>
 
 <div class="org-src-container">
 <label class="org-src-name">Изменение менеджером домена значения <b>loginShell</b> с помощью утилиты <b>ldapmodify</b></label>
-<pre class="src src-sh"><span style="color: #859900; font-weight: bold;">function</span> <span style="color: #268bd2;">modify</span>() {
-    ldapmodify -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"cn=Manager,dc=mercury,dc=febras,dc=net"</span> -w manager &lt;&lt;EOF
+<pre class="src src-sh">    ldapmodify -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"cn=Manager,dc=mercury,dc=febras,dc=net"</span> -w manager &lt;&lt;EOF
 <span style="color: #b58900; font-weight: bold;">dn: uid=username,ou=users,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #b58900; font-weight: bold;">changetype: modify</span>
 <span style="color: #b58900; font-weight: bold;">replace: loginShell</span>
@@ -2358,17 +2415,14 @@ gidNumber: 1050
 <span style="color: #b58900; font-weight: bold;">-</span>
 <span style="color: #b58900; font-weight: bold;">EOF</span>
     ldapsearch -x -h $<span style="color: #268bd2;">1</span> -LLL -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -b <span style="color: #2aa198;">'dc=mercury,dc=febras,dc=net'</span> <span style="color: #2aa198;">'(loginShell=*)'</span> -w manager | grep loginShell
-}
-
-<span style="color: #859900; font-weight: bold;">function</span> <span style="color: #268bd2;">modify_out</span>() {
-cat &lt;&lt;EOF
-<span style="color: #b58900; font-weight: bold;">modifying entry "uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span>
-
-<span style="color: #b58900; font-weight: bold;">loginShell: /bin/sh</span>
-<span style="color: #b58900; font-weight: bold;">EOF</span>
-}
 </pre>
 </div>
+
+<pre class="example">
+modifying entry "uid=username,ou=users,dc=mercury,dc=febras,dc=net"
+
+loginShell: /bin/sh
+</pre>
 </div>
 </div>
 
@@ -2471,7 +2525,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$z9Z3EWQ0$YOqB8odzPaJP/TDgpsDUo/
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2489,7 +2543,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2507,7 +2561,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2525,7 +2579,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2543,7 +2597,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2561,7 +2615,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2579,7 +2633,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2597,7 +2651,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2615,7 +2669,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2633,7 +2687,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2650,7 +2704,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2668,7 +2722,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2686,7 +2740,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2704,7 +2758,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2722,7 +2776,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2740,7 +2794,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2758,7 +2812,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2776,7 +2830,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2794,7 +2848,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2812,7 +2866,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17135
+shadowLastChange: 17136
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
