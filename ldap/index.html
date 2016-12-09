@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-12-01 Чт. 16:51 -->
+<!-- 2016-12-09 Пт. 16:31 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -255,6 +255,11 @@ for the JavaScript code in this tag.
 
 <tr>
 <td class="org-left"><a href="https://www.packtpub.com/networking-and-servers/mastering-openldap-configuring-securing-and-integrating-directory-services">Matt Butcher. <b>Mastering OpenLDAP: Configuring, Securing and Integrating Directory Services</b>. Packt Publishing, 2007.</a></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://shop.oreilly.com/product/9781565924918.do">Gerald Carter. LDAP system administration. O'Reilly Media, 2003.</a></td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
@@ -612,6 +617,8 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <span style="color: #268bd2;">include</span>         /etc/openldap/schema/inetorgperson.schema
 <span style="color: #268bd2;">include</span>         /etc/openldap/schema/nis.schema
 <span style="color: #268bd2;">include</span>         /etc/openldap/schema/sudo.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/misc.schema
+<span style="color: #268bd2;">include</span>         /etc/openldap/schema/ppolicy.schema
 
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Allow LDAPv2 client connections.  This is NOT the default.</span>
 <span style="color: #268bd2;">allow</span> bind_v2
@@ -624,7 +631,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <span style="color: #268bd2;">argsfile</span>        /var/run/openldap/slapd.args
 
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Load dynamic backend modules:</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">modulepath    /usr/lib64/openldap</span>
+<span style="color: #268bd2;">modulepath</span>      /usr/lib64/openldap
 
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Modules available in openldap-servers-overlays RPM package</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Module syncprov.la is now statically linked with slapd and there</span>
@@ -636,7 +643,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload dynlist.la</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload lastmod.la</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload pcache.la</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload ppolicy.la</span>
+<span style="color: #268bd2;">moduleload</span> ppolicy.la
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload refint.la</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload retcode.la</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload rwm.la</span>
@@ -719,23 +726,41 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">replica host=ldap-1.example.com:389 starttls=critical</span>
 <span style="color: #93a1a1;">#     </span><span style="color: #93a1a1;">bindmethod=sasl saslmech=GSSAPI</span>
 <span style="color: #93a1a1;">#     </span><span style="color: #93a1a1;">authcId=host/ldap-master.example.com@EXAMPLE.COM</span>
+
+<span style="color: #268bd2;">overlay</span> ppolicy
+<span style="color: #268bd2;">ppolicy_default</span> <span style="color: #2aa198;">"cn=passwordDefault,ou=policies,dc=my-domain,dc=com</span>
 </pre>
 </div>
 </div>
 <div class="org-src-container">
 <label class="org-src-name">Настройка <b>conf</b>-файла для <b>5/2.3</b></label>
-<pre class="src src-diff"><span style="background-color: #fdf6e3;">8a9</span>
+<pre class="src src-diff"><span style="background-color: #fdf6e3;">8a9,11</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/sudo.schema</span>
-<span style="background-color: #fdf6e3;">83a85,87</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/misc.schema</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/ppolicy.schema</span>
+<span style="background-color: #fdf6e3;">21c24</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # modulepath  /usr/lib64/openldap</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> modulepath    /usr/lib64/openldap</span>
+<span style="background-color: #fdf6e3;">33c36</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # moduleload ppolicy.la</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> moduleload ppolicy.la</span>
+<span style="background-color: #fdf6e3;">83a87,89</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}1Y2Y8gPV5nQn26m4igW03Vd8sLqX6LDt</span>
-<span style="background-color: #fdf6e3;">85c89,91</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}LIRMXICZ3oWU12gvaMu4pJimGU2qDv+k</span>
+<span style="background-color: #fdf6e3;">85c91,93</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database monitor</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      hdb</span>
+<span style="background-color: #fdf6e3;">110a119,121</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> overlay ppolicy</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ppolicy_default "cn=passwordDefault,ou=policies,dc=my-domain,dc=com</span>
+<span style="color: #93a1a1;">\ No newline at end of file</span>
 </pre>
 </div>
 <p>
@@ -814,7 +839,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload memberof.la</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload pbind.la</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload pcache.la</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload ppolicy.la</span>
+<span style="color: #268bd2;">moduleload</span> ppolicy.la
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload refint.la</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload retcode.la</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">moduleload rwm.la</span>
@@ -908,6 +933,9 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">replica host=ldap-1.example.com:389 starttls=critical</span>
 <span style="color: #93a1a1;">#     </span><span style="color: #93a1a1;">bindmethod=sasl saslmech=GSSAPI</span>
 <span style="color: #93a1a1;">#     </span><span style="color: #93a1a1;">authcId=host/ldap-master.example.com@EXAMPLE.COM</span>
+
+<span style="color: #268bd2;">overlay</span> ppolicy
+<span style="color: #268bd2;">ppolicy_default</span> <span style="color: #2aa198;">"cn=passwordDefault,ou=policies,dc=my-domain,dc=com</span>
 </pre>
 </div>
 </div>
@@ -915,14 +943,23 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <label class="org-src-name">Настройка <b>conf</b>-файла для <b>6/2.4</b></label>
 <pre class="src src-diff"><span style="background-color: #fdf6e3;">17a18</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> include               /etc/openldap/schema/sudo.schema</span>
+<span style="background-color: #fdf6e3;">50c51</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # moduleload ppolicy.la</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> moduleload ppolicy.la</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}XXkE5E2oB0yqnyyxCQkVSysmW1LC8KtR</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}18LeP+f/fi0clO/X3CtrGEFitXVJn0aU</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      hdb</span>
+<span style="background-color: #fdf6e3;">140a145,147</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> overlay ppolicy</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> ppolicy_default "cn=passwordDefault,ou=policies,dc=my-domain,dc=com</span>
+<span style="color: #93a1a1;">\ No newline at end of file</span>
 </pre>
 </div>
 
@@ -1019,7 +1056,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 
     <span style="color: #268bd2;">oldpath</span>=<span style="color: #6c71c4; font-weight: bold;">`pwd`</span>
     <span style="color: #657b83; font-weight: bold;">cd</span> /etc/openldap/schema
-    <span style="color: #268bd2;">SCHEMAD</span>=<span style="color: #6c71c4; font-weight: bold;">`pwd`</span> <span style="color: #268bd2;">SCHEMAS</span>=<span style="color: #2aa198;">'core.schema cosine.schema inetorgperson.schema nis.schema sudo.schema'</span> /root/2.5-schema-ldif.sh
+    <span style="color: #268bd2;">SCHEMAD</span>=<span style="color: #6c71c4; font-weight: bold;">`pwd`</span> <span style="color: #268bd2;">SCHEMAS</span>=<span style="color: #2aa198;">'core.schema cosine.schema inetorgperson.schema nis.schema sudo.schema misc.schema ppolicy.schema'</span> /root/2.5-schema-ldif.sh
     cp -R /etc/openldap/schema /gen/schema
     <span style="color: #657b83; font-weight: bold;">cd</span> $<span style="color: #268bd2;">oldpath</span>
 
@@ -1031,7 +1068,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 </pre>
 </div>
 <div class="org-src-container">
-<label class="org-src-name"><b>slapd.ldif</b>: формирование корневой записи DIT и контейнера для наборов схем данных; конфигурирование базы данных <b>HDB</b> и подключение мониторинга баз данных</label>
+<label class="org-src-name"><b>slapd.ldif</b>: формирование корневой записи DIT и контейнера для наборов схем данных; конфигурирование базы данных <b>HDB</b>, подключение мониторинга баз данных и загрузка модуля <b>ppolicy</b></label>
 <pre class="src src-ldif" id="orgsrcblock1"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=config</span>
 objectClass: olcGlobal
 olcPidFile: /var/run/openldap/slapd.pid
@@ -1053,6 +1090,8 @@ include: file:///etc/openldap/schema/cosine.ldif
 include: file:///etc/openldap/schema/inetorgperson.ldif
 include: file:///etc/openldap/schema/nis.ldif
 include: file:///etc/openldap/schema/sudo.ldif
+include: file:///etc/openldap/schema/misc.ldif
+include: file:///etc/openldap/schema/ppolicy.ldif
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase=monitor,cn=config</span>
 objectClass: olcDatabaseConfig
@@ -1070,6 +1109,21 @@ olcDbIndex: ou,cn,mail,surname,givenname      eq,pres,sub
 olcDbIndex: uidNumber,gidNumber,loginShell    eq,pres
 olcDbIndex: uid,memberUid                     eq,pres,sub
 olcDbIndex: nisMapName,nisMapEntry            eq,pres,sub
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=module{0},cn=config</span>
+objectClass: olcModuleList
+olcModulePath: /usr/lib64/openldap
+cn: module{0}
+olcModuleLoad: ppolicy.la
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcOverlay=ppolicy,olcDatabase={2}hdb,cn=config</span>
+objectClass: olcOverlayConfig
+objectClass: olcPPolicyConfig
+olcOverlay: ppolicy
+olcPPolicyDefault: cn=passwordDefault,ou=policies,dc=my-domain,dc=com
+olcPPolicyHashCleartext: FALSE
+olcPPolicyUseLockout: FALSE
+olcPPolicyForwardUpdates: FALSE
 </pre>
 </div>
 
@@ -1176,6 +1230,7 @@ olcDatabase: {-1}frontend
 <label class="org-src-name">Установка клиента для <b>5/2.3</b></label>
 <pre class="src src-org">yum install -y openssh-server openldap-clients nss_ldap authconfig
 yum install -y openldap openldap-servers finger sudo
+yum install -y sendmail sendmail-cf
 </pre>
 </div>
 
@@ -1187,6 +1242,7 @@ yum install -y openldap openldap-servers finger sudo
 <label class="org-src-name">Установка клиента для <b>6/2.4</b></label>
 <pre class="src src-org">yum install -y openssh-server openldap-clients nss-pam-ldapd authconfig
 yum install -y openldap migrationtools finger sudo
+yum install -y sendmail sendmail-cf
 </pre>
 </div>
 </div>
@@ -1377,7 +1433,7 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,303</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -1404,7 +1460,7 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.4/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
 </pre>
@@ -1648,7 +1704,7 @@ rm /var/run/nslcd/*
 <tbody>
 <tr>
 <td class="org-left"><b>slapd.ldif</b></td>
-<td class="org-left">формирование корневой записи DIT и контейнера для наборов схем данных; конфигурирование базы данных <b>HDB</b> и подключение мониторинга баз данных</td>
+<td class="org-left">формирование корневой записи DIT и контейнера для наборов схем данных; конфигурирование базы данных <b>HDB</b>, подключение мониторинга баз данных и загрузка модуля <b>ppolicy</b></td>
 </tr>
 
 <tr>
@@ -1658,12 +1714,12 @@ rm /var/run/nslcd/*
 
 <tr>
 <td class="org-left"><b>domain.ldif</b></td>
-<td class="org-left">связывание суффикса, менеджера домена и его пароля с базой <b>HDB</b>; установка списка контроля доступа ACL</td>
+<td class="org-left">связывание суффикса, менеджера домена и его пароля с базой <b>HDB</b>; установка списка контроля доступа ACL  и привязка модуля <b>ppolicy</b> к <b>passwordDefault</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>base.ldif</b></td>
-<td class="org-left">создание суффикса, менеджера домена, организационных единиц и учетной записи <b>authenticator</b></td>
+<td class="org-left">создание суффикса, менеджера домена, организационных единиц, учетной записи <b>authenticator</b> и настроек <b>passwordDefaults</b></td>
 </tr>
 
 <tr>
@@ -1781,9 +1837,25 @@ LDAP с помощью <b>ldif</b> формата. При этом, границ
 <td class="org-left">sudoUser</td>
 <td class="org-left">sudoers.ldif</td>
 </tr>
+
+<tr>
+<td class="org-left">misc.schema</td>
+<td class="org-left">inetLocalMailRecipient</td>
+<td class="org-left">mailRoutingAddress</td>
+<td class="org-left">user.ldif</td>
+</tr>
+
+<tr>
+<td class="org-left">ppolicy.schema</td>
+<td class="org-left">pwdPolicy</td>
+<td class="org-left">pwdAttribute</td>
+<td class="org-left">base.ldif</td>
+</tr>
 </tbody>
 </table>
 </div>
+
+
 
 <div id="outline-container-orgheadline19" class="outline-3">
 <h3 id="minimal-schema"><a id="orgheadline19"></a><a id="ID-3446a07c-3649-4e85-84c1-044e78c340dc"></a><span class="section-number-3">3.1</span> Настройка каталога LDAP</h3>
@@ -1835,17 +1907,18 @@ ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=
 <b>HDB</b>. Сконфигурируем (см. расп. <a href="#orgsrcblock3">27</a>) её для доменного имени
 <b>dc=mercury,dc=febras,dc=net</b>, определим менеджера домена
 <b>cn=Manager,dc=mercury,dc=febras,dc=net</b> и его пароль. Также, добавим
-правила доступа к атрибутам <b>userPassword</b> и <b>shadowLastChange</b>
-(см. подраздел <a href="#new-user-ldap">4.1</a>): для владельца записи &#x2014; <i>write</i> и для
-неавторизованного пользователя &#x2014; <i>auth</i>. Анонимный доступ будет разрешен только для
-заголовочной части записи подразделения <b>public</b>, но не для ее
-содержимого. Для доступа к записям пользователей и остальным атрибутам
-используем учетную запись <b>authenticator</b> (см. подраздел
-<a href="#client-commands">2.2</a>).
+правила доступа к атрибуту <b>userPassword</b> (см. подраздел
+<a href="#new-user-ldap">4.1</a>): для владельца записи &#x2014; <i>write</i> и для
+неавторизованного пользователя &#x2014; <i>auth</i>. Для атрибута
+<b>shadowLastChange</b>: владелец и <b>authentificator</b> имеют право на запись
+<i>write</i>. Анонимный доступ будет разрешен только для заголовочной части
+записи подразделения <b>public</b>, но не для ее содержимого. Для доступа к
+записям пользователей и остальным атрибутам используем учетную запись
+<b>authenticator</b> (см. подраздел <a href="#client-commands">2.2</a>).
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>domain.ldif</b>: связывание суффикса, менеджера домена и его пароля с базой <b>HDB</b>; установка списка контроля доступа ACL</label>
+<label class="org-src-name"><b>domain.ldif</b>: связывание суффикса, менеджера домена и его пароля с базой <b>HDB</b>; установка списка контроля доступа ACL  и привязка модуля <b>ppolicy</b> к <b>passwordDefault</b></label>
 <pre class="src src-ldif" id="orgsrcblock3"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
 <span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcSuffix</span>
@@ -1863,14 +1936,23 @@ olcRootPW: %LDAP_MANAGER_PASSWORD%
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcDatabase={2}hdb,cn=config</span>
 <span style="color: #859900; font-weight: bold;">add</span>: <span style="color: #268bd2;">olcAccess</span>
-olcAccess: {0}to attrs=userPassword,shadowLastChange
+olcAccess: {0}to attrs=userPassword
   by self write
   by * auth
-olcAccess: {1}to dn.base="ou=public,dc=mercury,dc=febras,dc=net"
+olcAccess: {1}to attrs=shadowLastChange
+  by self write
+  by dn="uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net" read
+  by dn="uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net" write
+olcAccess: {2}to dn.subtree="ou=public,dc=mercury,dc=febras,dc=net"
   by * read
-olcAccess: {2}to *
+olcAccess: {3}to *
   by dn="uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net" read
   by * none
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">olcOverlay={0}ppolicy,olcDatabase={2}hdb,cn=config</span>
+<span style="color: #859900; font-weight: bold;">changetype</span>: <span style="color: #268bd2; font-weight: bold;">modify</span>
+<span style="color: #859900; font-weight: bold;">replace</span>: <span style="color: #268bd2;">olcPPolicyDefault</span>
+olcPPolicyDefault: cn=passwordDefault,ou=policies,dc=mercury,dc=febras,dc=net
 </pre>
 </div>
 </div>
@@ -1891,7 +1973,7 @@ olcAccess: {2}to *
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>base.ldif</b>: создание суффикса, менеджера домена, организационных единиц и учетной записи <b>authenticator</b></label>
+<label class="org-src-name"><b>base.ldif</b>: создание суффикса, менеджера домена, организационных единиц, учетной записи <b>authenticator</b> и настроек <b>passwordDefaults</b></label>
 <pre class="src src-ldif" id="orgsrcblock4"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">dc=mercury,dc=febras,dc=net</span>
 objectClass: top
 objectClass: dcObject
@@ -1926,6 +2008,18 @@ objectClass: simpleSecurityObject
 uid: authenticator
 description: Used for authentication to LDAP
 userPassword: secret
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=policies,dc=mercury,dc=febras,dc=net</span>
+ou: policies
+objectClass: organizationalUnit
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=passwordDefault,ou=policies,dc=mercury,dc=febras,dc=net</span>
+objectClass: pwdPolicy
+objectClass: person
+objectClass: top
+cn: passwordDefault
+sn: passwordDefault
+pwdAttribute: userPassword
 </pre>
 </div>
 </div>
@@ -2030,6 +2124,11 @@ sudoOption: env_reset
 LDAP. Предложить CLI (или GUI WEB) интерфейс для выполнения данной
 операции. Ориентироваться на использование в ОС <b>CentOS 5/6</b>.
 </p>
+
+<p>
+Предложить LDAP-варианты для команд <b>passwd</b>, <b>useradd</b>, <b>usermod</b>,
+<b>finger</b>, <b>chsh</b>, <b>chfn</b> и функциональности <b>.forward</b>.
+</p>
 </blockquote>
 </div>
 
@@ -2059,6 +2158,7 @@ objectClass: account
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
+objectClass: inetLocalMailRecipient
 userPassword: p@ssw0rd
 shadowLastChange: 17093
 shadowMin: 0
@@ -2067,8 +2167,10 @@ shadowWarning: 7
 loginShell: /bin/bash
 uidNumber: 1050
 gidNumber: 1050
-homeDirectory: /home/webminder
+homeDirectory: /home/username
 gecos: User Name
+mailLocalAddress: username@mercury.febras.net
+mailRoutingAddress: username@localhost
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=username,ou=groups,dc=mercury,dc=febras,dc=net</span>
 objectClass: posixGroup
@@ -2079,8 +2181,8 @@ gidNumber: 1050
 </div>
 
 <p>
-Полученные в подразделе <a href="#add-users">4.5</a> в результате миграции учетные записи
-пользователей кластера добавляются аналогично. Необходимая нам
+Полученные (см. подраздел <a href="#add-users">4.5</a>) в результате миграции учетные
+записи пользователей кластера добавляются аналогично. Необходимая
 функциональность учетной записи пользователя определяется классами
 <b>posixAccount</b> и <b>shadowAccount</b>.
 </p>
@@ -2149,125 +2251,113 @@ gidNumber: 1050
 &lt;!<span style="color: #859900; font-weight: bold;">DOCTYPE</span> template <span style="color: #859900; font-weight: bold;">SYSTEM</span> <span style="color: #2aa198;">"</span><span style="color: #2aa198;">../template.dtd</span><span style="color: #2aa198;">"</span>&gt;
 
 &lt;<span style="color: #268bd2;">template</span>&gt;
-&lt;<span style="color: #268bd2;">askcontainer</span>&gt;1&lt;/<span style="color: #268bd2;">askcontainer</span>&gt;
-&lt;<span style="color: #268bd2;">description</span>&gt;New User Account&lt;/<span style="color: #268bd2;">description</span>&gt;
-&lt;<span style="color: #268bd2;">icon</span>&gt;ldap-user.png&lt;/<span style="color: #268bd2;">icon</span>&gt;
-&lt;<span style="color: #268bd2;">invalid</span>&gt;0&lt;/<span style="color: #268bd2;">invalid</span>&gt;
-&lt;<span style="color: #268bd2;">rdn</span>&gt;cn&lt;/<span style="color: #268bd2;">rdn</span>&gt;
-<span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;">&lt;regexp&gt;^ou=People,o=.*,&lt;/regexp&gt;</span><span style="color: #93a1a1;">--&gt;</span>
-&lt;<span style="color: #268bd2;">title</span>&gt;Generic: User Account with Shadow&lt;/<span style="color: #268bd2;">title</span>&gt;
-&lt;<span style="color: #268bd2;">visible</span>&gt;1&lt;/<span style="color: #268bd2;">visible</span>&gt;
+  &lt;<span style="color: #268bd2;">askcontainer</span>&gt;1&lt;/<span style="color: #268bd2;">askcontainer</span>&gt;
+  &lt;<span style="color: #268bd2;">description</span>&gt;New User Account&lt;/<span style="color: #268bd2;">description</span>&gt;
+  &lt;<span style="color: #268bd2;">icon</span>&gt;ldap-user.png&lt;/<span style="color: #268bd2;">icon</span>&gt;
+  &lt;<span style="color: #268bd2;">invalid</span>&gt;0&lt;/<span style="color: #268bd2;">invalid</span>&gt;
+  &lt;<span style="color: #268bd2;">rdn</span>&gt;cn&lt;/<span style="color: #268bd2;">rdn</span>&gt;
+  &lt;<span style="color: #268bd2;">title</span>&gt;Generic: User Account with Shadow&lt;/<span style="color: #268bd2;">title</span>&gt;
+  &lt;<span style="color: #268bd2;">visible</span>&gt;1&lt;/<span style="color: #268bd2;">visible</span>&gt;
 
-&lt;<span style="color: #268bd2;">objectClasses</span>&gt;
-&lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">inetOrgPerson</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
-&lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">posixAccount</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
-&lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowAccount</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
-&lt;/<span style="color: #268bd2;">objectClasses</span>&gt;
+  &lt;<span style="color: #268bd2;">objectClasses</span>&gt;
+    &lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">account</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
+    &lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">posixAccount</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
+    &lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">top</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
+    &lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowAccount</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
+    &lt;<span style="color: #268bd2;">objectClass</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">inetLocalMailRecipient</span><span style="color: #2aa198;">"</span>&gt;&lt;/<span style="color: #268bd2;">objectClass</span>&gt;
+  &lt;/<span style="color: #268bd2;">objectClasses</span>&gt;
 
-&lt;<span style="color: #268bd2;">attributes</span>&gt;
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">givenName</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;First name&lt;/<span style="color: #268bd2;">display</span>&gt;
-        &lt;<span style="color: #268bd2;">icon</span>&gt;ldap-uid.png&lt;/<span style="color: #268bd2;">icon</span>&gt;
-        &lt;<span style="color: #268bd2;">onchange</span>&gt;=autoFill(cn;%givenName% %sn%)&lt;/<span style="color: #268bd2;">onchange</span>&gt;
-        &lt;<span style="color: #268bd2;">onchange</span>&gt;=autoFill(uid;%givenName|0-1/l%%sn/l%)&lt;/<span style="color: #268bd2;">onchange</span>&gt;
-        &lt;<span style="color: #268bd2;">order</span>&gt;1&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">sn</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;Last name&lt;/<span style="color: #268bd2;">display</span>&gt;
-        &lt;<span style="color: #268bd2;">onchange</span>&gt;=autoFill(cn;%givenName% %sn%)&lt;/<span style="color: #268bd2;">onchange</span>&gt;
-        &lt;<span style="color: #268bd2;">onchange</span>&gt;=autoFill(uid;%givenName|0-1/l%%sn/l%)&lt;/<span style="color: #268bd2;">onchange</span>&gt;
-        <span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;"> &lt;onchange&gt;=autoFill(homeDirectory;/home/users/%uid|0-1/l%/%uid%)&lt;/onchange&gt; </span><span style="color: #93a1a1;">--&gt;</span>
-        &lt;<span style="color: #268bd2;">order</span>&gt;2&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">cn</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;Common Name&lt;/<span style="color: #268bd2;">display</span>&gt;
-        &lt;<span style="color: #268bd2;">order</span>&gt;3&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">uid</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;User ID&lt;/<span style="color: #268bd2;">display</span>&gt;
-        &lt;<span style="color: #268bd2;">onchange</span>&gt;=autoFill(homeDirectory;/home/%uid%)&lt;/<span style="color: #268bd2;">onchange</span>&gt;
-        &lt;<span style="color: #268bd2;">order</span>&gt;4&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-        &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">homeDirectory</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;Home directory&lt;/<span style="color: #268bd2;">display</span>&gt;
-        <span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;"> &lt;onchange&gt;=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)&lt;/onchange&gt; </span><span style="color: #93a1a1;">--&gt;</span>
-        &lt;<span style="color: #268bd2;">order</span>&gt;8&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">uidNumber</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;UID Number&lt;/<span style="color: #268bd2;">display</span>&gt;
-        &lt;<span style="color: #268bd2;">icon</span>&gt;terminal.png&lt;/<span style="color: #268bd2;">icon</span>&gt;
-        &lt;<span style="color: #268bd2;">order</span>&gt;6&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-        &lt;<span style="color: #268bd2;">readonly</span>&gt;1&lt;/<span style="color: #268bd2;">readonly</span>&gt;
-        &lt;<span style="color: #268bd2;">value</span>&gt;=php.GetNextNumber(/;uidNumber)&lt;/<span style="color: #268bd2;">value</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">gidNumber</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;GID Number&lt;/<span style="color: #268bd2;">display</span>&gt;
-        <span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;"> &lt;onchange&gt;=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)&lt;/onchange&gt; </span><span style="color: #93a1a1;">--&gt;</span>
-        &lt;<span style="color: #268bd2;">order</span>&gt;7&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-        &lt;<span style="color: #268bd2;">value</span>&gt;&lt;![<span style="color: #657b83; font-weight: bold;">CDATA</span>[=php.PickList(/;(&amp;(objectClass=posixGroup));gidNumber;%cn%;;;;cn)]]&gt;&lt;/<span style="color: #268bd2;">value</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowMax</span><span style="color: #2aa198;">"</span>&gt;
-  &lt;<span style="color: #268bd2;">display</span>&gt;Password Validity (in days)&lt;/<span style="color: #268bd2;">display</span>&gt;
-  &lt;<span style="color: #268bd2;">order</span>&gt;11&lt;/<span style="color: #268bd2;">order</span>&gt;
-  &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
-  &lt;<span style="color: #268bd2;">value</span>&gt;30&lt;/<span style="color: #268bd2;">value</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowMin</span><span style="color: #2aa198;">"</span>&gt;
-  &lt;<span style="color: #268bd2;">display</span>&gt;Password may be changed (days before)&lt;/<span style="color: #268bd2;">display</span>&gt;
-  &lt;<span style="color: #268bd2;">order</span>&gt;12&lt;/<span style="color: #268bd2;">order</span>&gt;
-  &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
-  &lt;<span style="color: #268bd2;">value</span>&gt;0&lt;/<span style="color: #268bd2;">value</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowWarning</span><span style="color: #2aa198;">"</span>&gt;
-  &lt;<span style="color: #268bd2;">display</span>&gt;Password Change Warning (days before expiry)&lt;/<span style="color: #268bd2;">display</span>&gt;
-  &lt;<span style="color: #268bd2;">order</span>&gt;9&lt;/<span style="color: #268bd2;">order</span>&gt;
-  &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
-  &lt;<span style="color: #268bd2;">value</span>&gt;5&lt;/<span style="color: #268bd2;">value</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowLastChange</span><span style="color: #2aa198;">"</span>&gt;
-  &lt;<span style="color: #268bd2;">display</span>&gt;Password Last Changed (in days since 01 Jan 1970)&lt;/<span style="color: #268bd2;">display</span>&gt;
-  &lt;<span style="color: #268bd2;">order</span>&gt;10&lt;/<span style="color: #268bd2;">order</span>&gt;
-  &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">loginShell</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;Login shell&lt;/<span style="color: #268bd2;">display</span>&gt;
-        &lt;<span style="color: #268bd2;">order</span>&gt;13&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-        <span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;"> &lt;value&gt;&lt;![CDATA[=php.PickList(/;(&amp;(objectClass=posixAccount));loginShell;%loginShell%;;;;loginShell)]]&gt;&lt;/value&gt; </span><span style="color: #93a1a1;">--&gt;</span>
-        &lt;<span style="color: #268bd2;">type</span>&gt;select&lt;/<span style="color: #268bd2;">type</span>&gt;
-        &lt;<span style="color: #268bd2;">value</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">/bin/sh</span><span style="color: #2aa198;">"</span>&gt;Bash&lt;/<span style="color: #268bd2;">value</span>&gt;
-        &lt;<span style="color: #268bd2;">value</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">/bin/csh</span><span style="color: #2aa198;">"</span>&gt;C Shell&lt;/<span style="color: #268bd2;">value</span>&gt;
-        &lt;<span style="color: #268bd2;">value</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">/bin/tsh</span><span style="color: #2aa198;">"</span>&gt;Turbo C Shell&lt;/<span style="color: #268bd2;">value</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-&lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">userPassword</span><span style="color: #2aa198;">"</span>&gt;
-        &lt;<span style="color: #268bd2;">display</span>&gt;Password&lt;/<span style="color: #268bd2;">display</span>&gt;
-        <span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;"> &lt;helper&gt;</span>
-<span style="color: #93a1a1;">                &lt;display&gt;Encryption&lt;/display&gt;</span>
-<span style="color: #93a1a1;">                &lt;id&gt;enc&lt;/id&gt;</span>
-<span style="color: #93a1a1;">                &lt;value&gt;=php.PasswordEncryptionTypes()&lt;/value&gt;</span>
-<span style="color: #93a1a1;">        &lt;/helper&gt; </span><span style="color: #93a1a1;">--&gt;</span>
-        &lt;<span style="color: #268bd2;">icon</span>&gt;lock.png&lt;/<span style="color: #268bd2;">icon</span>&gt;
-        &lt;<span style="color: #268bd2;">order</span>&gt;5&lt;/<span style="color: #268bd2;">order</span>&gt;
-        &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
-        &lt;<span style="color: #268bd2;">post</span>&gt;=php.PasswordEncrypt(%enc%;%userPassword%)&lt;/<span style="color: #268bd2;">post</span>&gt;
-        &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
-        &lt;<span style="color: #268bd2;">verify</span>&gt;1&lt;/<span style="color: #268bd2;">verify</span>&gt;
-&lt;/<span style="color: #268bd2;">attribute</span>&gt;
-&lt;/<span style="color: #268bd2;">attributes</span>&gt;
-
+  &lt;<span style="color: #268bd2;">attributes</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">uid</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;User ID&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">onchange</span>&gt;=autoFill(homeDirectory;/home/%uid%)&lt;/<span style="color: #268bd2;">onchange</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;1&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+      &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">cn</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Common Name&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;2&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">userPassword</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Password&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">icon</span>&gt;lock.png&lt;/<span style="color: #268bd2;">icon</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;3&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+      &lt;<span style="color: #268bd2;">post</span>&gt;=php.PasswordEncrypt(%enc%;%userPassword%)&lt;/<span style="color: #268bd2;">post</span>&gt;
+      &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
+      &lt;<span style="color: #268bd2;">verify</span>&gt;1&lt;/<span style="color: #268bd2;">verify</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowLastChange</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Password Last Changed (in days since 01 Jan 1970)&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;4&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
+      &lt;<span style="color: #268bd2;">value</span>&gt;=php.Function(date;dmY)&lt;/<span style="color: #268bd2;">value</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowMin</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Password may be changed (days before)&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;5&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
+      &lt;<span style="color: #268bd2;">value</span>&gt;0&lt;/<span style="color: #268bd2;">value</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowMax</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Password Validity (in days)&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;6&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
+      &lt;<span style="color: #268bd2;">value</span>&gt;3650&lt;/<span style="color: #268bd2;">value</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">shadowWarning</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Password Change Warning (days before expiry)&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;7&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">spacer</span>&gt;1&lt;/<span style="color: #268bd2;">spacer</span>&gt;
+      &lt;<span style="color: #268bd2;">value</span>&gt;5&lt;/<span style="color: #268bd2;">value</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">loginShell</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Login shell&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;8&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+      &lt;<span style="color: #268bd2;">default</span>&gt;/bin/bash&lt;/<span style="color: #268bd2;">default</span>&gt;
+      &lt;<span style="color: #268bd2;">type</span>&gt;select&lt;/<span style="color: #268bd2;">type</span>&gt;
+      &lt;<span style="color: #268bd2;">value</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">/bin/bash</span><span style="color: #2aa198;">"</span>&gt;Bash&lt;/<span style="color: #268bd2;">value</span>&gt;
+      &lt;<span style="color: #268bd2;">value</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">/bin/sh</span><span style="color: #2aa198;">"</span>&gt;Dash&lt;/<span style="color: #268bd2;">value</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">uidNumber</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;UID Number&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">icon</span>&gt;terminal.png&lt;/<span style="color: #268bd2;">icon</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;9&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+      &lt;<span style="color: #268bd2;">readonly</span>&gt;1&lt;/<span style="color: #268bd2;">readonly</span>&gt;
+      &lt;<span style="color: #268bd2;">value</span>&gt;=php.GetNextNumber(/;uidNumber)&lt;/<span style="color: #268bd2;">value</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">gidNumber</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;GID Number&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;10&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+      <span style="color: #93a1a1;">&lt;!--</span><span style="color: #93a1a1;"> &lt;value&gt;&lt;![CDATA[=php.PickList(/;(&amp;(objectClass=posixGroup));gidNumber;%cn%;;;;cn)]]&gt;&lt;/value&gt; </span><span style="color: #93a1a1;">--&gt;</span>
+      &lt;<span style="color: #268bd2;">value</span>&gt;=php.GetNextNumber(/;uidNumber)&lt;/<span style="color: #268bd2;">value</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">homeDirectory</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Home directory&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;11&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">gecos</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;GECOS&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;12&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">mailLocalAddress</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Mail Local Address&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;13&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+    &lt;<span style="color: #268bd2;">attribute</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"</span><span style="color: #2aa198;">mailRoutingAddress</span><span style="color: #2aa198;">"</span>&gt;
+      &lt;<span style="color: #268bd2;">display</span>&gt;Mail Routing Address&lt;/<span style="color: #268bd2;">display</span>&gt;
+      &lt;<span style="color: #268bd2;">order</span>&gt;14&lt;/<span style="color: #268bd2;">order</span>&gt;
+      &lt;<span style="color: #268bd2;">page</span>&gt;1&lt;/<span style="color: #268bd2;">page</span>&gt;
+    &lt;/<span style="color: #268bd2;">attribute</span>&gt;
+  &lt;/<span style="color: #268bd2;">attributes</span>&gt;
 &lt;/<span style="color: #268bd2;">template</span>&gt;
 </pre>
 </div>
@@ -2351,7 +2441,7 @@ gidNumber: 1050
 </p>
 <div class="org-src-container">
 
-<pre class="src src-conf-colon"><span style="color: #268bd2;">username</span>:x:1050:1050:User Name:/home/webminder:/bin/bash
+<pre class="src src-conf-colon"><span style="color: #268bd2;">username</span>:x:1050:1050:User Name:/home/username:/bin/bash
 </pre>
 </div>
 
@@ -2382,13 +2472,6 @@ gidNumber: 1050
 <div id="outline-container-orgheadline28" class="outline-3">
 <h3 id="standard-commands"><a id="orgheadline28"></a><a id="ID-84d40fcf-c285-40e6-9f13-11685889a085"></a><span class="section-number-3">4.4</span> Стандартные команды администрирования пользователей в случае использования LDAP</h3>
 <div class="outline-text-3" id="text-standard-commands">
-<blockquote>
-<p>
-Предложить LDAP-варианты для команд <b>passwd</b>, <b>useradd</b>, <b>usermod</b>,
-<b>finger</b>, <b>chsh</b>, <b>chfn</b> и функциональности <b>.forward</b>.
-</p>
-</blockquote>
-
 <p class="verse">
 Где работаем: любой хост в локальной сети контейнеров с установленными утилитами openldap-client<br  />
 </p>
@@ -2399,10 +2482,15 @@ gidNumber: 1050
 <b>shadowLastChange</b>, чтобы пользователь имел право на смену пароля.
 </p>
 
-<div class="org-src-container">
-<label class="org-src-name">Изменение пользователем своего пароля с помощью утилиты <b>ldappasswd</b></label>
-<pre class="src src-sh">    ldappasswd -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd -s new_p@ssw0rd
-</pre>
+<div class="warning">
+<p>
+При использовании утилиты <b>ldappasswd</b> изменения атрибута
+<b>shadowLastChange</b> не происходит. Его необходимо задавать отдельно с
+помощью утилиты <b>ldapmodify</b>. В случае применения утилиты <b>passwd</b>,
+атрибут <b>shadowLastChange</b> корректно обновляется в LDAP (благодаря
+действиям PAM) при наличии соответствующих прав доступа на запись.
+</p>
+
 </div>
 
 <div class="org-src-container">
@@ -2414,7 +2502,7 @@ gidNumber: 1050
 <span style="color: #b58900; font-weight: bold;">loginShell: /bin/sh</span>
 <span style="color: #b58900; font-weight: bold;">-</span>
 <span style="color: #b58900; font-weight: bold;">EOF</span>
-    ldapsearch -x -h $<span style="color: #268bd2;">1</span> -LLL -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -b <span style="color: #2aa198;">'dc=mercury,dc=febras,dc=net'</span> <span style="color: #2aa198;">'(loginShell=*)'</span> -w manager | grep loginShell
+    ldapsearch -x -h $<span style="color: #268bd2;">1</span> -LLL -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -b <span style="color: #2aa198;">'uid=username,ou=users,dc=mercury,dc=febras,dc=net'</span> <span style="color: #2aa198;">'(loginShell=*)'</span> -w manager | grep loginShell
 </pre>
 </div>
 
@@ -2423,6 +2511,67 @@ modifying entry "uid=username,ou=users,dc=mercury,dc=febras,dc=net"
 
 loginShell: /bin/sh
 </pre>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 3.:</span> Замещение стандартных команд в случае использования LDAP</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Утилита</td>
+<td class="org-left">Работает с LDAP</td>
+<td class="org-left">Примечание</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>passwd</b></td>
+<td class="org-left"><b>Да</b></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>useradd</b></td>
+<td class="org-left">Нет</td>
+<td class="org-left"><b>ldapadd</b>, атрибуты классов <b>posixAccount</b>, <b>shadowAccount</b></td>
+</tr>
+
+<tr>
+<td class="org-left"><b>usermod</b></td>
+<td class="org-left">Нет</td>
+<td class="org-left"><b>ldapmodify</b>, атрибуты классов <b>posixAccount</b>, <b>shadowAccount</b></td>
+</tr>
+
+<tr>
+<td class="org-left"><b>finger</b></td>
+<td class="org-left"><b>Да</b></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>chsh</b></td>
+<td class="org-left">Нет</td>
+<td class="org-left"><b>ldapmodify</b>, атрибут <b>loginShell</b></td>
+</tr>
+
+<tr>
+<td class="org-left"><b>chfn</b></td>
+<td class="org-left">Нет</td>
+<td class="org-left"><b>ldapmodify</b>, атрибут <b>gecos</b></td>
+</tr>
+
+<tr>
+<td class="org-left"><b>.forward</b></td>
+<td class="org-left"><b>Да</b></td>
+<td class="org-left">атрибут <b>mailRoutingAddress</b> класса <b>inetLocalMailRecipient</b></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -2524,8 +2673,8 @@ objectClass: account
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
-userPassword: {crypt}$1$z9Z3EWQ0$YOqB8odzPaJP/TDgpsDUo/
-shadowLastChange: 17136
+userPassword: {crypt}$1$mR7Ibsu2$tnUG9LpgP3PK8uuNz3UW1.
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2543,7 +2692,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2561,7 +2710,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2579,7 +2728,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2597,7 +2746,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2615,7 +2764,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2633,7 +2782,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2651,7 +2800,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2669,7 +2818,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2687,7 +2836,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2704,7 +2853,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2722,7 +2871,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2740,7 +2889,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2758,7 +2907,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2776,7 +2925,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2794,7 +2943,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2812,7 +2961,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2830,7 +2979,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2848,7 +2997,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2866,7 +3015,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17136
+shadowLastChange: 17144
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2875,6 +3024,40 @@ uidNumber: 55
 gidNumber: 55
 homeDirectory: /var/lib/ldap
 gecos: LDAP User
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=mailnull,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: mailnull
+cn: mailnull
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}!!
+shadowLastChange: 17144
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 47
+gidNumber: 47
+homeDirectory: /var/spool/mqueue
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=smmsp,ou=People,dc=mercury,dc=febras,dc=net</span>
+uid: smmsp
+cn: smmsp
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {crypt}!!
+shadowLastChange: 17144
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /sbin/nologin
+uidNumber: 51
+gidNumber: 51
+homeDirectory: /var/spool/mqueue
 </pre>
 </div>
 </div>
@@ -3098,6 +3281,20 @@ objectClass: top
 cn: ldap
 userPassword: {crypt}x
 gidNumber: 55
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=mailnull,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: mailnull
+userPassword: {crypt}x
+gidNumber: 47
+
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=smmsp,ou=Group,dc=mercury,dc=febras,dc=net</span>
+objectClass: posixGroup
+objectClass: top
+cn: smmsp
+userPassword: {crypt}x
+gidNumber: 51
 </pre>
 </div>
 </div>
