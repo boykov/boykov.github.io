@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-12-09 Пт. 16:31 -->
+<!-- 2016-12-14 Ср. 17:06 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -172,12 +172,12 @@ for the JavaScript code in this tag.
 <li><a href="#configure-slapd">1.6. Дополнительно. Предварительная настройка схемы каталога LDAP с помощью ldif формата</a></li>
 </ul>
 </li>
-<li><a href="#authentication">2. Настройка аутентификации пользователей при помощи LDAP&nbsp;<sup><i class="fa fa-star-half-o"></i></sup></a>
+<li><a href="#authentication">2. Настройка аутентификации пользователей при помощи LDAP</a>
 <ul>
 <li><a href="#client-packages">2.1. Требуемые пакеты</a></li>
-<li><a href="#client-commands">2.2. Используемые команды&nbsp;<sup><i class="fa fa-star"></i></sup></a></li>
-<li><a href="#client-files">2.3. Изменяемые файлы&nbsp;<sup><i class="fa fa-star"></i></sup></a></li>
-<li><a href="#client-options">2.4. Описание опций&nbsp;<sup><i class="fa fa-star"></i></sup></a>
+<li><a href="#client-commands">2.2. Используемые команды</a></li>
+<li><a href="#client-files">2.3. Изменяемые файлы</a></li>
+<li><a href="#client-options">2.4. Описание опций</a>
 <ul>
 <li><a href="#orgheadline12">2.4.1. Опции, связанные с conf-файлами для <b>5/2.3</b></a></li>
 <li><a href="#orgheadline13">2.4.2. Опции, связанные с файлом system-auth для <b>5/2.3</b></a></li>
@@ -299,7 +299,7 @@ for the JavaScript code in this tag.
 <td class="org-left"><b>Docker Engine</b></td>
 <td class="org-left">kairos</td>
 <td class="org-left"><b>Ubuntu 14.04</b></td>
-<td class="org-left"><b>Docker version 1.12.3</b></td>
+<td class="org-left"><b>Docker 1.12.3</b></td>
 </tr>
 </tbody>
 <tbody>
@@ -307,28 +307,28 @@ for the JavaScript code in this tag.
 <td class="org-left"><b>Служба каталогов</b></td>
 <td class="org-left">server-ldif5</td>
 <td class="org-left"><b>CentOS 5</b></td>
-<td class="org-left"><b>OpenLDAP 2.3</b> server, <b>ldif</b></td>
+<td class="org-left"><b>OpenLDAP 2.3</b> server, <b>ldif</b>; <b>phpLDAPadmin 1.2.3</b>, custom</td>
 </tr>
 
 <tr>
 <td class="org-left"><b>Служба каталогов</b></td>
 <td class="org-left">server-ldif6</td>
 <td class="org-left"><b>CentOS 6</b></td>
-<td class="org-left"><b>OpenLDAP 2.4</b> server, <b>ldif</b></td>
+<td class="org-left"><b>OpenLDAP 2.4</b> server, <b>ldif</b>; <b>phpLDAPadmin 1.2.3</b>, custom</td>
 </tr>
 
 <tr>
 <td class="org-left"><b>Служба каталогов</b></td>
 <td class="org-left">server-conf5</td>
 <td class="org-left"><b>CentOS 5</b></td>
-<td class="org-left"><b>OpenLDAP 2.3</b> server, <b>conf</b></td>
+<td class="org-left"><b>OpenLDAP 2.3</b> server, <b>conf</b>; <b>phpLDAPadmin 1.2.3</b>, custom</td>
 </tr>
 
 <tr>
 <td class="org-left"><b>Служба каталогов</b></td>
 <td class="org-left">server-conf6</td>
 <td class="org-left"><b>CentOS 6</b></td>
-<td class="org-left"><b>OpenLDAP 2.4</b> server, <b>conf</b></td>
+<td class="org-left"><b>OpenLDAP 2.4</b> server, <b>conf</b>; <b>phpLDAPadmin 1.2.3</b>, custom</td>
 </tr>
 
 <tr>
@@ -383,17 +383,40 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 </p>
 
 <p>
-Базовые репозитории дистрибутивов <b>CentOS 5</b> и <b>CentOS 6</b> содержат <b>2.3</b> и <b>2.4</b> версию <b>OpenLDAP</b>, соответственно. Выполнив стандартную установку
+Базовые репозитории дистрибутивов <b>CentOS 5</b> и <b>CentOS 6</b> содержат
+<b>2.3</b> и <b>2.4</b> версию <b>OpenLDAP</b>, соответственно. Выполнив стандартную
+установку
 </p>
 
 <div class="org-src-container">
 <label class="org-src-name">Установка сервера <b>OpenLDAP</b> для <b>5/2.3</b> и <b>6/2.4</b></label>
 <pre class="src src-org">    yum -y install openldap openldap-servers openldap-clients sudo
+    yum -y install php php-ldap wget
 </pre>
 </div>
 
+<div class="org-src-container">
+<label class="org-src-name">Установка дополнительных пакетов для <b>5/2.3</b></label>
+<pre class="src src-org">    yum -y install openldap-servers-overlays
+    wget <span style="color: #b58900; text-decoration: underline;"><a href="http://dl.fedoraproject.org/pub/epel/5/i386/phpldapadmin-1.2.3-1.el5.noarch.rpm">http://dl.fedoraproject.org/pub/epel/5/i386/phpldapadmin-1.2.3-1.el5.noarch.rpm</a></span>
+    rpm -i phpldapadmin-1.2.3-1.el5.noarch.rpm
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name">Установка дополнительных пакетов для <b>6/2.4</b></label>
+<pre class="src src-org">    wget <span style="color: #b58900; text-decoration: underline;"><a href="http://dl.fedoraproject.org/pub/epel/6/i386/phpldapadmin-1.2.3-2.el6.noarch.rpm">http://dl.fedoraproject.org/pub/epel/6/i386/phpldapadmin-1.2.3-2.el6.noarch.rpm</a></span>
+    rpm -i phpldapadmin-1.2.3-2.el6.noarch.rpm
+</pre>
+</div>
+
+
+
 <p>
-получаем две конфигурации, различающиеся в некоторых деталях. Например, название сервиса: <b>ldap</b> в случае <b>CentOS 5/2.3 OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 OpenLDAP</b> (<b>6/2.4</b>).
+получаем две конфигурации, различающиеся в некоторых
+деталях. Например, название сервиса: <b>ldap</b> в случае <b>CentOS 5/2.3
+OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 OpenLDAP</b>
+(<b>6/2.4</b>).
 </p>
 </div>
 </div>
@@ -453,7 +476,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 Каталог LDAP имеет раздел <b>cn=schema</b>, содержащий все определения
 системной схемы данных, которые вкомилированы в <b>ldap</b> (<b>slapd</b>). Сюда
 же подключаются дополнительные специфические схемы данных,
-см. расп. <a href="#orgsrcblock1">14</a>. Подготовим
+см. расп. <a href="#orgsrcblock1">16</a>. Подготовим
 необходимые файлы (не включенные в поставку <b>OpenLDAP</b>), для <b>5/2.3</b>
 </p>
 <div class="org-src-container">
@@ -749,7 +772,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <span style="background-color: #fdf6e3;">83a87,89</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}LIRMXICZ3oWU12gvaMu4pJimGU2qDv+k</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}3+Kh/07nS+At0bXKAb+aTU+hf9SmWCYj</span>
 <span style="background-color: #fdf6e3;">85c91,93</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -949,7 +972,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> moduleload ppolicy.la</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}18LeP+f/fi0clO/X3CtrGEFitXVJn0aU</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}AVUkk2U5JxZUY6EwRKxjBSyjDF12fZwd</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -996,6 +1019,19 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
     <span style="color: #657b83; font-weight: bold;">cd</span> $<span style="color: #268bd2;">oldpath</span>
 </pre>
 </div>
+
+<div class="note">
+<p>
+Если не осуществлять переход к <b>ldif</b> формату, ограничившись <b>conf</b>
+файлом, необходимо либо все настройки файла <b>domain.ldif</b>
+(см. подраздел <a href="#hdb-domain-config">3.2</a>) перенести в <b>conf</b> файл (записав их
+в формате <b>conf</b> файла), либо загружать их каждый раз при перезапуске
+сервиса. Использование <b>ldif</b> формата позволяет хранить все настройки
+в директории <b>slapd.d</b>.
+</p>
+
+</div>
+
 <p>
 После перезапуска, для <b>5/2.3</b>
 </p>
@@ -1185,7 +1221,7 @@ olcDatabase: {-1}frontend
 </div>
 </div>
 <div id="outline-container-orgheadline18" class="outline-2">
-<h2 id="authentication"><a id="orgheadline18"></a><a id="ID-49b5e2df-0c06-445a-ae9e-66bcd6cc9e40"></a><span class="section-number-2">2</span> Настройка аутентификации пользователей при помощи LDAP&nbsp;<sup><i class="fa fa-star-half-o"></i></sup></h2>
+<h2 id="authentication"><a id="orgheadline18"></a><a id="ID-49b5e2df-0c06-445a-ae9e-66bcd6cc9e40"></a><span class="section-number-2">2</span> Настройка аутентификации пользователей при помощи LDAP</h2>
 <div class="outline-text-2" id="text-authentication">
 <blockquote>
 <p>
@@ -1249,7 +1285,7 @@ yum install -y sendmail sendmail-cf
 </div>
 
 <div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="client-commands"><a id="orgheadline10"></a><a id="ID-6e7a8278-7334-46f7-b289-07da7f2b6d14"></a><span class="section-number-3">2.2</span> Используемые команды&nbsp;<sup><i class="fa fa-star"></i></sup></h3>
+<h3 id="client-commands"><a id="orgheadline10"></a><a id="ID-6e7a8278-7334-46f7-b289-07da7f2b6d14"></a><span class="section-number-3">2.2</span> Используемые команды</h3>
 <div class="outline-text-3" id="text-client-commands">
 <p class="verse">
 Где работаем: контейнеры <b>client.</b><br  />
@@ -1318,7 +1354,7 @@ rm /var/run/nslcd/*
 </div>
 
 <div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="client-files"><a id="orgheadline11"></a><a id="ID-386e40de-d1f2-4dc8-994b-5870d4ec42fb"></a><span class="section-number-3">2.3</span> Изменяемые файлы&nbsp;<sup><i class="fa fa-star"></i></sup></h3>
+<h3 id="client-files"><a id="orgheadline11"></a><a id="ID-386e40de-d1f2-4dc8-994b-5870d4ec42fb"></a><span class="section-number-3">2.3</span> Изменяемые файлы</h3>
 <div class="outline-text-3" id="text-client-files">
 <p>
 Файлы, которые были модифицированы настройками подраздела <a href="#client-commands">2.2</a> в случае <b>5/2.3</b>
@@ -1401,7 +1437,7 @@ rm /var/run/nslcd/*
 </div>
 
 <div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="client-options"><a id="orgheadline17"></a><a id="ID-a8dfad56-906c-45b6-9ef1-7d5a9cfa854f"></a><span class="section-number-3">2.4</span> Описание опций&nbsp;<sup><i class="fa fa-star"></i></sup></h3>
+<h3 id="client-options"><a id="orgheadline17"></a><a id="ID-a8dfad56-906c-45b6-9ef1-7d5a9cfa854f"></a><span class="section-number-3">2.4</span> Описание опций</h3>
 <div class="outline-text-3" id="text-client-options">
 </div>
 
@@ -1904,7 +1940,7 @@ ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=
 <div class="outline-text-3" id="text-hdb-domain-config">
 <p>
 В подразделе <a href="#configure-hdb">1.2</a> была подготовлена база данных
-<b>HDB</b>. Сконфигурируем (см. расп. <a href="#orgsrcblock3">27</a>) её для доменного имени
+<b>HDB</b>. Сконфигурируем (см. расп. <a href="#orgsrcblock3">29</a>) её для доменного имени
 <b>dc=mercury,dc=febras,dc=net</b>, определим менеджера домена
 <b>cn=Manager,dc=mercury,dc=febras,dc=net</b> и его пароль. Также, добавим
 правила доступа к атрибуту <b>userPassword</b> (см. подраздел
@@ -1966,7 +2002,7 @@ olcPPolicyDefault: cn=passwordDefault,ou=policies,dc=mercury,dc=febras,dc=net
 записи дерева DIT средствами формата <b>ldif</b> (эквивалентную настройку
 можно осуществить при помощи файла конфигурации <b>conf</b>, как это
 показано в подразделе <a href="#configure-slapd-conf">1.5</a>). Теперь создадим корневую
-запись домена, добавим необходимые атрибуты (см. расп. <a href="#orgsrcblock4">28</a>),
+запись домена, добавим необходимые атрибуты (см. расп. <a href="#orgsrcblock4">30</a>),
 корневой узел <b>dn: dc=mercury,dc=febras,dc=net</b>,
 подразделения <b>users</b>, <b>groups</b>, <b>system</b> и <b>public</b>, а также
 пользователя <b>authenticator</b>.
@@ -2031,7 +2067,7 @@ pwdAttribute: userPassword
 <p>
 Создадим подразделение <b>sudoers</b>, одну posix-группу <b>wheel</b> и
 сконфигурируем <b>sudoers</b> так, чтобы разрешить выполнение <b>sudo</b> команд
-без ввода пароля для членов этой группы (см. расп. <a href="#orgsrcblock5">29</a>). Класс
+без ввода пароля для членов этой группы (см. расп. <a href="#orgsrcblock5">31</a>). Класс
 <b>sudoRole</b> содержится в файле <b>sudo.schema</b>, подключенном в подразделе
 <a href="#add-schemas">1.3</a>.
 </p>
@@ -2482,6 +2518,12 @@ gidNumber: 1050
 <b>shadowLastChange</b>, чтобы пользователь имел право на смену пароля.
 </p>
 
+<div class="org-src-container">
+<label class="org-src-name">Изменение пользователем своего пароля с помощью утилиты <b>ldappasswd</b></label>
+<pre class="src src-sh">    ldappasswd -h $<span style="color: #268bd2;">1</span> -x -D <span style="color: #2aa198;">"uid=username,ou=users,dc=mercury,dc=febras,dc=net"</span> -w p@ssw0rd -s new_p@ssw0rd
+</pre>
+</div>
+
 <div class="warning">
 <p>
 При использовании утилиты <b>ldappasswd</b> изменения атрибута
@@ -2505,6 +2547,10 @@ gidNumber: 1050
     ldapsearch -x -h $<span style="color: #268bd2;">1</span> -LLL -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=net'</span> -b <span style="color: #2aa198;">'uid=username,ou=users,dc=mercury,dc=febras,dc=net'</span> <span style="color: #2aa198;">'(loginShell=*)'</span> -w manager | grep loginShell
 </pre>
 </div>
+
+<p>
+Значение <b>loginShell: /bin/bash</b>, указанное в файле <b>user.ldif</b>, изменилось на <b>/bin/sh</b>:
+</p>
 
 <pre class="example">
 modifying entry "uid=username,ou=users,dc=mercury,dc=febras,dc=net"
@@ -2674,7 +2720,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$mR7Ibsu2$tnUG9LpgP3PK8uuNz3UW1.
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2692,7 +2738,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2710,7 +2756,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2728,7 +2774,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2746,7 +2792,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2764,7 +2810,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2782,7 +2828,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2800,7 +2846,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2818,7 +2864,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2836,7 +2882,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2853,7 +2899,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2871,7 +2917,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2889,7 +2935,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2907,7 +2953,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2925,7 +2971,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2943,7 +2989,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2961,7 +3007,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2979,7 +3025,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2997,7 +3043,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3015,7 +3061,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3033,7 +3079,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3050,7 +3096,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17144
+shadowLastChange: 17148
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7

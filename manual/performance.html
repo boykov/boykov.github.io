@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+<head>
+<!-- 2016-12-14 Ср. 17:15 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Материалы по оценке производительности вычислительных систем</title>
+<meta  name="generator" content="Org-mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="../org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style type="text/css">.org-src-name{ text-align: right; }</style>
+<style type="text/css">.outline-2{ margin-top: 60px; }</style>
+
+<style type="text/css">
+  pre.src:before {
+    top: -5px;
+  }
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Материалы по оценке производительности вычислительных систем</h1>
+<blockquote>
+<p>
+Необходимо найти и изучить литературу по оценке производительности
+высокопроизводительных вычислительных систем. Основная цель -
+сформировать набор тестов, который будет использоваться при вводе в
+эксплуатацию нового вычислительного кластера. Особое внимание уделить
+вопросам тестирования <b>GPU</b> (NVIDIA <b>P100</b>) и процессоров с архитектурой
+<b>POWER8</b>. Также нужно поискать примеры обзорных работ, публикуемых
+организациями для своих вычислительных систем.
+</p>
+
+<p>
+Ключевые слова: обзорная статья, <b>NVLink</b>, <b>LINPACK</b>, <b>Green500</b>, <b>Graph500</b>,
+плотнозаполненные матрицы, тесты для новой архитектуры.
+</p>
+</blockquote>
+
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12"><span class="section-number-2">1</span> Ключевые слова</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="linpack"><a id="orgheadline1"></a><a id="ID-7913bb34-5ecd-4445-bb30-eb8747a4128c"></a><span class="section-number-3">1.1</span> LINPACK</h3>
+<div class="outline-text-3" id="text-linpack">
+<ul class="org-ul">
+<li><a href="https://www.nextplatform.com/2016/06/20/nvidia-rounds-pascal-tesla-accelerator-lineup/">Nvidia Rounds Out Pascal Tesla Accelerator Lineup</a>
+<ul class="org-ul">
+<li>Interestingly, because the M40 does not have DP math, it cannot
+run the Linpack Fortran benchmark test, and it therefore cannot be
+ranked on the Top 500 list of supercomputers.</li>
+</ul></li>
+<li>High Performance Linpack for GPUs (Using OpenCL, CUDA, CAL) <a href="https://github.com/davidrohr/hpl-gpu">https://github.com/davidrohr/hpl-gpu</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="p100"><a id="orgheadline6"></a><a id="ID-0a47544c-f8e5-440e-8812-8c9bee1a4344"></a><span class="section-number-3">1.2</span> NVIDIA P100 Pascal</h3>
+<div class="outline-text-3" id="text-p100">
+</div>
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="nvlink"><a id="orgheadline4"></a><a id="ID-438f5422-92d2-44dc-862b-bdec2d3b3095"></a><span class="section-number-4">1.2.1</span> NVLink</h4>
+<div class="outline-text-4" id="text-nvlink">
+<ul class="org-ul">
+<li>Tesla P100 for NVLink-enabled Servers</li>
+<li>Напомним, одной из особенностей стал интерфейс связи между
+несколькими графическими NVIDIA. NVLink распределяет нагрузку между
+GPU, увеличивая пропускную способность в 5 раз. NVIDIA NVLink
+позволяет связать вместе до восьми карт Tesla P100. Двунаправленный
+интерфейс NVIDIA NVLink обладает скоростью 160 ГБ/с.  Как отмечает
+NVIDIA, Tesla P100 — первый ускоритель со скоростью вычислений
+двойной и одинарной точности в 5 и 10 терафлопс соответственно.</li>
+<li>NVIDIA® NVLink™ – это высокоскоростное и энергоэффективное
+внутреннее соединение, которое обеспечивает ультрабыстрый обмен
+данными между CPU и GPU, а также между GPU. Эта технология обеспечит
+от 5 до 12 раз более быстрый обмен данными по сравнению с
+традиционным внутренним соединением PCIe Gen3.</li>
+<li>NVLink — высокопроизводительная компьютерная шина, использующая
+соединение точка-точка, дифференциальные сигналы со встроенным
+синхросигналом и каналы, называемые «блоки», в каждом по 8 пар со
+скоростью 20 Гбит/с. Таким образом каждый блок предоставляет
+возможность передачи примерно 20 гигабайт в секунду.</li>
+<li>Предполагается, что NVLink будет использовать мезонинный
+разъем. Программная модель интерфейса NVLink схожа с PCI
+Express. По интерфейсу NVLink несколько GPU будут связываться
+друг с другом, а в дальнейшем планируется использовать его для связи
+GPU и центрального процессора (возможно, с архитектурой IBM
+<a href="#power8">POWER</a>), и добавление в интерфейс протоколов
+кеш-когерентности.</li>
+<li>The NVLink technology on the POWER platform provides coherency among
+the multiple memory hierarchies in the CPUs and GPUs.</li>
+<li>But most of this power will be wasted unless GPUs learn to exchange
+data with CPUs at faster speeds. For years, Nvidia has been working
+on a technology that could do just that, and it looks like NVLink is
+finally ready for action.</li>
+<li>Server-side GPU acceleration is a hot topic: earlier this year
+Nvidia launched Tesla P100, calling it “the most advanced data
+center GPU ever built’. Intel is pushing ahead with its Xeon Phi,
+claiming it is more than a match for Nvidia’s hardware, and AMD is
+steadily improving its FirePro range.</li>
+</ul>
+</div>
+<div id="outline-container-orgheadline2" class="outline-5">
+<h5 id="orgheadline2"><span class="section-number-5">1.2.1.1</span> NVLink 1.0</h5>
+<div class="outline-text-5" id="text-1-2-1-1">
+<ul class="org-ul">
+<li>Пропускная способность интерфейса используемого в GPU NVIDIA Pascal GP100 (2016 год):
+<ul class="org-ul">
+<li>20 Гбит/с на контакт;</li>
+<li>40 Гбайт/с на один порт;</li>
+<li>160 Гбайт/с (4 × 40 Гбайт/с) на один GPU.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-5">
+<h5 id="orgheadline3"><span class="section-number-5">1.2.1.2</span> NVLink 2.0 (2017)</h5>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5"><span class="section-number-4">1.2.2</span> Tesla P100 for PCIe-Based Servers</h4>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="power8"><a id="orgheadline11"></a><a id="ID-858126b4-6dfd-487c-8840-5859d84b3fe1"></a><span class="section-number-3">1.3</span> POWER 8</h3>
+<div class="outline-text-3" id="text-power8">
+<ul class="org-ul">
+<li><a href="https://www.microway.com/product/openpower-gpu-server-nvidia-tesla-p100-nvlink-gpus/">OpenPOWER GPU Server with NVIDIA Tesla P100 NVLink GPUs</a></li>
+<li><a href="https://servernews.ru/931493">https://servernews.ru/931493</a>
+<ul class="org-ul">
+<li>Для того чтобы получить все преимущества от NVIDIA Tesla P100 с
+шиной NVLink, программистам придётся переделать свои программы под
+IBM POWER8. IBM и NVIDIA намерены создать сеть лабораторий, чтобы
+помочь разработчикам приложений портировать свои программы на новые
+высокопроизводительные вычислительные платформы. Эти лаборатории
+будут очень важны не только для IBM и NVIDIA, но и для будущего
+высокопроизводительных систем в целом. Гетерогенные суперкомпьютеры
+могут предложить очень высокую производительность, но для того,
+чтобы использовать их в полной мере, необходимы новые методы
+программирования.</li>
+</ul></li>
+<li>Представлен в 2013 году, изготовлен по 22 нм SOI. 6 или 12 ядер на
+чип, тактовая частота от 2.5 до 5 ГГц, каждое ядро исполняет
+одновременно до 8 потоков. процессор имеет общий кэш L3 размером 48
+МБ(6-ядерные модели) или 96 МБ (12-ядерные модели). В процессор
+встроены высокопроизводительные контроллеры памяти (DDR3/DDR4) и
+системных каналов ввода-вывода (CAPI port на основе PCI
+Express3.0 в том числе, для подключения ASIC, FPGA,
+GPU. Питанием процессора управляет встроенный микроконтроллер на
+базе PowerPC 405 с 512 килобайтами SRAM памяти, настраивая 1764
+встроенных регуляторов напряжения. Векторно-скалярное устройство
+процессора,для работы с числами c плавающей запятой выдает до 8
+результатов с плавающей запятой двойной точности, что обеспечивает
+пиковую производительность 384 GFLOPS на процессор. Для многих видов
+нагрузок процессор POWER8 показывает прирост производительности в
+2-3 раза по сравнению с предыдущим процессором POWER7.</li>
+<li>IBM has launched a version of the Power8 processor that features
+Nvidia’s NVLink, a high-performance interconnect technology that
+sits between GPU and CPU.
+<ul class="org-ul">
+<li>The chip has been released as part of a new Power System server, the
+S822LC for High Performance Computing.</li>
+<li>IBM has also launched two servers without NVLink: the Power System
+S821LC and the Power System S822LC for Big Data.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">1.3.1</span> Cell</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Cell совмещает ядро общего назначения архитектуры <a href="#power">POWER</a> с
+сопроцессорами, которые значительно ускоряют обработку мультимедиа
+и векторных вычислений.
+</p>
+
+<p>
+<a href="https://parallel.ru/computers/cell.html">parallel: Процессор CELL</a>
+</p>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-5">
+<h5 id="orgheadline7"><span class="section-number-5">1.3.1.1</span> PowerXCell</h5>
+</div>
+<div id="outline-container-orgheadline8" class="outline-5">
+<h5 id="orgheadline8"><span class="section-number-5">1.3.1.2</span> PowerPC Element</h5>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="power"><a id="orgheadline10"></a><a id="ID-00567ea2-be80-4d73-8b3d-bcc5557f52e9"></a><span class="section-number-4">1.3.2</span> POWER</h4>
+<div class="outline-text-4" id="text-power">
+<ul class="org-ul">
+<li>POWER — микропроцессорная архитектура с ограниченным набором команд
+(RISC), разработанная и развиваемая компанией IBM. Название позже
+было расшифровано как Performance Optimization With Enhanced RISC
+(оптимизация производительности на базе расширенной архитектуры
+RISC). Этим словом также называется серия микропроцессоров,
+использующая указанный набор команд. Они применяются в качестве
+центрального процессора во многих микрокомпьютерах, встраиваемых
+системах, рабочих станциях, мейнфреймах и суперкомпьютерах.</li>
+<li>Он содержал тридцать два 32-разрядных целочисленных регистра и ещё
+тридцать два 64-разрядных регистра с плавающей точкой, каждый в
+своём разделе. Кроме того, имелось несколько регистров для
+внутренних нужд внутри блока ветвления, в частности, счётчик адреса.</li>
+<li>Тогда как 801 был простым устройством, чрезмерное количество
+дополнений превратили его в сложный процессор, гораздо сложнее
+большинства конкурирующих RISC-изделий. Например, набор команд POWER
+(и PowerPC) включает более 100 опкодов переменной длины, многие из
+которых являются модификациями друг друга. Для сравнения:
+архитектура ARM располагает только 34 инструкциями.</li>
+<li>В конструкцию заложено и одно необычное свойство: виртуальное
+адресное пространство. Все адреса во время работы конвертируются в
+52-битное представление, таким образом получается, что каждая
+программа обладает плоским 32-битным пространством адресов, но при
+этом каждая может занимать эти блоки произвольно.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13"><span class="section-number-2">2</span> обзор</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Ломоносов
+<ul class="org-ul">
+<li><a href="http://www.msu.ru/lomonosov/science/computer.html">msu.ru Суперкомпьютер "Ломоносов"</a></li>
+<li><a href="https://parallel.ru/cluster/lomonosov.html">parallel lomonosov</a></li>
+<li><a href="http://samag.ru/archive/article/3202">Исследование воздействия некоторых параметров теста LINPACK</a></li>
+</ul></li>
+
+<li>Тестирование суперкомпьютеров
+<ul class="org-ul">
+<li><a href="http://num-meth.srcc.msu.ru/zhurnal/tom_2013/pdf/v14r216.pdf">Комплексная методика тестирования производительности суперкомпьютеров</a>
+<ul class="org-ul">
+<li>Рассматривается рейтинговое и профессиональное (комплексное и
+углубленное) оценочное тестирование. Оба подхода представляют
+интерес. Это демонстрируется сначала на примере анализа динамики
+результатов рейтингового тестирования последних лет,
+позволившего выявить устойчивую тенденцию развития
+суперкомпьютеров в сторону повышения эффективности решения задач
+с интенсивной нерегулярной работой с памятью. Далее
+рассматриваются схемы применения профессионального оценочного
+тестирования при оценке и разработке суперкомпьютеров, а также
+пример такой методики, применяемой авторами. Эта методика
+особенна своей многоуровневостью и разноплановостью на уровнях,
+обеспечиваемой тестами разной направленности и специальным
+образом изменяемой нагрузкой на оборудование. Сообщается о
+вариантах практического применения методики и использования ее
+результатов при оптимизации программ и создании перспективного
+системного программного обеспечения.
+<ul class="org-ul">
+<li>Ключевые слова: pейтинговое тестирование, комплексное
+тестирование, задачи с интенсивной нерегулярной работой с
+памятью, многоуровневое оценочное тестирование,
+пространственно-временная локализация обращений к памяти,
+оптимизация задержек обращений к памяти, оптимизация
+толерантности к задержкам обращений к памяти, системы поддержки
+выполнения программ, программная эмуляция мультитредовых
+архитектур</li>
+</ul></li>
+</ul></li>
+
+<li><a href="http://www.siam.org/meetings/ex14/02-oberlin-slides.pdf">http://www.siam.org/meetings/ex14/02-oberlin-slides.pdf</a>
+<ul class="org-ul">
+<li>Accelerating Exascale
+<ul class="org-ul">
+<li>How the End of Moore’s Law Scaling is Changing the Machines
+You Use, the Way You Code, and the Algorithms You Use</li>
+</ul></li>
+<li>Pascal NVLink</li>
+<li>LINPACK vs. Real Apps</li>
+<li>Programmers, Tools, and Architecture Need to Play Their Positions</li>
+<li>Exascale (25x) is Within Reach
+<ul class="org-ul">
+<li>Requires clever circuits and ruthlessly-efficient architecture
+<ul class="org-ul">
+<li>Moore’s Law cannot be relied upon</li>
+</ul></li>
+<li>Need to simplify programming and automate mapping
+<ul class="org-ul">
+<li>“MPI + X” is only a step in the right direction</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15"><span class="section-number-2">3</span> ИНТУИТ</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<a href="http://www.intuit.ru/studies/courses/3457/699/lecture/14133?page=2">Лекция 2</a>: Методы оценки вычислительных характеристик задач предметной
+области и поддерживающих их аппаратных платформ
+</p>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">3.1</span> Особенности измерения основных характеристик вычислительных систем</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Сравнение компьютеров между собой обычно начинают с оценки их
+производительности. Это потребовало введения соответствующих единиц
+измерения производительности и разработки стандартных методов ее
+оценки.</li>
+</ul>
+
+
+<ul class="org-ul">
+<li>Тест LINPACK используется при составлении рейтинга самых
+высокопроизводительны компьютеров мира. Результаты размещаются на
+сайте <a href="http://www.top500.org/">http://www.top500.org/</a>.</li>
+</ul>
+
+<p>
+В основе используемых в LINPACK алгоритмов лежит метод декомпозиции,
+широко применяемый при высокопроизводительных
+вычислениях. Достоинством тестов LINPACK является их
+структурированность. Для реализации элементарных операций над
+векторами, которые включаю умножение векторов на скаляр, сложение
+векторов, скалярное произведение векторов выделяется базовый уровень
+системы, называемый BLAS (Basic Linear Algebra Subprograms).
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-2">
+<h2 id="orgheadline16"><span class="section-number-2">4</span> fksis</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<a href="http://s1.fksis.ru/abc/%D0%A2%D0%B5%D0%BE%D1%80%D0%B8%D1%8F/content/ak2/theme13.htm">13</a>. Оценка производительности вычислительных систем
+</p>
+
+<p>
+Одной из наиболее известных систем оценки является тест LINPACK,
+представляющий собой пакет программ на языке Фортран, предназначенных
+для решения систем линейных алгебраических уравнений больших
+размерностей (до нескольких миллионов неизвестных) с плотной матрицей
+методом Гаусса с выбором главного элемента. Имеется несколько
+разновидностей этого теста, например, LINPACK TPP (от Toward Peak
+Performance – направляющийся к пиковой производительности) и HPL (от
+High-Performance LINPACK – высокопроизводительный LINPACK).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">5</span> top500</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">5.1</span> IBM Ups Its Game with the Power9 Processor</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+<a href="https://www.top500.org/news/ibm-ups-its-game-with-the-power9-processor/">https://www.top500.org/news/ibm-ups-its-game-with-the-power9-processor/</a>
+</p>
+
+
+<p>
+Speaking of which, there is special support for NVIDIA GPUs in the
+form of NVLink 2.0 support, which promises much faster communication
+speeds than vanilla PCIe.
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
