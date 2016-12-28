@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-12-23 Пт. 15:51 -->
+<!-- 2016-12-28 Ср. 17:26 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -299,7 +299,7 @@ for the JavaScript code in this tag.
 <td class="org-left"><b>Docker Engine</b></td>
 <td class="org-left">kairos</td>
 <td class="org-left"><b>Ubuntu 14.04</b></td>
-<td class="org-left"><b>Docker 1.12.3</b></td>
+<td class="org-left"><b>Docker 1.12.5</b></td>
 </tr>
 </tbody>
 <tbody>
@@ -773,7 +773,7 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="background-color: #fdf6e3;">83a87,89</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}Ya3FoQvHRORMW4FEcZx8BcAVtmBgFPlz</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}pTWkPPRtkpTh72G1U/E5O4AtgGCR4ENk</span>
 <span style="background-color: #fdf6e3;">85c91,93</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -973,7 +973,7 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> moduleload ppolicy.la</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}189uyUDsgvJcy0NHmBZhzEANlZb9ckFe</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}/wf23iXAtB/eTQX3ptkw/uosdElYlIT/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -1300,8 +1300,8 @@ yum install -y sendmail sendmail-cf
 В <b>5/2.3</b> приходится использовать параметр <b>enableshadow</b>, поскольку
 эта функциональность отключена по умолчанию. Отдельно укажем параметр
 <b>sudoers_base</b> и параметры <b>binddn</b> и <b>bindpw</b> в настройках для
-<b>pam_ldap</b> (см. также настроки для <b>authenticator</b> в подразделе
-<a href="#minimal-schema">3.1</a>).
+<b>pam_ldap</b> (см. также настройки для <b>authenticator</b> в подразделе
+<a href="#hdb-domain-config">3.2</a>).
 </p>
 
 <div class="org-src-container">
@@ -1316,7 +1316,12 @@ sed -i <span style="color: #2aa198;">"s|pam_mkhomedir.so|pam_mkhomedir.so skel=/
 <span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">uid</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/ldap.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/ldap.conf
 
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">chmod 600 /etc/ldap.conf</span>
+chmod 600 /etc/ldap.conf
+
+sed -i <span style="color: #2aa198;">"s|      positive-time-to-live   passwd          600|    positive-time-to-live   passwd          0|g"</span> /etc/nscd.conf
+sed -i <span style="color: #2aa198;">"s|      negative-time-to-live   passwd          20|     negative-time-to-live   passwd          0|g"</span> /etc/nscd.conf
+
+/etc/init.d/nscd start
 </pre>
 </div>
 
@@ -1387,6 +1392,7 @@ rm /var/run/nslcd/*
 <span style="color: #93a1a1;">/etc/group-</span>
 <span style="color: #93a1a1;">/etc/gshadow</span>
 <span style="color: #93a1a1;">/etc/ldap.conf</span>
+<span style="color: #93a1a1;">/etc/nscd.conf</span>
 <span style="color: #93a1a1;">/etc/nsswitch.conf</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
@@ -1478,7 +1484,7 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,303</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.6/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -1486,6 +1492,13 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
+<span style="color: #93a1a1;">/etc/nscd.conf</span>
+<span style="background-color: #fdf6e3;">44,45c44,45</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;">       positive-time-to-live   passwd          600</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;">       negative-time-to-live   passwd          20</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;">       positive-time-to-live   passwd          0</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;">       negative-time-to-live   passwd          0</span>
 <span style="color: #93a1a1;">/etc/nsswitch.conf</span>
 <span style="background-color: #fdf6e3;">33,35c33,35</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
@@ -1501,13 +1514,6 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> netgroup:   files ldap</span>
 <span style="background-color: #fdf6e3;">61c61</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> automount:  files nisplus</span>
-<span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
-<span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.4/</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
 </pre>
 </div>
 </div>
@@ -1518,7 +1524,14 @@ rm /var/run/nslcd/*
 <div class="outline-text-4" id="text-2-4-2">
 <div class="org-src-container">
 <label class="org-src-name">Опции, выставляемые в файле <b>system-auth</b> для <b>5/2.3</b></label>
-<pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
+<pre class="src src-diff"><span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
+<span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
+<span style="background-color: #fdf6e3;">13a14,16</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.6/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
+<span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
 <span style="background-color: #fdf6e3;">5c5,7</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -1666,7 +1679,7 @@ rm /var/run/nslcd/*
 (Pluggable Authentication Modules), добавляя библиотеку <b>pam_ldap.so</b>
 и дополнительные настройки, обеспечивающие поддержку механизма
 аутентификации средствами LDAP. PAM &#x2014; это стандартный интерфейс,
-который может работать как с локальными базами данных <b>files</b>, так и c
+который может работать как с локальной базой данных <b>files</b>, так и c
 базой <b>ldap</b>.
 </p>
 
@@ -1769,12 +1782,12 @@ rm /var/run/nslcd/*
 
 <tr>
 <td class="org-left"><b>sudoers.ldif</b></td>
-<td class="org-left">создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></td>
+<td class="org-left">создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>sudowheel</b>, включенной в группу администраторов <b>sudo</b></td>
 </tr>
 
 <tr>
 <td class="org-left"><b>user.ldif</b></td>
-<td class="org-left">создание нового пользователя, принадлежащего к группе <b>wheel</b></td>
+<td class="org-left">создание нового пользователя, принадлежащего к группе <b>sudowheel</b></td>
 </tr>
 
 <tr>
@@ -1955,11 +1968,42 @@ ldapadd -x -D <span style="color: #2aa198;">'cn=Manager,dc=mercury,dc=febras,dc=
 правила доступа к атрибуту <b>userPassword</b> (см. подраздел
 <a href="#new-user-ldap">4.1</a>): для владельца записи &#x2014; <i>write</i> и для
 неавторизованного пользователя &#x2014; <i>auth</i>. Для атрибута
-<b>shadowLastChange</b>: владелец и <b>authentificator</b> имеют право на запись
+<b>shadowLastChange</b>: владелец и пользователь <b>authentificator</b> имеют право на запись
 <i>write</i>. Анонимный доступ будет разрешен только для заголовочной части
-записи подразделения <b>public</b>, но не для ее содержимого. Для доступа к
-записям пользователей и остальным атрибутам используем учетную запись
-<b>authenticator</b> (см. подраздел <a href="#client-commands">2.2</a>).
+записи подразделения <b>public</b> и для ее содержимого. Ко всем
+остальным объектам в базе применяется правило доступа для пользователя
+<b>authentificator</b> &#x2014; <i>read</i>.
+</p>
+
+<p>
+Учетные записи из подразделения <b>users</b> могут считываться модулем PAM
+из БД LDAP для осуществления аутентификации про входе в систему на
+клиентских машинах, но они не могут (в нынешней конфигурации)
+применяться для аутентификации в самой БД LDAP. Поэтому, чтобы не
+предоставлять анонимный доступ к данным БД LDAP, применяется учетная
+запись <b>authenticator</b>, которую модуль PAM использует для работы с БД
+LDAP. В нашем случае, доступ к большей части информации на сервере
+каталогов (кроме подразделения <b>public</b> для анонимного доступа) имеют
+только те компьютеры, на которых в качестве <b>binddn</b> присутствует
+учетная запись <b>authenticator</b> (см. подраздел <a href="#client-commands">2.2</a>).
+</p>
+
+<div class="note">
+<p>
+Учетная запись <b>authenticator</b> добавляет дополнительный уровень
+безопасности после анонимного доступа.
+</p>
+
+</div>
+
+<p>
+Текущую политику контроля доступа для БД (ACL) можно описать следущими
+словами: она состоит из четырех правил, первые два из них определяют
+права для атрибутов <b>userPassword</b> и <b>shadowLastChange</b>, которые
+следуют из необходимости осуществления изменения пароля, сохранения
+даты его изменения и проведения авторизации. Третье правило не
+существенно. Четвертое правило разрешает доступ ко всем атрибутам
+пользователю <b>authenticator</b>.
 </p>
 
 <div class="org-src-container">
@@ -2074,7 +2118,7 @@ pwdAttribute: userPassword
 <h3 id="create-sudoers"><a id="orgheadline22"></a><a id="ID-22a6415e-716f-4045-aab4-2535b7bdff12"></a><span class="section-number-3">3.4</span> Формирование подразделения sudoers</h3>
 <div class="outline-text-3" id="text-create-sudoers">
 <p>
-Создадим подразделение <b>sudoers</b>, одну posix-группу <b>wheel</b> и
+Создадим подразделение <b>sudoers</b>, одну posix-группу <b>sudowheel</b> и
 сконфигурируем <b>sudoers</b> так, чтобы разрешить выполнение <b>sudo</b> команд
 без ввода пароля для членов этой группы (см. расп. <a href="#orgsrcblock5">31</a>). Класс
 <b>sudoRole</b> содержится в файле <b>sudo.schema</b>, подключенном в подразделе
@@ -2082,13 +2126,13 @@ pwdAttribute: userPassword
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>sudoers.ldif</b>: создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>wheel</b>, включенной в группу администраторов <b>sudo</b></label>
+<label class="org-src-name"><b>sudoers.ldif</b>: создание организационной единицы <b>sudoers</b>, добавление настроек по умолчанию для <b>sudo</b> и группы <b>sudowheel</b>, включенной в группу администраторов <b>sudo</b></label>
 <pre class="src src-ldif" id="orgsrcblock5"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">ou=sudoers,dc=mercury,dc=febras,dc=net</span>
 objectClass: organizationalUnit
 ou: sudoers
 
-<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=wheel,ou=groups,dc=mercury,dc=febras,dc=net</span>
-cn: wheel
+<span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=sudowheel,ou=groups,dc=mercury,dc=febras,dc=net</span>
+cn: sudowheel
 objectClass: posixGroup
 objectClass: top
 gidNumber: 1030
@@ -2101,7 +2145,7 @@ cn: admins
 sudoCommand: ALL
 sudoRunAs: ALL
 sudoHost: ALL
-sudoUser: %wheel
+sudoUser: %sudowheel
 sudoOption: !authenticate
 
 <span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">cn=defaults,ou=sudoers,dc=mercury,dc=febras,dc=net</span>
@@ -2195,7 +2239,7 @@ LDAP. Предложить CLI (или GUI WEB) интерфейс для вып
 </div>
 
 <div class="org-src-container">
-<label class="org-src-name"><b>user.ldif</b>: создание нового пользователя, принадлежащего к группе <b>wheel</b></label>
+<label class="org-src-name"><b>user.ldif</b>: создание нового пользователя, принадлежащего к группе <b>sudowheel</b></label>
 <pre class="src src-ldif"><span style="color: #859900; font-weight: bold;">dn</span>: <span style="color: #268bd2;">uid=username,ou=users,dc=mercury,dc=febras,dc=net</span>
 uid: username
 cn: User Name
@@ -2628,6 +2672,22 @@ loginShell: /bin/sh
 </tr>
 </tbody>
 </table>
+
+<div class="note">
+<p>
+В файле <b>/etc/nsswitch.conf</b> указывается порядок обращения к базам
+данных (слева направо): <b>files</b> <b>ldap</b>. Если использовать команду
+<i>passwd username</i>, вызываемую от имени суперпользователя, то поиск
+пользователя <b>username</b> будет осуществляться сначала в базе <b>files</b> и,
+если он там присутствует, произойдет смена пароля. До базы <b>ldap</b> в
+этом случае поиск не дойдет, даже в случае наличия в ней пользователя
+<b>username</b>. Однако, если войти в систему под учетной записью
+<b>username</b>, используя пароль из базы <b>ldap</b>, и использовать команду
+<i>passwd</i> (т.е. смену пароля для текущего пользователя), то произойдет
+смена пароля в базе <b>ldap</b>, а база <b>files</b> останется без изменений.
+</p>
+
+</div>
 </div>
 </div>
 
@@ -2730,7 +2790,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$mR7Ibsu2$tnUG9LpgP3PK8uuNz3UW1.
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2748,7 +2808,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2766,7 +2826,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2784,7 +2844,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2802,7 +2862,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2820,7 +2880,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2838,7 +2898,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2856,7 +2916,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2874,7 +2934,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2892,7 +2952,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2909,7 +2969,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2927,7 +2987,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2945,7 +3005,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2963,7 +3023,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2981,7 +3041,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2999,7 +3059,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3017,7 +3077,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3035,7 +3095,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3053,7 +3113,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3071,7 +3131,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3089,7 +3149,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3106,7 +3166,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17158
+shadowLastChange: 17163
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
