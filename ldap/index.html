@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-01-09 Пн. 17:16 -->
+<!-- 2017-01-10 Вт. 16:59 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -773,7 +773,7 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="background-color: #fdf6e3;">83a87,89</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}EK/ako9d9VTwdX5XNMgfLirt5qFBPmzZ</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}tCvhw1X//Q2ezEi2m81CM27rMpBsAzRL</span>
 <span style="background-color: #fdf6e3;">85c91,93</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -973,7 +973,7 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> moduleload ppolicy.la</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}vk6xf6Mr9rBqDCk0VkIZ58vL7RwvXrUc</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}Q1fRwutse4Xl3Iz5He+9ZJRN1dlN3yHv</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -2069,8 +2069,8 @@ LDAP. В нашем случае, доступ к большей части ин
 словами: она состоит из четырех правил, первые два из них определяют
 права для атрибутов <b>userPassword</b> и <b>shadowLastChange</b>, которые
 следуют из необходимости осуществления изменения пароля, сохранения
-даты его изменения и проведения авторизации. Третье правило не
-существенно. Четвертое правило разрешает доступ ко всем атрибутам
+даты его изменения и проведения авторизации. Третье правило
+несущественно. Четвертое правило разрешает доступ ко всем атрибутам
 пользователю <b>authenticator</b>.
 </p>
 
@@ -2880,7 +2880,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$cMgX2/5Z$2dBOIa75mWgeQCeoDGYMA0
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2898,7 +2898,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2916,7 +2916,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2934,7 +2934,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2952,7 +2952,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2970,7 +2970,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2988,7 +2988,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3006,7 +3006,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3024,7 +3024,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3042,7 +3042,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3059,7 +3059,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3077,7 +3077,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3095,7 +3095,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3113,7 +3113,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3131,7 +3131,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3149,7 +3149,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3167,7 +3167,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3185,7 +3185,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3203,7 +3203,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3221,7 +3221,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3239,7 +3239,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3256,7 +3256,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17175
+shadowLastChange: 17176
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2016-12-19 Пн. 16:55 -->
+<!-- 2017-01-10 Вт. 17:42 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Материалы по оценке производительности вычислительных систем</title>
@@ -188,32 +188,41 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline1">1.1. Бенчмарки и тесты</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline3">2. Обзорные работы, публикуемые организациями для своих вычислительных систем</a></li>
-<li><a href="#orgheadline15">3. Ключевые слова</a>
+<li><a href="#orgheadline4">2. <span class="todo nilTODO">TODO</span> развертывание кластера с помощью xCAT</a>
 <ul>
-<li><a href="#linpack">3.1. LINPACK</a></li>
-<li><a href="#p100">3.2. NVIDIA P100 Pascal</a>
-<ul>
-<li><a href="#nvlink">3.2.1. NVLink</a>
-<ul>
-<li><a href="#orgheadline5">3.2.1.1. NVLink 1.0</a></li>
-<li><a href="#orgheadline6">3.2.1.2. NVLink 2.0 (2017)</a></li>
+<li><a href="#orgheadline3">2.1. xcat 2 Extreme Cloud Administration Toolkit</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline8">3.2.2. Tesla P100 for PCIe-Based Servers</a></li>
-</ul>
-</li>
-<li><a href="#power8">3.3. POWER 8</a>
+<li><a href="#orgheadline5">3. Обзорные работы, публикуемые организациями для своих вычислительных систем</a></li>
+<li><a href="#orgheadline18">4. Ключевые слова</a>
 <ul>
-<li><a href="#orgheadline10">3.3.1. Servers</a></li>
-<li><a href="#orgheadline11">3.3.2. Cell, PowerXCell, PowerPC Element</a></li>
-<li><a href="#power">3.3.3. POWER</a></li>
+<li><a href="#linpack">4.1. LINPACK</a></li>
+<li><a href="#p100">4.2. NVIDIA P100 Pascal</a>
+<ul>
+<li><a href="#nvlink">4.2.1. NVLink</a>
+<ul>
+<li><a href="#orgheadline7">4.2.1.1. NVLink 1.0</a></li>
+<li><a href="#orgheadline8">4.2.1.2. NVLink 2.0 (2017)</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline14">3.4. S822LC</a></li>
+<li><a href="#orgheadline10">4.2.2. Tesla P100 for PCIe-Based Servers</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline16">4. Литература</a></li>
+<li><a href="#power8">4.3. POWER 8</a>
+<ul>
+<li><a href="#orgheadline12">4.3.1. Servers</a></li>
+<li><a href="#orgheadline13">4.3.2. Cell, PowerXCell, PowerPC Element</a></li>
+<li><a href="#power">4.3.3. POWER</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline17">4.4. S822LC</a>
+<ul>
+<li><a href="#implementing-s822lc">4.4.1. Implementing an IBM High-Performance Computing Solution on IBM Power System S822LC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline19">5. Литература</a></li>
 </ul>
 </div>
 </div>
@@ -307,6 +316,23 @@ Keywords: ГРАФИЧЕСКИЙ ПРОЦЕССОР; КЛАСТЕР; ЭФФЕК�
                   ВЫЧИСЛЕНИЯ; РАЗМЕРНОСТЬ ЗАДАЧИ; ГИБРИДНЫЙ УЗЕЛ;
                   ФЛОПС
 </font></blockquote>
+
+</td>
+</tr>
+
+
+<tr valign="top">
+<td align="right" class="bibtexnumber">
+[<a name="quintero2016implementing">3</a>]
+</td>
+<td class="bibtexitem">
+D.&nbsp;Quintero, L.C.C. Huertas, T.&nbsp;Kamenoue, W.&nbsp;dos Santos&nbsp;Moschetta, M.F.
+  de&nbsp;Oliveira, G.E. Pavlov, A.&nbsp;Pozdneev, and IBM Redbooks.
+ <em>Implementing an IBM High-Performance Computing Solution on IBM
+  Power System S822LC</em>.
+ IBM Redbooks, 2016.
+[&nbsp;<a href="cluster_bib.html#quintero2016implementing">bib</a>&nbsp;| 
+<a href="http://www.redbooks.ibm.com/redbooks/pdfs/sg248280.pdf">.pdf</a>&nbsp;]
 
 </td>
 </tr>
@@ -413,9 +439,117 @@ OPENMP + GPU + streams)</li>
 </div>
 </div>
 
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3"><span class="section-number-2">2</span> Обзорные работы, публикуемые организациями для своих вычислительных систем</h2>
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4"><span class="section-number-2">2</span> <span class="todo TODO">TODO</span> развертывание кластера с помощью xCAT</h2>
 <div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>см. также <a href="#implementing-s822lc">s822lc</a></li>
+</ul>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">2.1</span> xcat 2 Extreme Cloud Administration Toolkit</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li><a href="http://docplayer.net/3806990-Xcat-2-extreme-cloud-administration-toolkit.html">презентация</a>
+<ul class="org-ul">
+<li>xCAT Architecture &amp; Basic Functionality
+<ul class="org-ul">
+<li>"Nodes" are anything that require an IP address:
+<ul class="org-ul">
+<li>Servers, server IMM/BMCs</li>
+<li>Switches, storage controllers, PDUs, etc.</li>
+</ul></li>
+<li>XCAT provides a choice – conventional state-full installs to disk,
+state-less installs with no persistent media, and state-lite
+installs with persistent media NFS mounted.</li>
+<li>Statelite advantages over Stateless
+<ul class="org-ul">
+<li>Some files can be made persistent over reboot. However, you
+still get the advantage of only having to manage a single image</li>
+<li>Changes to hundreds of machines can take place instantly, and
+automatically, by updating one main image. In most cases,
+machines do not need to reboot for these changes to take
+affect. (only for the NFSROOT-based solution)</li>
+<li>Ease of administration by being able to lock down an
+image. Parts of the image can be read-only - so no modifications
+can be made without updating the central image</li>
+<li>Files can be managed . You can set table values to allow
+machines to sync from different places based on their
+attributes: think overlays</li>
+<li>Ideal for virtualization. Images can be smaller, use less disk
+and memory, and can be easier to manage</li>
+</ul></li>
+<li>Statelite disadvantages compared to Stateless
+<ul class="org-ul">
+<li>Network traffic is not just at node boot time</li>
+<li>NFS and scaling</li>
+<li>While more flexible it does require more initial configuration
+to work</li>
+<li>Some limitations on target environments. Mostly a testing
+problem</li>
+</ul></li>
+</ul></li>
+<li>xCAT Commands
+<ul class="org-ul">
+<li>xCAT Commands used on the CLI interface can be divided in several groups
+<ul class="org-ul">
+<li>Database support
+<ul class="org-ul">
+<li>chtab, chdef, nodels, mkrrbc, mkrrnodes, modech, tabdump</li>
+</ul></li>
+<li>Hardware control
+<ul class="org-ul">
+<li>getmacs, rcons, renergy, rnetboot, reventlog</li>
+</ul></li>
+<li>Monitoring
+<ul class="org-ul">
+<li>monadd, monls, monstart, monstop</li>
+</ul></li>
+<li>Inventory
+<ul class="org-ul">
+<li>rinv, rvitals, sinv</li>
+</ul></li>
+<li>Parallel commands
+<ul class="org-ul">
+<li>pscp, psh, prsync, pping</li>
+</ul></li>
+<li>Deployment
+<ul class="org-ul">
+<li>copycds, genimage, liteimg</li>
+</ul></li>
+<li>CSM to xCAT migration Tools</li>
+<li>Others
+<ul class="org-ul">
+<li>makenetworks, makehost, makedhcp</li>
+</ul></li>
+</ul></li>
+<li>xCAT <a href="http://xcat-docs.readthedocs.io/en/latest/guides/admin-guides/references/man3/noderange.3.html">noderange</a></li>
+</ul></li>
+<li>Setting Up an xCAT Cluster
+<ul class="org-ul">
+<li>Prior to installing the Management Node, the administrator
+should already have an idea of how the overall cluster will look
+post-configured.
+<ul class="org-ul">
+<li>Internal Node naming scheme</li>
+<li>Networks and IP addresses for every node on each net</li>
+<li>Storage disk drive and filesystem layout</li>
+<li>Linux version(s) to be used</li>
+<li>Node or resource groups</li>
+<li>Resource manager/scheduler</li>
+<li>Cluster authentication method</li>
+<li>License managers/services inside/outside the cluster</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5"><span class="section-number-2">3</span> Обзорные работы, публикуемые организациями для своих вычислительных систем</h2>
+<div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Т-Платформы, Ломоносов, 2012 <a href="http://www.t-platforms.ru/images/pdfsolutions_RUS/%D0%A1%D1%83%D0%BF%D0%B5%D1%80%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80%20%D0%9B%D0%BE%D0%BC%D0%BE%D0%BD%D0%BE%D1%81%D0%BE%D0%B2.pdf">link</a></li>
 <li>Отчет о введении гибридного кластера ФМБФ в эксплуатацию 2010
@@ -466,11 +600,11 @@ PCG, система показала ускорение на 30-40% при ре�
 </div>
 </div>
 
-<div id="outline-container-orgheadline15" class="outline-2">
-<h2 id="orgheadline15"><span class="section-number-2">3</span> Ключевые слова</h2>
-<div class="outline-text-2" id="text-3">
-</div><div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="linpack"><a id="orgheadline4"></a><a id="ID-7913bb34-5ecd-4445-bb30-eb8747a4128c"></a><span class="section-number-3">3.1</span> LINPACK</h3>
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">4</span> Ключевые слова</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="linpack"><a id="orgheadline6"></a><a id="ID-7913bb34-5ecd-4445-bb30-eb8747a4128c"></a><span class="section-number-3">4.1</span> LINPACK</h3>
 <div class="outline-text-3" id="text-linpack">
 <ul class="org-ul">
 <li><a href="https://www.nextplatform.com/2016/06/20/nvidia-rounds-pascal-tesla-accelerator-lineup/">Nvidia Rounds Out Pascal Tesla Accelerator Lineup</a>
@@ -483,8 +617,8 @@ ranked on the Top 500 list of supercomputers.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="p100"><a id="orgheadline9"></a><a id="ID-0a47544c-f8e5-440e-8812-8c9bee1a4344"></a><span class="section-number-3">3.2</span> NVIDIA P100 Pascal</h3>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="p100"><a id="orgheadline11"></a><a id="ID-0a47544c-f8e5-440e-8812-8c9bee1a4344"></a><span class="section-number-3">4.2</span> NVIDIA P100 Pascal</h3>
 <div class="outline-text-3" id="text-p100">
 <ul class="org-ul">
 <li>NVIDIA® Tesla® P100 GPU accelerators are the most advanced ever
@@ -578,8 +712,8 @@ the size of the GPU physical memory.</li>
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="nvlink"><a id="orgheadline7"></a><a id="ID-438f5422-92d2-44dc-862b-bdec2d3b3095"></a><span class="section-number-4">3.2.1</span> NVLink</h4>
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="nvlink"><a id="orgheadline9"></a><a id="ID-438f5422-92d2-44dc-862b-bdec2d3b3095"></a><span class="section-number-4">4.2.1</span> NVLink</h4>
 <div class="outline-text-4" id="text-nvlink">
 <ul class="org-ul">
 <li>Tesla P100 for NVLink-enabled Servers</li>
@@ -615,9 +749,9 @@ claiming it is more than a match for Nvidia’s hardware, and AMD is
 steadily improving its FirePro range.</li>
 </ul>
 </div>
-<div id="outline-container-orgheadline5" class="outline-5">
-<h5 id="orgheadline5"><span class="section-number-5">3.2.1.1</span> NVLink 1.0</h5>
-<div class="outline-text-5" id="text-3-2-1-1">
+<div id="outline-container-orgheadline7" class="outline-5">
+<h5 id="orgheadline7"><span class="section-number-5">4.2.1.1</span> NVLink 1.0</h5>
+<div class="outline-text-5" id="text-4-2-1-1">
 <ul class="org-ul">
 <li>Пропускная способность интерфейса используемого в GPU NVIDIA Pascal GP100 (2016 год):
 <ul class="org-ul">
@@ -628,16 +762,16 @@ steadily improving its FirePro range.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgheadline6" class="outline-5">
-<h5 id="orgheadline6"><span class="section-number-5">3.2.1.2</span> NVLink 2.0 (2017)</h5>
+<div id="outline-container-orgheadline8" class="outline-5">
+<h5 id="orgheadline8"><span class="section-number-5">4.2.1.2</span> NVLink 2.0 (2017)</h5>
 </div>
 </div>
-<div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8"><span class="section-number-4">3.2.2</span> Tesla P100 for PCIe-Based Servers</h4>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10"><span class="section-number-4">4.2.2</span> Tesla P100 for PCIe-Based Servers</h4>
 </div>
 </div>
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="power8"><a id="orgheadline13"></a><a id="ID-858126b4-6dfd-487c-8840-5859d84b3fe1"></a><span class="section-number-3">3.3</span> POWER 8</h3>
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="power8"><a id="orgheadline15"></a><a id="ID-858126b4-6dfd-487c-8840-5859d84b3fe1"></a><span class="section-number-3">4.3</span> POWER 8</h3>
 <div class="outline-text-3" id="text-power8">
 <ul class="org-ul">
 <li>Представлен в 2013 году, изготовлен по 22 нм SOI. 6 или 12 ядер на
@@ -666,9 +800,9 @@ S821LC and the Power System S822LC for Big Data.</li>
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10"><span class="section-number-4">3.3.1</span> Servers</h4>
-<div class="outline-text-4" id="text-3-3-1">
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12"><span class="section-number-4">4.3.1</span> Servers</h4>
+<div class="outline-text-4" id="text-4-3-1">
 <ul class="org-ul">
 <li><a href="https://www.microway.com/product/openpower-gpu-server-nvidia-tesla-p100-nvlink-gpus/">OpenPOWER GPU Server with NVIDIA Tesla P100 NVLink GPUs</a></li>
 <li>IBM, NVIDIA и Wistron <a href="https://servernews.ru/931493">разработали</a> новый HPC-сервер на базе POWER8 и Tesla P100
@@ -687,9 +821,9 @@ IBM POWER8. IBM и NVIDIA намерены создать сеть лабора�
 </ul>
 </div>
 </div>
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11"><span class="section-number-4">3.3.2</span> Cell, PowerXCell, PowerPC Element</h4>
-<div class="outline-text-4" id="text-3-3-2">
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13"><span class="section-number-4">4.3.2</span> Cell, PowerXCell, PowerPC Element</h4>
+<div class="outline-text-4" id="text-4-3-2">
 <p>
 Cell совмещает ядро общего назначения архитектуры <a href="#power">POWER</a> с
 сопроцессорами, которые значительно ускоряют обработку мультимедиа
@@ -702,8 +836,8 @@ Cell совмещает ядро общего назначения архите�
 </div>
 </div>
 
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="power"><a id="orgheadline12"></a><a id="ID-00567ea2-be80-4d73-8b3d-bcc5557f52e9"></a><span class="section-number-4">3.3.3</span> POWER</h4>
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="power"><a id="orgheadline14"></a><a id="ID-00567ea2-be80-4d73-8b3d-bcc5557f52e9"></a><span class="section-number-4">4.3.3</span> POWER</h4>
 <div class="outline-text-4" id="text-power">
 <ul class="org-ul">
 <li>POWER — микропроцессорная архитектура с ограниченным набором команд
@@ -734,9 +868,9 @@ RISC). Этим словом также называется серия микр
 </div>
 </div>
 
-<div id="outline-container-orgheadline14" class="outline-3">
-<h3 id="orgheadline14"><span class="section-number-3">3.4</span> S822LC</h3>
-<div class="outline-text-3" id="text-3-4">
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">4.4</span> S822LC</h3>
+<div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>Server-side GPU acceleration
 <ul class="org-ul">
@@ -775,11 +909,105 @@ Conjugate Gradients (HPCG) Benchmark.</li>
 </ul></li>
 </ul>
 </div>
+
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="implementing-s822lc"><a id="orgheadline16"></a><a id="ID-4e8e265c-1dd2-43a7-a1cb-a47f5e425b75"></a><span class="section-number-4">4.4.1</span> Implementing an IBM High-Performance Computing Solution on IBM Power System S822LC</h4>
+<div class="outline-text-4" id="text-implementing-s822lc">
+<ul class="org-ul">
+<li>Selective Contents [<a href="#quintero2016implementing">3</a>]
+<ul class="org-ul">
+<li>Chapter 2. Reference architecture</li>
+<li>Chapter 3. Hardware components</li>
+<li>Chapter 4. Software stack
+<ul class="org-ul">
+<li>4.2 OPAL firmware</li>
+<li>4.3 xCAT</li>
+<li>4.4 RHEL server</li>
+<li>4.5 NVIDIA CUDA Toolkit</li>
+<li>4.6 Mellanox OFED for Linux</li>
+<li>4.7 IBM XL compilers, GCC, and Advance Toolchain</li>
+<li>4.8 IBM Parallel Environment</li>
+<li>4.9 IBM Engineering and Scientific Subroutine Library and Parallel ESSL</li>
+<li>4.10 IBM Spectrum Scale (formerly IBM GPFS)</li>
+<li>4.11 IBM Spectrum LSF (formerly IBM Platform LSF)</li>
+</ul></li>
+<li>Chapter 5. Software deployment
+<ul class="org-ul">
+<li>5.2 System management
+<ul class="org-ul">
+<li>5.2.1 Build instructions for IPMItool
+<ul class="org-ul">
+<li>IPMI – это набор спецификаций, регламентирующих, как общаться и что предоставлять.
+<ul class="org-ul">
+<li>BMC – это обертка из железа для работы IPMI. Представляет собой
+одноплатный (system on а chip) с щупальцами в сенсорах основного.</li>
+<li>IBM IMM (Integrated Management Module)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>5.3 xCAT overview</li>
+<li>5.4 xCAT Management Node</li>
+<li>5.5 xCAT Node Discovery</li>
+<li>5.6 xCAT Compute Nodes</li>
+<li>5.7 xCAT Login Nodes</li>
+</ul></li>
+<li>Chapter 6. Application development and tuning
+<ul class="org-ul">
+<li>6.2 Engineering and Scientific Subroutine Library</li>
+<li>6.4 Using POWER8 vectorization</li>
+<li>6.5 Development models
+<ul class="org-ul">
+<li>6.5.1 MPI programs with IBM Parallel Environment</li>
+<li>6.5.2 CUDA C programs with the NVIDIA CUDA Toolkit</li>
+<li>6.5.3 Hybrid MPI and CUDA programs with IBM Parallel Environment</li>
+<li>6.5.4 OpenMP programs with the IBM Parallel Environment</li>
+<li>6.5.5 OpenSHMEM programs with the IBM Parallel Environment</li>
+<li>6.5.6 Parallel Active Messaging Interface programs</li>
+</ul></li>
+<li>6.6 GPU tuning</li>
+<li>6.7 Tools for development and tuning of applications
+<ul class="org-ul">
+<li>6.7.1 The Parallel Environment Developer Edition</li>
+<li>6.7.2 IBM PE Parallel Debugger</li>
+<li>6.7.3 Eclipse for Parallel Application Developers</li>
+<li>6.7.4 NVIDIA Nsight Eclipse Edition for CUDA C/C++</li>
+<li>6.7.5 Command-line tools for CUDA C/C++</li>
+</ul></li>
+</ul></li>
+<li>Chapter 8. Cluster monitoring
+<ul class="org-ul">
+<li>8.1 IBM Spectrum LSF tools for monitoring</li>
+<li>8.2 nvidia-smi tool for monitoring GPU</li>
+</ul></li>
+<li>Appendix A. Applications and performance
+<ul class="org-ul">
+<li>Application software
+<ul class="org-ul">
+<li>Bioinformatics</li>
+<li>OpenFOAM</li>
+<li>NAMD program</li>
+</ul></li>
+<li>Effects of basic performance tuning techniques
+<ul class="org-ul">
+<li>The performance impact of a rational choice of an SMT mode</li>
+<li>The impact of optimization options on performance</li>
+<li>Summary of favorable modes and options for applications from the NPB suite</li>
+<li>The importance of binding threads to logical processors</li>
+</ul></li>
+<li>General methodology of performance benchmarking</li>
+<li>Sample code for the construction of thread affinity strings</li>
+<li>ESSL performance results</li>
+</ul></li>
+</ul></li>
+</ul>
 </div>
 </div>
-<div id="outline-container-orgheadline16" class="outline-2">
-<h2 id="orgheadline16"><span class="section-number-2">4</span> Литература</h2>
-<div class="outline-text-2" id="text-4">
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="orgheadline19"><span class="section-number-2">5</span> Литература</h2>
+<div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Ломоносов
 <ul class="org-ul">
