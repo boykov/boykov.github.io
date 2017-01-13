@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-01-10 Вт. 17:42 -->
+<!-- 2017-01-13 Пт. 12:33 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Материалы по оценке производительности вычислительных систем</title>
@@ -215,7 +215,7 @@ for the JavaScript code in this tag.
 <li><a href="#power">4.3.3. POWER</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline17">4.4. S822LC</a>
+<li><a href="#orgheadline17">4.4. S822LC 8335-GTB Model</a>
 <ul>
 <li><a href="#implementing-s822lc">4.4.1. Implementing an IBM High-Performance Computing Solution on IBM Power System S822LC</a></li>
 </ul>
@@ -367,6 +367,10 @@ D.&nbsp;Quintero, L.C.C. Huertas, T.&nbsp;Kamenoue, W.&nbsp;dos Santos&nbsp;Mosc
 <ul class="org-ul">
 <li><a href="https://www-01.ibm.com/common/ssi/cgi-bin/ssialias?htmlfid=POD03117USEN">буклет</a> IBM Power System S822LC for High Performance Computing
 <ul class="org-ul">
+<li>The combination of NVLink and NVIDIA Tesla P100 GPUs delivers
+unprecedented performance across multiple workloads compared to
+x86 with Tesla K80 GPUs:
+<ul class="org-ul">
 <li>Kinetica “Filter by geographic area” queries on data set of 280
 million simulated Tweets with 1 up to 80 concurrent query streams
 each with 0 think time</li>
@@ -377,10 +381,33 @@ Density Functional Theory. A Hybrid version of CPMD (e.g. MPI +
 OPENMP + GPU + streams)</li>
 <li>High Performance Conjugate Gradients (HPCG) Benchmark <a href="http://www.hpcg-benchmark.org/">http://www.hpcg-benchmark.org/</a></li>
 </ul></li>
-</ul>
+</ul></li>
 
-
+<li>Implementing an IBM High-Performance Computing Solution on IBM Power
+System S822LC [<a href="#quintero2016implementing">3</a>]
 <ul class="org-ul">
+<li>POWER8 with Tesla K80 GPUs (8335-GTA)</li>
+<li>Appendix A. Applications and performance
+<ul class="org-ul">
+<li>Application software
+<ul class="org-ul">
+<li>Bioinformatics</li>
+<li>OpenFOAM</li>
+<li>NAMD program</li>
+</ul></li>
+<li>Effects of basic performance tuning techniques
+<ul class="org-ul">
+<li>The performance impact of a rational choice of an SMT mode</li>
+<li>The impact of optimization options on performance</li>
+<li>Summary of favorable modes and options for applications from the NPB suite</li>
+<li>The importance of binding threads to logical processors</li>
+</ul></li>
+<li>General methodology of performance benchmarking</li>
+<li>Sample code for the construction of thread affinity strings</li>
+<li>ESSL performance results</li>
+</ul></li>
+</ul></li>
+
 <li>Комплексная методика тестирования производительности суперкомпьютеров [<a href="#gorbunov2013komplexnaya">1</a>]
 <ul class="org-ul">
 <li>Класс DIS-задач представляют тест
@@ -869,7 +896,7 @@ RISC). Этим словом также называется серия микр
 </div>
 
 <div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17"><span class="section-number-3">4.4</span> S822LC</h3>
+<h3 id="orgheadline17"><span class="section-number-3">4.4</span> S822LC 8335-GTB Model</h3>
 <div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>Server-side GPU acceleration
@@ -945,7 +972,11 @@ Conjugate Gradients (HPCG) Benchmark.</li>
 </ul></li>
 </ul></li>
 </ul></li>
-<li>5.3 xCAT overview</li>
+<li>5.3 xCAT overview
+<ul class="org-ul">
+<li>xCAT manages the nodes in a cluster by using continuous
+configuration and event handling</li>
+</ul></li>
 <li>5.4 xCAT Management Node</li>
 <li>5.5 xCAT Node Discovery</li>
 <li>5.6 xCAT Compute Nodes</li>
@@ -978,25 +1009,6 @@ Conjugate Gradients (HPCG) Benchmark.</li>
 <ul class="org-ul">
 <li>8.1 IBM Spectrum LSF tools for monitoring</li>
 <li>8.2 nvidia-smi tool for monitoring GPU</li>
-</ul></li>
-<li>Appendix A. Applications and performance
-<ul class="org-ul">
-<li>Application software
-<ul class="org-ul">
-<li>Bioinformatics</li>
-<li>OpenFOAM</li>
-<li>NAMD program</li>
-</ul></li>
-<li>Effects of basic performance tuning techniques
-<ul class="org-ul">
-<li>The performance impact of a rational choice of an SMT mode</li>
-<li>The impact of optimization options on performance</li>
-<li>Summary of favorable modes and options for applications from the NPB suite</li>
-<li>The importance of binding threads to logical processors</li>
-</ul></li>
-<li>General methodology of performance benchmarking</li>
-<li>Sample code for the construction of thread affinity strings</li>
-<li>ESSL performance results</li>
 </ul></li>
 </ul></li>
 </ul>
