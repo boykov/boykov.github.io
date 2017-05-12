@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-02-09 Чт. 17:19 -->
+<!-- 2017-03-29 Ср. 09:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -390,7 +390,7 @@ cc-ldap-centos<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
 
 <div class="org-src-container">
 <label class="org-src-name">Установка сервера <b>OpenLDAP</b> для <b>5/2.3</b> и <b>6/2.4</b></label>
-<pre class="src src-org">    yum -y install openldap openldap-servers openldap-clients sudo
+<pre class="src src-org">    yum -y install openldap openldap-servers openldap-clients openssl sudo
     yum -y install php php-ldap wget
 </pre>
 </div>
@@ -684,9 +684,9 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">/etc/pki/tls/certs, running "make slapd.pem", and fixing permissions on</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">slapd.pem so that the ldap user or group can read it.  Your client software</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">may balk at self-signed certificates, however.</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">TLSCACertificateFile /etc/pki/tls/certs/ca-bundle.crt</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">TLSCertificateFile /etc/pki/tls/certs/slapd.pem</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">TLSCertificateKeyFile /etc/pki/tls/certs/slapd.pem</span>
+<span style="color: #268bd2;">TLSCACertificateFile</span> /etc/openldap/certs/ca-bundle.crt
+<span style="color: #268bd2;">TLSCertificateFile</span> /etc/openldap/certs/server.crt
+<span style="color: #268bd2;">TLSCertificateKeyFile</span> /etc/openldap/certs/server.key
 
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Sample security restrictions</span>
 <span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Require integrity protection (prevent hijacking)</span>
@@ -770,10 +770,18 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # moduleload ppolicy.la</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> moduleload ppolicy.la</span>
+<span style="background-color: #fdf6e3;">50,52c53,55</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # TLSCACertificateFile /etc/pki/tls/certs/ca-bundle.crt</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # TLSCertificateFile /etc/pki/tls/certs/slapd.pem</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # TLSCertificateKeyFile /etc/pki/tls/certs/slapd.pem</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLSCACertificateFile /etc/openldap/certs/ca-bundle.crt</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLSCertificateFile /etc/openldap/certs/server.crt</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLSCertificateKeyFile /etc/openldap/certs/server.key</span>
 <span style="background-color: #fdf6e3;">83a87,89</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}SU5TvGLX/MoNX5pCYIaLQgz3jx9WDgx0</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}iWDZg5mFKTlK0y8mClqG1IUd7CUKn8QH</span>
 <span style="background-color: #fdf6e3;">85c91,93</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -792,7 +800,11 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 </p>
 <div class="org-src-container">
 <label class="org-src-name">Первый запуск сервиса для <b>5/2.3</b></label>
-<pre class="src src-sh">    mv /etc/openldap/slapd.conf /etc/openldap/slapd.conf.original
+<pre class="src src-sh">    mkdir -p /etc/openldap/certs/
+    cp /root/server.key /root/server.crt /root/ca-bundle.crt /etc/openldap/certs/
+    chown ldap. /etc/openldap/certs/server.key /etc/openldap/certs/server.crt /etc/openldap/certs/ca-bundle.crt
+
+    mv /etc/openldap/slapd.conf /etc/openldap/slapd.conf.original
     cp /root/slapd.conf /etc/openldap/slapd.conf
     <span style="color: #268bd2;">ROOT_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>)
     <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Use bash variable substitution to escape special chars http://stackoverflow.com/a/14339705</span>
@@ -879,9 +891,9 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">dummy test certificate which you can generate by running</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">/usr/libexec/openldap/generate-server-cert.sh. Your client software may balk</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">at self-signed certificates, however.</span>
-<span style="color: #268bd2;">TLSCACertificatePath</span> /etc/openldap/certs
-<span style="color: #268bd2;">TLSCertificateFile</span> <span style="color: #2aa198;">"\"OpenLDAP Server\""</span>
-<span style="color: #268bd2;">TLSCertificateKeyFile</span> /etc/openldap/certs/password
+<span style="color: #268bd2;">TLSCACertificateFile</span> /etc/openldap/certs/ca-bundle.crt
+<span style="color: #268bd2;">TLSCertificateFile</span> /etc/openldap/certs/server.crt
+<span style="color: #268bd2;">TLSCertificateKeyFile</span> /etc/openldap/certs/server.key
 
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Sample security restrictions</span>
 <span style="color: #93a1a1;">#       </span><span style="color: #93a1a1;">Require integrity protection (prevent hijacking)</span>
@@ -971,9 +983,17 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # moduleload ppolicy.la</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> moduleload ppolicy.la</span>
+<span style="background-color: #fdf6e3;">66,68c67,69</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLSCACertificatePath /etc/openldap/certs</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLSCertificateFile "\"OpenLDAP Server\""</span>
+<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLSCertificateKeyFile /etc/openldap/certs/password</span>
+<span style="background-color: #fdf6e3;">---</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLSCACertificateFile /etc/openldap/certs/ca-bundle.crt</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLSCertificateFile /etc/openldap/certs/server.crt</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLSCertificateKeyFile /etc/openldap/certs/server.key</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}Xs78eHOwcPoJrSohxbU3Fig1F84GAenX</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}t6/UlGwPVxv0gm2CcHJlUD52Y+WXKFH/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -989,7 +1009,10 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 
 <div class="org-src-container">
 <label class="org-src-name">Первый запуск сервиса для <b>6/2.4</b></label>
-<pre class="src src-sh">    cp /root/slapd.conf.obsolete /etc/openldap/slapd.conf
+<pre class="src src-sh">    cp /root/server.key /root/server.crt /root/ca-bundle.crt /etc/openldap/certs/
+    chown ldap. /etc/openldap/certs/server.key /etc/openldap/certs/server.crt /etc/openldap/certs/ca-bundle.crt
+
+    cp /root/slapd.conf.obsolete /etc/openldap/slapd.conf
     <span style="color: #268bd2;">ROOT_PWD</span>=$(<span style="color: #6c71c4; font-weight: bold;">slappasswd</span> -s $<span style="color: #268bd2;">LDAP_ROOT_PASSWORD</span>)
     <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Use bash variable substitution to escape special chars http://stackoverflow.com/a/14339705</span>
     sed -i <span style="color: #2aa198;">"s+%LDAP_ROOT_PASSWORD%+${ROOT_PWD//+/\\+}+"</span> /etc/openldap/slapd.conf
@@ -1328,8 +1351,8 @@ sed -i <span style="color: #2aa198;">"s|      negative-time-to-live   passwd    
 
 <div class="org-src-container">
 <label class="org-src-name">Настройка libuser для <b>5/2.3</b> и <b>6/2.4</b></label>
-<pre class="src src-sh">sed -i <span style="color: #2aa198;">"s|^modules = files shadow|modules = files shadow ldap|"</span> /etc/libuser.conf
-sed -i <span style="color: #2aa198;">"s|create_modules = files shadow|create_modules = ldap files shadow|"</span> /etc/libuser.conf
+<pre class="src src-sh">sed -i <span style="color: #2aa198;">"s|^modules = files shadow|modules = ldap|"</span> /etc/libuser.conf
+sed -i <span style="color: #2aa198;">"s|create_modules = files shadow|create_modules = ldap|"</span> /etc/libuser.conf
 sed -i <span style="color: #2aa198;">"s|# server = ldap|server = ldap://$LDAP_SERVER|"</span> /etc/libuser.conf
 sed -i <span style="color: #2aa198;">"s|# basedn = dc=example,dc=com|basedn = $LDAP_BASEDN|"</span> /etc/libuser.conf
 sed -i <span style="color: #2aa198;">"s|# userBranch = ou=People|userBranch = ou=users|"</span> /etc/libuser.conf
@@ -1352,6 +1375,7 @@ sed -i <span style="color: #2aa198;">"s|# binddn = cn=Manager,dc=example,dc=com|
 <label class="org-src-name">Настройка клиента для <b>6/2.4</b></label>
 <pre class="src src-sh">authconfig --enablemkhomedir --enableldap --enableldapauth <span style="color: #b58900; font-weight: bold;">\</span>
            --ldapserver=$<span style="color: #268bd2;">LDAP_SERVER</span> --ldapbasedn=$<span style="color: #268bd2;">LDAP_BASEDN</span> --update
+<span style="color: #657b83; font-weight: bold;">echo</span> <span style="color: #2aa198;">"TLS_REQCERT allow"</span> &gt;&gt; /etc/openldap/ldap.conf
 
 <span style="color: #657b83; font-weight: bold;">echo</span> sudoers:  files ldap &gt;&gt; /etc/nsswitch.conf
 
@@ -1367,6 +1391,7 @@ sed -i <span style="color: #2aa198;">"s|# binddn = cn=Manager,dc=example,dc=com|
 
 <span style="color: #657b83; font-weight: bold;">echo</span> binddn <span style="color: #268bd2;">uid</span>=authenticator,<span style="color: #268bd2;">ou</span>=system,<span style="color: #268bd2;">dc</span>=mercury,<span style="color: #268bd2;">dc</span>=febras,<span style="color: #268bd2;">dc</span>=net &gt;&gt; /etc/nslcd.conf
 <span style="color: #657b83; font-weight: bold;">echo</span> bindpw secret &gt;&gt; /etc/nslcd.conf
+<span style="color: #657b83; font-weight: bold;">echo</span> <span style="color: #2aa198;">"tls_reqcert allow"</span> &gt;&gt; /etc/nslcd.conf
 
 chmod 600 /etc/sudo-ldap.conf
 chmod 600 /etc/pam_ldap.conf
@@ -2881,7 +2906,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$cMgX2/5Z$2dBOIa75mWgeQCeoDGYMA0
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2899,7 +2924,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2917,7 +2942,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2935,7 +2960,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2953,7 +2978,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2971,7 +2996,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2989,7 +3014,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3007,7 +3032,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3025,7 +3050,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3043,7 +3068,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3060,7 +3085,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3078,7 +3103,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3096,7 +3121,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3114,7 +3139,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3132,7 +3157,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3150,7 +3175,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3168,7 +3193,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3186,7 +3211,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3204,7 +3229,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3222,7 +3247,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3240,7 +3265,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3257,7 +3282,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17191
+shadowLastChange: 17253
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7

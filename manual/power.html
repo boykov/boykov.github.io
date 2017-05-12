@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+<head>
+<!-- 2017-05-12 Пт. 12:26 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Руководство пользователя кластера OpenPOWER ВЦ ДВО РАН</title>
+<meta  name="generator" content="Org-mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="../org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style type="text/css">.org-src-name{ text-align: right; }</style>
+<style type="text/css">.outline-2{ margin-top: 60px; }</style>
+
+<style type="text/css">
+  pre.src:before {
+    top: -5px;
+  }
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Руководство пользователя кластера OpenPOWER ВЦ ДВО РАН</h1>
+<div id="table-of-contents">
+<h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">Регистрация</a></li>
+<li><a href="#orgheadline2">Вход в систему</a>
+<ul>
+<li><a href="#orgheadline3">Вход с Windows-машины</a></li>
+<li><a href="#orgheadline4">Вход с терминала Linux</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline5">Копирование файлов</a></li>
+<li><a href="#orgheadline6">Работа на кластере</a>
+<ul>
+<li><a href="#orgheadline7">Навигация</a>
+<ul>
+<li><a href="#orgheadline8">Консоль</a></li>
+<li><a href="#orgheadline9">mc</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">Редактирование файлов</a>
+<ul>
+<li><a href="#orgheadline11">mc-edit</a></li>
+<li><a href="#orgheadline12">Emacs, VIM</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">Компиляция программ</a>
+<ul>
+<li><a href="#orgheadline14">Замечания по разработке программ на отдельной машине</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline15">Запуск задач</a>
+<ul>
+<li><a href="#orgheadline16">Диспетчеризация задач</a></li>
+<li><a href="#orgheadline17">Система очередей</a></li>
+<li><a href="#orgheadline18">Постановка задачи в очередь</a></li>
+<li><a href="#orgheadline19">Запуск интерактивных программ</a></li>
+<li><a href="#orgheadline20">Запуск непараллельных программ</a></li>
+<li><a href="#orgheadline21">Состояние пользовательских задач</a></li>
+<li><a href="#orgheadline22">Остановка задач</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline23">Мониторинг</a>
+<ul>
+<li><a href="#orgheadline24">Web-интерфейс</a></li>
+<li><a href="#orgheadline25">Консоль</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline26">Справочная информация</a></li>
+</ul>
+</div>
+</div>
+<p>
+<br  />
+<br  />
+Данное руководство содержит минимально необходимый объем информации
+для работы на кластере ВЦ ДВО РАН: описание процесса регистрации,
+сведения по работе в ОС Linux (вход в систему, работа с каталогами и
+файлами, мониторинг) и работе с MPI программами и не параллельными
+программами на кластере (компиляция, запуск, остановка, работа с
+очередями). В тексте под термином параллельная программа
+подразумеваются только MPI программы.
+</p>
+
+<p>
+Команды и переменные командного
+интерпретатора, названия программ, листинги, непосредственный
+ввод/вывод консоли выделены моноширинным шрифтом.
+</p>
+
+<p>
+Вопросы относительно работы кластера следует отправлять на <i>e-mail</i>:
+<a href="mailto:support@hpc.febras.net">support@hpc.febras.net</a>.
+</p>
+
+<p>
+Вопросы относительно этого документа (ошибки, неточности, предложения)
+можно отправлять на <i>e-mail</i>: <a href="mailto:support@hpc.febras.net">support@hpc.febras.net</a>.
+</p>
+
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">Регистрация</a></li>
+<li><a href="#orgheadline2">Вход в систему</a>
+<ul>
+<li><a href="#orgheadline3">Вход с Windows-машины</a></li>
+<li><a href="#orgheadline4">Вход с терминала Linux</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline5">Копирование файлов</a></li>
+<li><a href="#orgheadline6">Работа на кластере</a>
+<ul>
+<li><a href="#orgheadline7">Навигация</a>
+<ul>
+<li><a href="#orgheadline8">Консоль</a></li>
+<li><a href="#orgheadline9">mc</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">Редактирование файлов</a>
+<ul>
+<li><a href="#orgheadline11">mc-edit</a></li>
+<li><a href="#orgheadline12">Emacs, VIM</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">Компиляция программ</a>
+<ul>
+<li><a href="#orgheadline14">Замечания по разработке программ на отдельной машине</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline15">Запуск задач</a>
+<ul>
+<li><a href="#orgheadline16">Диспетчеризация задач</a></li>
+<li><a href="#orgheadline17">Система очередей</a></li>
+<li><a href="#orgheadline18">Постановка задачи в очередь</a></li>
+<li><a href="#orgheadline19">Запуск интерактивных программ</a></li>
+<li><a href="#orgheadline20">Запуск непараллельных программ</a></li>
+<li><a href="#orgheadline21">Состояние пользовательских задач</a></li>
+<li><a href="#orgheadline22">Остановка задач</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline23">Мониторинг</a>
+<ul>
+<li><a href="#orgheadline24">Web-интерфейс</a></li>
+<li><a href="#orgheadline25">Консоль</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline26">Справочная информация</a></li>
+</ul>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Регистрация</h2>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Вход в систему</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+Для работы с системой пользователь должен иметь свою учетную запись на
+управляющем узле кластера. Регистрация пользователя на кластере
+происходит в соответствии с предыдущей частью руководства. После
+регистрации пользователь получает свое имя (логин), пароль и домашнюю
+директорию. Если имя пользователя, например, будет <b>user</b>, то домашняя
+папка находится в <b>/home/user</b>.
+</p>
+
+<p>
+Пользователи имеют возможность работать на кластере с любой машины,
+находящейся в сети института и интернет. Для входа в систему
+пользователю необходим адрес сервера (<a href="http://jupiter.febras.net/">jupiter.febras.net</a>), а также
+имя и пароль, полученные при регистрации.
+</p>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">Вход с Windows-машины</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+Работа с системой осуществляется по безопасному протоколу SSH при помощи какого-либо
+ssh-клиента. Клиент должен поддерживать протокол версии 2. Рекомендуется использовать 
+<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a>.
+Эта программа является свободно распространяемой и проста в использовании.
+</p>
+
+<p>
+После запуска программы (рис. 1) пользователь должен выбрать протокол
+ssh и в поле «Host Name (or IP address)» указать адрес
+сервера. Нажатие на «Open» приведет к отправке запроса на
+подключение. В случае успешного подключения к серверу будет предложено
+ввести имя (логин), а затем и пароль.
+</p>
+
+
+<div id="orgparagraph1" class="figure">
+<p><img src="./putty.png" alt="putty.png" />
+</p>
+<p><span class="figure-number">&#1056;&#1080;&#1089;. 1.:</span> Окно ssh-клиента PuTTY</p>
+</div>
+
+<p>
+При вводе пароля символы на экране не отображаются. Если все введено
+правильно, то пользователь автоматически окажется в своей домашней
+директории. Этот каталог доступен пользователю с любого узла кластера.
+</p>
+
+<div class="note">
+<p>
+<b>Примечание</b>. На кластере существует единое дисковое пространство для
+директорий <b>/opt</b> (только чтение) и <b>/home</b>.  Все узлы используют
+дисковый массив сервера посредством сетевой файловой системы NFS. Файл
+записанный на одном из узлов кластера автоматически становится
+доступен на любом другом.
+</p>
+
+</div>
+
+<p>
+Работа в ssh-сессии происходит в терминальном (текстовом, консольном)
+режиме. Необходимо помнить, что консоль Linux, в отличии от Windows,
+различает регистр вводимых символов, то есть <code>mydoc.txt</code> и <code>mydoc.TXT</code> не
+одно и то же. После входа на экране отображается консоль командного
+интерпретатора в следующем формате имя_пользователя@машина текущий_каталог:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">Вход с терминала Linux</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+В любой дистрибутив ОС Linux входит терминальный ssh-клиент (обычно
+OpenSSH). Минимальный формат команды для подключения к кластеру таков:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@localhost ~]$ ssh jupiter.febras.net -l имя_пользователя
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">Копирование файлов</h2>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">Работа на кластере</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+</div><div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">Навигация</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+</div><div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">Консоль</h4>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9">mc</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">Редактирование файлов</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+</div><div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">mc-edit</h4>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">Emacs, VIM</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">Компиляция программ</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+</div><div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">Замечания по разработке программ на отдельной машине</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15">Запуск задач</h3>
+<div class="outline-text-3" id="text-orgheadline15">
+</div><div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16">Диспетчеризация задач</h4>
+<div class="outline-text-4" id="text-orgheadline16">
+<p>
+Для диспетчеризации задач на кластере используется система PBS
+Pro. С её помощью пользователь может отправлять свои задачи на
+исполнение, снимать их с исполнения и получать информацию по текущему
+статусу задачи.
+</p>
+
+<p>
+Данная система построена на основе очередей, где под очередью
+понимается набор пользовательских процессов (программ, задач)
+выполняющихся в рамках системы диспетчеризации. Каждой очереди
+сопоставлен ряд атрибутов, в зависимости от которых к задаче будут
+применены те или иные действия. Типичными атрибутами являются название
+(идентификатор) очереди, её приоритет, доступные ресурсы, количество
+задач. В общем случае термин очередь не означает, то что программы в
+ней будут выполняться строго последовательно.
+</p>
+
+<p>
+Чтобы поставить задачу на исполнение, пользователь должен добавить ее
+при помощи команды <code>qsub</code> в очередь.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17">Система очередей</h4>
+<div class="outline-text-4" id="text-orgheadline17">
+<p>
+На данный момент действует 1 очередь: <i>workq</i>.
+</p>
+
+<p>
+Для получения информации об очередях, можно выполнить команду <code>qstat -q</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[eab@jupiter install]$ qstat -q
+
+server: jupiter1
+
+Queue            Memory CPU Time Walltime Node   Run   Que   Lm  State
+---------------- ------ -------- -------- ---- ----- ----- ----  -----
+workq              --      --       --     --      0     0   --   E R
+                                               ----- -----
+                                                   0     0
+</pre>
+</div>
+
+<p>
+<b>Queue</b> – имя очереди; <b>Run</b> – число выполняемых задач; <b>Que</b> – число задач, ожидающих начала выполнения.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18">Постановка задачи в очередь</h4>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">Запуск интерактивных программ</h4>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">Запуск непараллельных программ</h4>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21">Состояние пользовательских задач</h4>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">Остановка задач</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+<p>
+Остановка программы производится командой <code>qdel идентификатор_задачи</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ qdel 700
+</pre>
+</div>
+
+<p>
+Этой командой задача, стоящая в очереди, убирается из нее, а
+выполняющаяся задача снимается с выполнения. Следующая по очереди и
+приоритету задача встает на выполнение.
+</p>
+
+<p>
+Задача снимается в течении некоторого времени, поэтому при вызове
+<code>qstat</code> непосредственно после <code>qdel</code> удаленная задача все еще может
+быть отражена в таблице.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-2">
+<h2 id="orgheadline23">Мониторинг</h2>
+<div class="outline-text-2" id="text-orgheadline23">
+</div><div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24">Web-интерфейс</h3>
+<div class="outline-text-3" id="text-orgheadline24">
+<p>
+Мониторинг кластера реализован при помощи системы Ganglia. Эта система позволяет следить
+за ресурсами кластера посредством web-интерфейса. Система мониторинга находится по адресу 
+<a href="http://jupiter.febras.net/ganglia">http://jupiter.febras.net/ganglia</a>.
+</p>
+
+<p>
+Для мониторинга пользователю доступно большое число типов ресурсов:
+загруженность процессора, оперативная память, загрузка сети, средняя
+загрузка, количество процессов и ряд других.  Имеется возможность
+наблюдать как за всеми узлами в кластере (по одному параметру), так и
+за каждым (по всем параметрам).
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25">Консоль</h3>
+<div class="outline-text-3" id="text-orgheadline25">
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ pbsnodes jupiter2
+jupiter2
+     Mom = jupiter2
+     Port = 15002
+     pbs_version = 14.1.0
+     ntype = PBS
+     state = free
+     pcpus = 160
+     resources_available.arch = linux
+     resources_available.host = jupiter2
+     resources_available.mem = 263653568kb
+     resources_available.ncpus = 160
+     resources_available.ngpus = 2
+     resources_available.vnode = jupiter2
+     resources_assigned.accelerator_memory = 0kb
+     resources_assigned.mem = 0kb
+     resources_assigned.naccelerators = 0
+     resources_assigned.ncpus = 0
+     resources_assigned.netwins = 0
+     resources_assigned.ngpus = 0
+     resources_assigned.vmem = 0kb
+     resv_enable = True
+     sharing = default_shared
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-2">
+<h2 id="orgheadline26">Справочная информация</h2>
+<div class="outline-text-2" id="text-orgheadline26">
+<p>
+Описание основных команд при работе в ОС Linux – <a href="http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html">http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html</a>
+Документация к системе диспетчеризации заданий PBS Torque — <a href="http://www.pbsworks.com/pdfs/PBSUserGuide14.2.pdf">http://www.pbsworks.com/pdfs/PBSUserGuide14.2.pdf</a>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

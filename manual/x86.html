@@ -1,0 +1,1225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+<head>
+<!-- 2017-05-12 Пт. 11:30 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Руководство пользователя кластера ВЦ ДВО РАН</title>
+<meta  name="generator" content="Org-mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="../org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style type="text/css">.org-src-name{ text-align: right; }</style>
+<style type="text/css">.outline-2{ margin-top: 60px; }</style>
+
+<style type="text/css">
+  pre.src:before {
+    top: -5px;
+  }
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Руководство пользователя кластера ВЦ ДВО РАН</h1>
+<div id="table-of-contents">
+<h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">Регистрация</a></li>
+<li><a href="#orgheadline2">Вход в систему</a>
+<ul>
+<li><a href="#orgheadline3">Вход с Windows-машины</a></li>
+<li><a href="#orgheadline4">Вход с терминала Linux</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline5">Копирование файлов</a></li>
+<li><a href="#orgheadline6">Работа на кластере</a>
+<ul>
+<li><a href="#orgheadline7">Навигация</a>
+<ul>
+<li><a href="#orgheadline8">Консоль</a></li>
+<li><a href="#orgheadline9">mc</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">Редактирование файлов</a>
+<ul>
+<li><a href="#orgheadline11">mc-edit</a></li>
+<li><a href="#orgheadline12">Emacs, VIM</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">Компиляция программ</a>
+<ul>
+<li><a href="#orgheadline14">Замечания по разработке программ на отдельной машине</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline15">Запуск задач</a>
+<ul>
+<li><a href="#orgheadline16">Диспетчеризация задач</a></li>
+<li><a href="#orgheadline17">Система очередей</a></li>
+<li><a href="#orgheadline18">Постановка задачи в очередь</a></li>
+<li><a href="#orgheadline19">Запуск интерактивных программ</a></li>
+<li><a href="#orgheadline20">Запуск непараллельных программ</a></li>
+<li><a href="#orgheadline21">Состояние пользовательских задач</a></li>
+<li><a href="#orgheadline22">Остановка задач</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline23">Мониторинг</a>
+<ul>
+<li><a href="#orgheadline24">Web-интерфейс</a></li>
+<li><a href="#orgheadline25">Консоль</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline26">Справочная информация</a></li>
+</ul>
+</div>
+</div>
+<p>
+<br  />
+<br  />
+Данное руководство содержит минимально необходимый объем информации
+для работы на кластере ВЦ ДВО РАН: описание процесса регистрации,
+сведения по работе в ОС Linux (вход в систему, работа с каталогами и
+файлами, мониторинг) и работе с MPI программами и не параллельными
+программами на кластере (компиляция, запуск, остановка, работа с
+очередями). В тексте под термином параллельная программа
+подразумеваются только MPI программы.
+</p>
+
+<p>
+Команды и переменные командного
+интерпретатора, названия программ, листинги, непосредственный
+ввод/вывод консоли выделены моноширинным шрифтом.
+</p>
+
+<p>
+Вопросы относительно работы кластера следует отправлять на <i>e-mail</i>:
+<a href="mailto:support@hpc.febras.net">support@hpc.febras.net</a>.
+</p>
+
+<p>
+Вопросы относительно этого документа (ошибки, неточности, предложения)
+можно отправлять на <i>e-mail</i>: <a href="mailto:support@hpc.febras.net">support@hpc.febras.net</a>.
+</p>
+
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">Регистрация</a></li>
+<li><a href="#orgheadline2">Вход в систему</a>
+<ul>
+<li><a href="#orgheadline3">Вход с Windows-машины</a></li>
+<li><a href="#orgheadline4">Вход с терминала Linux</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline5">Копирование файлов</a></li>
+<li><a href="#orgheadline6">Работа на кластере</a>
+<ul>
+<li><a href="#orgheadline7">Навигация</a>
+<ul>
+<li><a href="#orgheadline8">Консоль</a></li>
+<li><a href="#orgheadline9">mc</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">Редактирование файлов</a>
+<ul>
+<li><a href="#orgheadline11">mc-edit</a></li>
+<li><a href="#orgheadline12">Emacs, VIM</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">Компиляция программ</a>
+<ul>
+<li><a href="#orgheadline14">Замечания по разработке программ на отдельной машине</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline15">Запуск задач</a>
+<ul>
+<li><a href="#orgheadline16">Диспетчеризация задач</a></li>
+<li><a href="#orgheadline17">Система очередей</a></li>
+<li><a href="#orgheadline18">Постановка задачи в очередь</a></li>
+<li><a href="#orgheadline19">Запуск интерактивных программ</a></li>
+<li><a href="#orgheadline20">Запуск непараллельных программ</a></li>
+<li><a href="#orgheadline21">Состояние пользовательских задач</a></li>
+<li><a href="#orgheadline22">Остановка задач</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline23">Мониторинг</a>
+<ul>
+<li><a href="#orgheadline24">Web-интерфейс</a></li>
+<li><a href="#orgheadline25">Консоль</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline26">Справочная информация</a></li>
+</ul>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Регистрация</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+Регистрация пользователей на кластере происходит автоматически — посредством web-интерфейса. Загрузить html страницу с формой для регистрации можно по адресу: <a href="http://hpc.febras.net/cluster/registration.html">http://hpc.febras.net/cluster/registration.html</a>
+ или пройти по ссылке с главной страницы сайта кластера: <a href="http://hpc.febras.net/">http://hpc.febras.net/</a>.
+</p>
+
+<p>
+В регистрационной форме пользователь должен заполнить ряд обязательных (выделены символом «*») полей:
+</p>
+
+<p>
+<b>Фамилия</b>, <b>Имя</b>, <b>Отчество</b> Заполнение разрешено как кириллицей, так и латинскими буквами.
+</p>
+
+<p>
+<b>Email (сообщения кластера)</b> По этому адресу будут отправляться сообщения связанные с пользовательскими заданиями, а также организационные сообщения связанные с регистрацией пользователя, ошибками в работе и т.п.
+</p>
+
+<p>
+<b>Телефон</b> Номер контактного телефона.
+</p>
+
+<p>
+<b>Место работы</b> Полное наименование места работы или учебы.
+</p>
+
+<p>
+<b>Логин</b>  Имя пользователя применяемое для входа на кластер. Разрешено применение тольколатинских букв и цифр. Минимальный размер этого поля 4 символа.
+</p>
+
+<p>
+<b>Пароль</b>  Желаемый пароль для входа на кластер. Разрешено применение только латинских букв и цифр. Минимальный размер этого поля 8 символов.
+</p>
+
+<p>
+<b>Пароль (еще раз)</b>  То же, что и предыдущее. Служит для контроля корректности ввода пароля.
+</p>
+
+<p>
+<b>Цель регистрации</b> В этом поле пользователь может оставить дополнительную информацию
+для администратора, которую он посчитает важной.
+</p>
+
+<p>
+После заполнения формы и нажатия на кнопку «Отправить регистрационную
+информацию» заявка на регистрацию автоматически будут отправлена
+администратору кластера. Заявка рассматривается администратором,
+решение о регистрации согласовывается, в случае необходимости, с
+руководством. При отсутствии ошибок заполнения формы и принятия
+положительного решения о регистрации будет создана учетная запись
+пользователя. На контактный e-mail будет отправлено сообщение,
+содержащее краткие инструкции для подключения.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Вход в систему</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+Для работы с системой пользователь должен иметь свою учетную запись на
+управляющем узле кластера. Регистрация пользователя на кластере
+происходит в соответствии с предыдущей частью руководства. После
+регистрации пользователь получает свое имя (логин), пароль и домашнюю
+директорию. Если имя пользователя, например, будет <b>user</b>, то домашняя
+папка находится в <b>/home/user</b>.
+</p>
+
+<p>
+Пользователи имеют возможность работать на кластере с любой машины,
+находящейся в сети института и интернет. Для входа в систему
+пользователю необходим адрес сервера (<a href="http://jupiter.febras.net/">mercury.febras.net</a>), а также
+имя и пароль, полученные при регистрации.
+</p>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">Вход с Windows-машины</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+Работа с системой осуществляется по безопасному протоколу SSH при помощи какого-либо
+ssh-клиента. Клиент должен поддерживать протокол версии 2. Рекомендуется использовать 
+<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a>.
+Эта программа является свободно распространяемой и проста в использовании.
+</p>
+
+<p>
+После запуска программы (рис. 1) пользователь должен выбрать протокол
+ssh и в поле «Host Name (or IP address)» указать адрес
+сервера. Нажатие на «Open» приведет к отправке запроса на
+подключение. В случае успешного подключения к серверу будет предложено
+ввести имя (логин), а затем и пароль.
+</p>
+
+
+<div id="orgparagraph1" class="figure">
+<p><img src="./putty.png" alt="putty.png" />
+</p>
+<p><span class="figure-number">&#1056;&#1080;&#1089;. 1.:</span> Окно ssh-клиента PuTTY</p>
+</div>
+
+<p>
+При вводе пароля символы на экране не отображаются. Если все введено
+правильно, то пользователь автоматически окажется в своей домашней
+директории. Этот каталог доступен пользователю с любого узла кластера.
+</p>
+
+<div class="note">
+<p>
+<b>Примечание</b>. На кластере существует единое дисковое пространство для
+директорий <b>/opt</b> (только чтение) и <b>/home</b>.  Все узлы используют
+дисковый массив сервера посредством сетевой файловой системы NFS. Файл
+записанный на одном из узлов кластера автоматически становится
+доступен на любом другом.
+</p>
+
+</div>
+
+<p>
+Работа в ssh-сессии происходит в терминальном (текстовом, консольном)
+режиме. Необходимо помнить, что консоль Linux, в отличии от Windows,
+различает регистр вводимых символов, то есть <code>mydoc.txt</code> и <code>mydoc.TXT</code> не
+одно и то же. После входа на экране отображается консоль командного
+интерпретатора в следующем формате имя_пользователя@машина текущий_каталог:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">Вход с терминала Linux</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+В любой дистрибутив ОС Linux входит терминальный ssh-клиент (обычно
+OpenSSH). Минимальный формат команды для подключения к кластеру таков:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@localhost ~]$ ssh mercury.febras.net -l имя_пользователя
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">Копирование файлов</h2>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">Работа на кластере</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+</div><div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">Навигация</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+</div><div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">Консоль</h4>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9">mc</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">Редактирование файлов</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+</div><div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">mc-edit</h4>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">Emacs, VIM</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">Компиляция программ</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+<p>
+На кластере (на 15.12.2013) поддерживаются следующие компиляторы
+языков программирования для архитектуры x86_64:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1.:</span> Компиляторы на кластере</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Компилятор</td>
+<td class="org-left">Путь к файлу компилятора</td>
+<td class="org-left">Язык</td>
+</tr>
+
+<tr>
+<td class="org-left">Intel C 14.0.1</td>
+<td class="org-left">/opt/intel/composer_xe_2013_sp1.1.106/bin/intel64/icc</td>
+<td class="org-left">C</td>
+</tr>
+
+<tr>
+<td class="org-left">Intel C++ 14.0.1</td>
+<td class="org-left">/opt/intel/composer_xe_2013_sp1.1.106/bin/intel64/icpc</td>
+<td class="org-left">C++</td>
+</tr>
+
+<tr>
+<td class="org-left">Intel Fortran 14.0.1</td>
+<td class="org-left">/opt/intel/composer_xe_2013_sp1.1.106/bin/intel64/ifort</td>
+<td class="org-left">Fortran 77/90</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU C 4.1.2</td>
+<td class="org-left">/usr/bin/gcc</td>
+<td class="org-left">C</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU C++ 4.1.2</td>
+<td class="org-left">/usr/bin/g++</td>
+<td class="org-left">C++</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU Fortran 4.1.2</td>
+<td class="org-left">/usr/bin/gfortran</td>
+<td class="org-left">Fortran 90</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU Fortran 3.4.6</td>
+<td class="org-left">/usr/bin/g77</td>
+<td class="org-left">Fortran 77</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+В переменной среды «PATH» для всех пользователей прописаны пути к
+компиляторам Intel для архитектуры x86_64. Поэтому, например, при
+вводе команды:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$ icc
+</pre>
+</div>
+<p>
+будет запускаться 64-битная версия компилятора Intel C. В переменной
+среды «LD_LIBRARY_PATH» также указаны пути к библиотекам с
+архитектурой x86_64.
+</p>
+
+<p>
+В качестве реализации MPI библиотеки на кластере (на 15.12.2013)
+поддерживается Intel MPI. Библиотека доступна со всех узлов кластера и
+расположена по пути <b>/opt/intel/impi/4.1.2</b>. Пути к 64-битной версии
+данной библиотеки добавлены в переменные среды «PATH» и
+«LD_LIBRARY_PATH».
+</p>
+
+<p>
+Для компиляции mpi программ лучше всего использовать обёртки к
+компиляторам, чем вручную прописывать для этого специальные
+флаги. Так, например, чтобы скомпилировать mpi программу, написанную
+на языке Fortran, нужно воспользоваться оберткой <code>mpiifort</code>. Данная
+команда вызовет компилятор Intel Fortran, с указанием всех необходимых
+флагов.
+</p>
+
+<p>
+Распишем соответствия между обертками и соответствующими им компиляторами: 
+<code>mpiicc</code> – <code>icc</code>,
+<code>mpiicpc</code> – <code>icpc</code>, 
+<code>mpiifort</code> – <code>ifort</code>, 
+<code>mpigcc</code> – <code>gcc</code>, 
+<code>mpigxx</code> – <code>g++</code>,
+<code>mpif77</code> – <code>g77</code>,
+<code>mpif90</code> – <code>gfortran</code>.
+</p>
+
+<p>
+Для того, чтобы посмотреть какие опции компилятора указываются при
+вызове обертки, можно воспользоваться следующей командой:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$ mpiicc -show
+icc -I/opt/intel/impi/4.1.2.040/intel64/include
+-L/opt/intel/impi/4.1.2.040/intel64/lib -Xlinker —enable-new-dtags -Xlinker
+-rpath -Xlinker /opt/intel/impi/4.1.2.040/intel64/lib -Xlinker -rpath
+-Xlinker /opt/intel/mpi-rt/4.1 -lmpigf -lmpi -lmpigi -ldl -lrt -lpthread
+</pre>
+</div>
+
+<p>
+Как видно из данного вывода, единственными опциями, которые может
+потребоваться указать при вызове компилятора могут оказаться опции
+оптимизации.
+</p>
+
+<p>
+Рассмотрим пример, иллюстрирующий компиляцию mpi приложения:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury mpi_test]$ mpiifort test.f90 -o ./mpi -O2 -funroll-loops
+-march=core2 -mmmx
+</pre>
+</div>
+
+<p>
+В данном примере, учитывая специфику научных приложений, особое
+внимание уделено параметрам, отвечающим за оптимизацию вычислений с
+плавающей точкой.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 2.:</span> Некоторые параметры компиляторов</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Параметр</td>
+<td class="org-left">Описание</td>
+</tr>
+
+<tr>
+<td class="org-left">-O3</td>
+<td class="org-left">Включение полной автоматической оптимизации компилятора (рекомендуемое -O2)</td>
+</tr>
+
+<tr>
+<td class="org-left">-funroll-loops</td>
+<td class="org-left">Включение раскрутки циклов</td>
+</tr>
+
+<tr>
+<td class="org-left">-march=core2</td>
+<td class="org-left">Этот параметр указывает компилятору использовать команды доступные начиная с Core 2</td>
+</tr>
+
+<tr>
+<td class="org-left">-mmmx</td>
+<td class="org-left">Разрешение использования набора инструкций mmx</td>
+</tr>
+
+<tr>
+<td class="org-left">-o имя_файла</td>
+<td class="org-left">Имя выходного файла. Если этот параметр не указан, то поумолчанию готовая к выполнению программа будет называться a.out</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Обычно эти параметры оптимизации позволяют программе работать существенно быстрее.
+</p>
+
+<p>
+Для продуктивной работы настоятельно рекомендуется ознакомиться с
+полным перечнем команд компиляторов.
+</p>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">Замечания по разработке программ на отдельной машине</h4>
+<div class="outline-text-4" id="text-orgheadline14">
+<p>
+Практически все реализации MPI поддерживают запуск параллельных
+приложений в режиме эмуляции на отдельно взятой рабочей станции. Это
+можно делать как на Linux, так и Windows машинах.
+</p>
+
+<p>
+В Linux рекомендуется использовать пакет OpenMPI, а для создания MPI
+приложений на Windows машинах можно использовать пакет MPICH в версии
+для Windows. Для успешного портирования программ с Windows на Linux не
+следует использовать расширения предоставляемые средами
+программирования, такими как Visual Studio и Borland Builder.
+</p>
+
+<p>
+Подготовленные исходные коды программ лучше всего компилировать на
+кластере.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15">Запуск задач</h3>
+<div class="outline-text-3" id="text-orgheadline15">
+</div><div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16">Диспетчеризация задач</h4>
+<div class="outline-text-4" id="text-orgheadline16">
+<p>
+Для диспетчеризации задач на кластере используется система PBS
+Torque. С её помощью пользователь может отправлять свои задачи на
+исполнение, снимать их с исполнения и получать информацию по текущему
+статусу задачи.
+</p>
+
+<p>
+Данная система построена на основе очередей, где под очередью
+понимается набор пользовательских процессов (программ, задач)
+выполняющихся в рамках системы диспетчеризации. Каждой очереди
+сопоставлен ряд атрибутов, в зависимости от которых к задаче будут
+применены те или иные действия. Типичными атрибутами являются название
+(идентификатор) очереди, её приоритет, доступные ресурсы, количество
+задач. В общем случае термин очередь не означает, то что программы в
+ней будут выполняться строго последовательно.
+</p>
+
+<p>
+Чтобы поставить задачу на исполнение, пользователь должен добавить ее
+при помощи команды <code>qsub</code> в какую-либо очередь. Очереди отличаются
+друг от друга совокупностью ресурсов, которыми они обладают.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17">Система очередей</h4>
+<div class="outline-text-4" id="text-orgheadline17">
+<p>
+На данный момент действуют 3 очереди: <i>vl_mars</i>, <i>vl_mercury</i>, <i>vl_pluto</i>. В
+таблице представлены отличия между очередями.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 3.:</span> Очереди на кластере</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">vl_mars</td>
+<td class="org-left">vl_mercury</td>
+<td class="org-left">vl_pluto</td>
+</tr>
+
+<tr>
+<td class="org-left">Доступно узлов</td>
+<td class="org-left">4</td>
+<td class="org-left">5</td>
+<td class="org-left">8</td>
+</tr>
+
+<tr>
+<td class="org-left">Процессоры,установленные на узлах</td>
+<td class="org-left">Six Core AMD Opteron™ 8431</td>
+<td class="org-left">Quad Core Intel® Xeon® E5450 EM64T</td>
+<td class="org-left">Dual Core Intel® Xeon® 5060 EM64T</td>
+</tr>
+
+<tr>
+<td class="org-left">Процессоров на узле</td>
+<td class="org-left">4</td>
+<td class="org-left">2</td>
+<td class="org-left">2</td>
+</tr>
+
+<tr>
+<td class="org-left">Вычислительных ядер на узле</td>
+<td class="org-left">24</td>
+<td class="org-left">8</td>
+<td class="org-left">4</td>
+</tr>
+
+<tr>
+<td class="org-left">Памяти на узле</td>
+<td class="org-left">96 GB</td>
+<td class="org-left">16GB</td>
+<td class="org-left">4GB</td>
+</tr>
+
+<tr>
+<td class="org-left">Сеть передачи данных</td>
+<td class="org-left">InfiniBand</td>
+<td class="org-left">InfiniBand</td>
+<td class="org-left">Gigabit Ethernet</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Никаких ограничений по времени исполнения и количеству доступных
+ресурсов для этих очередей не установлено. 
+</p>
+
+<p>
+Для получения информации об очередях, можно выполнить команду <code>qstat -q</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$ qstat -q
+server: mercury1
+Queue            Memory CPU Time Walltime Node  Run Que Lm  State
+---------------- ------ -------- -------- ----  --- --- --  -----
+vl_mars            --      --       --      --    9   1 --   E R
+vl_pluto           --      --       --      --    5   0 --   E R
+vl_mercury         --      --       --      --    4   0 --   E R
+                                               ----- -----
+                                                  18     1
+</pre>
+</div>
+
+<p>
+<b>Queue</b> — имя очереди; <b>Run</b> — число выполняемых задач; 
+<b>Que</b> — число задач, ожидающих начала выполнения.
+</p>
+
+<p>
+Команда <code>qstat -Qf имя_очереди</code> позволяет получить информацию о
+конкретной очереди.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18">Постановка задачи в очередь</h4>
+<div class="outline-text-4" id="text-orgheadline18">
+<p>
+Для постановки задачи в очередь на исполнение используется команда <code>qsub</code>. Данная команда
+принимает в качестве параметра имя скрипта, в котором описываются требуемые задачей ресурсы и
+указываются команды, исполняемые при запуске. Рассмотрим пример, иллюстрирующий запуск ранее
+скомпилированной программы на 2 узлах кластера, с использованием 8 процессоров на каждом.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury mpi_test]$ cat mpi_test.qsub
+#PBS -k oe
+#PBS -l nodes=2:ppn=8
+#PBS -r n
+#PBS -M user@mail.com
+#PBS -m abe
+#PBS -q vl_mercury
+#PBS -N mpi_test
+#!/bin/sh
+
+cd /home/user/test/mpi_test
+
+mpirun ./mpi
+
+exit 0
+[user@mercury mpi_test]$ qsub mpi_test.qsub
+66330.mercury1
+</pre>
+</div>
+
+<p>
+Если команда выполнена успешно, то на экране отобразится идентификатор
+задачи (в данном случае это <i>66330.mercury1</i>), в противном случае
+появится сообщение об ошибке. Ошибки пользовательской программы
+(неправильная компиляция и т.п.) проявятся только при переходе задачи
+к активному состоянию.
+</p>
+
+<div class="note">
+<p>
+<b>Примечание.</b> Весь вывод программы в стандартный поток и в поток ошибок
+перенаправляется в файлы, находящиеся в домашней директории пользователя.
+Названия таких файлов имеют формат <code>имя_задачи.(e/o)порядковый_номер</code>. Для
+запущенной задачи это будут: <i>mpi_test.e66330</i> – для потока ошибок и
+<i>mpi_test.o66330</i> – для стандартного потока вывода.
+</p>
+
+</div>
+
+<p>
+Прокомментируем каждую из строчек скрипта <code>mpi_test.qsub</code>
+</p>
+
+<p>
+<code>#PBS -k oe</code> — указание сброса потока вывода (o) и потока ошибок (e)
+</p>
+
+<p>
+<code>#PBS -l nodes=2:ppn=8</code> — требуемое количество узлов (2) и процессоров на каждом из них (8)
+</p>
+
+<p>
+<code>#PBS -r n</code> — является ли задача перезапускаемой (задачей с контрольными точками);
+<b>y</b> — является, <b>n</b> — не является
+</p>
+
+<p>
+<code>#PBS -M user@mail.com</code> — почтовый адрес пользователя
+</p>
+
+<p>
+<code>#PBS -m abe</code> — какие сообщения отправляются на указанный адрес (<b>a</b> — ошибка в
+выполнении задачи, <b>b</b> — начало выполнения, <b>e</b> — завершение
+выполнения)
+</p>
+
+<p>
+<code>#PBS -q vl_mercury</code> — идентификатор очереди
+</p>
+
+<p>
+<code>#PBS -N mpi_test</code> — название задачи
+</p>
+
+<p>
+<code>#!/bin/sh</code> — указание необходимого командного интерпретатора
+</p>
+
+<p>
+<code>cd /home/user/test/mpi_test</code> — переход в директорию с исполняемым файлом
+</p>
+
+<p>
+<code>mpirun ./mpi</code> — запуск приложения
+</p>
+
+<p>
+<code>exit 0</code> — выход
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">Запуск интерактивных программ</h4>
+<div class="outline-text-4" id="text-orgheadline19">
+<p>
+Программы, использующие стандартный ввод, называются
+интерактивными. Как правило, такие программы после запуска требуют от
+пользователя ввода данных. При постановке задачи в очередь любая
+программа переводится в фоновый режим. В этом режиме ввод данных
+пользователем в запущенную программу невозможен. Для передачи данных
+таким программам используется механизм перенаправления стандартных
+потоков ввода/вывода.
+</p>
+
+<p>
+Для перенаправления подготавливается текстовый файл, содержимое
+которого в точности представляет собой данные, вводимые пользователем.
+Например, если программа <code>solver</code> предполагает ввод в первой строке
+размерности матрицы, а во второй количества итераций, то текстовый
+файл <code>input.txt</code> будет иметь вид:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury solver]$ cat input.txt
+10000000
+1000
+</pre>
+</div>
+
+<p>
+После каждого числа обязателен символ новой строки. Запуск программы
+на выполнение производится так:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">solver &lt; input.txt
+</pre>
+</div>
+
+<p>
+Скрипт для постановки в очередь задания, в рамках которого будет
+выполняться интерактивная программа, будет выглядеть следующим
+образом:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury solver]$ cat job.qsub
+#PBS -k oe
+#PBS -l nodes=2:ppn=8
+#PBS -r n
+#PBS -M user@mail.com
+#PBS -m abe
+#PBS -q vl_mercury
+#PBS -N solver
+#!/bin/sh
+
+cd /home/user/test/solver
+
+mpirun ./solver &lt; ./input.txt
+
+exit 0
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">Запуск непараллельных программ</h4>
+<div class="outline-text-4" id="text-orgheadline20">
+<p>
+Запуск непараллельных программ практически ничем не отличается от запуска параллельных
+программ. Единственное отличие заключается в том, что в <code>qsub</code> скрипте такой программы необходимо
+указать, что для её работы необходим только один логический процессор:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">#PBS -l nodes=1:ppn=1
+</pre>
+</div>
+
+<p>
+Также в этом скрипте необходимо запускать непосредственно исполняемый
+файл программы, то есть не использовать для запуска <code>mpiexec</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21">Состояние пользовательских задач</h4>
+<div class="outline-text-4" id="text-orgheadline21">
+<p>
+Для получения информации об очередях и задачах пользователя
+используется команда <code>qstat</code>. Выполнение этой команды без параметров
+покажет все задачи пользователя и их состояние.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$ qstat
+Job id                  Name             User            Time Use S Queue
+----------------------- ---------------- --------------- -------- - -----
+700.mercury1            mpi_test         user            00:10:40 R vl_pluto
+701.mercury1            sample_job       user            0        Q vl_mars
+702.mercury1            solver           user            0        Q vl_mercury
+</pre>
+</div>
+
+<p>
+<b>Job id</b> — идентификатор задачи, полученный при выполнении <code>qsub</code>;
+<b>Name</b> — имя задачи; <b>User</b> — имя пользователя, запустившего задачу;
+<b>Time Use</b> — процессорное время, потраченное задачей; <b>S (State)</b> — с
+остояние задачи ( <b>R</b> – задача выполняется, <b>Q</b> – ожидает в очереди);
+<b>Queue</b> — очередь.
+</p>
+
+<p>
+В данном случае пользователю <b>user</b> принадлежат три задачи, одна из
+которых (<i>700.mercury1</i>) выполняется в очереди <i>vl_pluto</i>, а две
+других ожидают в очередях <i>vl_mars</i> и <i>vl_mercury</i>.
+</p>
+
+<p>
+С помощью команды <code>qstat -n идентификатор_задачи</code> можно получить
+список узлов, на которых выполняется конкретная задача. Эта информация
+полезна при мониторинге эффективности использования вычислительных
+ресурсов с использованием системы Ganglia, так как позволяет
+отслеживать состояние только используемых задачей узлов.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$ qstat -n 701
+
+mercury.febras.net:
+                                                           Req'd  Req'd   Elap
+Job ID       Username Queue    Jobname    SessID NDS  TSK  Memory Time  S Time
+------------ -------- -------- ------     ------ ---- --- ------ -----  - -----
+701.mercury1 user     vl_mars  sample_job 9456      1  --     --    --  R 166:1
+   mars1/11+mars1/10+mars1/9+mars1/8+mars1/7+mars1/6+mars1/5+mars1/4+mars1/3
+   +mars1/2+mars1/1+mars1/0
+</pre>
+</div>
+
+<p>
+Для получения более подробной информации о конкретной задаче можно запустить команду
+<code>qstat -f идентификатор_задачи</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">Остановка задач</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+<p>
+Остановка программы производится командой <code>qdel идентификатор_задачи</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$ qdel 700
+</pre>
+</div>
+
+<p>
+Этой командой задача, стоящая в очереди, убирается из нее, а
+выполняющаяся задача снимается с выполнения. Следующая по очереди и
+приоритету задача встает на выполнение.
+</p>
+
+<p>
+Задача снимается в течении некоторого времени, поэтому при вызове
+<code>qstat</code> непосредственно после <code>qdel</code> удаленная задача все еще может
+быть отражена в таблице.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-2">
+<h2 id="orgheadline23">Мониторинг</h2>
+<div class="outline-text-2" id="text-orgheadline23">
+</div><div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24">Web-интерфейс</h3>
+<div class="outline-text-3" id="text-orgheadline24">
+<p>
+Мониторинг кластера реализован при помощи системы Ganglia. Эта система позволяет следить
+за ресурсами кластера посредством web-интерфейса. Система мониторинга находится по адресу 
+<a href="http://mercury.febras.net/ganglia">http://mercury.febras.net/ganglia</a> (или по ссылке с главной страницы сайта кластера).
+</p>
+
+<p>
+Для мониторинга пользователю доступно большое число типов ресурсов:
+загруженность процессора, оперативная память, загрузка сети, средняя
+загрузка, количество процессов и ряд других.  Имеется возможность
+наблюдать как за всеми узлами в кластере (по одному параметру), так и
+за каждым (по всем параметрам).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25">Консоль</h3>
+<div class="outline-text-3" id="text-orgheadline25">
+<p>
+Кроме графического интерфейса существует несколько полезных консольных
+команд для мониторинга. Команда <code>pbsnodes имя_узла</code> позволяет
+получить информацию о конкретном узле: тип, состояние, количество
+процессоров, выполняющиеся задачи. Ниже представлен фрагмент вывода
+этой команды.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$ pbsnodes mercury2
+mercury2
+     state = job-exclusive
+     np = 8
+     properties = mercury
+     ntype = cluster
+     jobs = 0/69079.mercury1, 1/69079.mercury1, 2/69079.mercury1,
+3/69079.mercury1, 4/69079.mercury1, 5/69079.mercury1, 6/69079.mercury1,
+7/69079.mercury1
+     status = opsys=linux,uname=Linux mercury2 2.6.18-128.el5xen #1 SMP Wed Jan
+21 11:12:42 EST 2009 x86_64,sessions=30274 30299 30300 30301 30302 30303 30304
+30305
+30306,nsessions=9,nusers=1,idletime=6750117,totmem=34966476kb,availmem=32764152
+kb,physmem=16090112kb,ncpus=8,loadave=8.07,netload=1610728519638,state=free,job
+s=69079.mercury1,varattr=,rectime=1285741337
+</pre>
+</div>
+
+<p>
+<b>state</b> – состояние узла (<b>job-exclusive</b> – все ресурсы узла заняты;
+<b>free</b> – на узле есть свободные ресурсы для запуска заданий; <b>offline</b>
+– узел временно выведен из эксплуатации, запуск заданий на нем
+невозможен; <b>down</b> – узел выключен); <b>np</b> – число процессорных ядер на
+узле; <b>jobs</b> – задачи, запущенные на узле.
+</p>
+
+<p>
+При выполнении команды <code>pbsnodes</code> без указания параметров будет
+выведена информация обо всех узлах кластера.
+</p>
+
+<p>
+Для получения списка свободных узлов (или узлов с каким-либо другим
+состоянием) можно воспользоваться командой <code>pbsnodes -l free</code> (здесь
+<b>free</b> – состояние узла).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@mercury ~]$ pbsnodes -l free
+mercury1             free
+mercury4             free
+mercury5             free
+mars3                free
+mercury6             free
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-2">
+<h2 id="orgheadline26">Справочная информация</h2>
+<div class="outline-text-2" id="text-orgheadline26">
+<p>
+Описание основных команд при работе в ОС Linux – <a href="http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html">http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html</a>
+Документация к системе диспетчеризации заданий PBS Torque — <a href="http://www.clusterresources.com/torquedocs21/">http://www.clusterresources.com/torquedocs21/</a>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>
