@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-05-12 Пт. 12:26 -->
+<!-- 2017-05-12 Пт. 16:16 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Руководство пользователя кластера OpenPOWER ВЦ ДВО РАН</title>
@@ -293,6 +293,12 @@ for the JavaScript code in this tag.
 
 <div id="outline-container-orgheadline1" class="outline-2">
 <h2 id="orgheadline1">Регистрация</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+Регистрация пользователей на кластере происходит через систему ЦКП
+<a href="http://ckp.ccfebras.ru/">http://ckp.ccfebras.ru/</a>.
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-2">
@@ -305,6 +311,16 @@ for the JavaScript code in this tag.
 регистрации пользователь получает свое имя (логин), пароль и домашнюю
 директорию. Если имя пользователя, например, будет <b>user</b>, то домашняя
 папка находится в <b>/home/user</b>.
+</p>
+
+<p>
+При первом входе в систему предлагается сменить пароль. Требования к
+новому паролю: он должен быть достаточной длины, содержать хотя бы 1
+цифру и 1 заглавную букву. Директория <code>~/.ssh</code> содержит пару ключей
+(<i>id_rsa</i> и <i>authorized_keys</i>) для доступа к узлам кластера. При
+добавлении личного ssh-ключа, необходимо добавить открытый ключ в файл
+<i>authorized_keys</i> через перенос строки (т.е. после уже имеющегося одного
+открытого ключа).
 </p>
 
 <p>
@@ -455,7 +471,8 @@ Pro. С её помощью пользователь может отправля
 
 <p>
 Чтобы поставить задачу на исполнение, пользователь должен добавить ее
-при помощи команды <code>qsub</code> в очередь.
+при помощи команды <code>qsub</code> в какую-либо очередь. Очереди отличаются
+друг от друга совокупностью ресурсов, которыми они обладают.
 </p>
 </div>
 </div>
