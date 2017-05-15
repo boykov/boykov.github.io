@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-05-12 Пт. 15:06 -->
+<!-- 2017-05-15 Пн. 17:01 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Руководство пользователя кластера ВЦ ДВО РАН</title>
@@ -161,56 +161,48 @@ for the JavaScript code in this tag.
 <h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">Регистрация</a></li>
-<li><a href="#orgheadline2">Вход в систему</a>
+<li><a href="#registration">Регистрация</a></li>
+<li><a href="#login">Вход в систему</a>
 <ul>
-<li><a href="#orgheadline3">Вход с Windows-машины</a></li>
-<li><a href="#orgheadline4">Вход с терминала Linux</a></li>
+<li><a href="#login_windows">Вход с Windows-машины</a></li>
+<li><a href="#login_linux">Вход с терминала Linux</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline5">Копирование файлов</a></li>
-<li><a href="#orgheadline6">Работа на кластере</a>
+<li><a href="#work_cluster">Работа на кластере</a>
 <ul>
-<li><a href="#orgheadline7">Навигация</a>
+<li><a href="#compilation">Компиляция программ</a>
 <ul>
-<li><a href="#orgheadline8">Консоль</a></li>
-<li><a href="#orgheadline9">mc</a></li>
+<li><a href="#notes_dev">Замечания по разработке программ на отдельной машине</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline10">Редактирование файлов</a>
+<li><a href="#run_tasks">Запуск задач</a>
 <ul>
-<li><a href="#orgheadline11">mc-edit</a></li>
-<li><a href="#orgheadline12">Emacs, VIM</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline13">Компиляция программ</a>
-<ul>
-<li><a href="#orgheadline14">Замечания по разработке программ на отдельной машине</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline15">Запуск задач</a>
-<ul>
-<li><a href="#orgheadline16">Диспетчеризация задач</a></li>
-<li><a href="#orgheadline17">Система очередей</a></li>
-<li><a href="#orgheadline18">Постановка задачи в очередь</a></li>
-<li><a href="#orgheadline19">Запуск интерактивных программ</a></li>
-<li><a href="#orgheadline20">Запуск непараллельных программ</a></li>
-<li><a href="#orgheadline21">Состояние пользовательских задач</a></li>
-<li><a href="#orgheadline22">Остановка задач</a></li>
+<li><a href="#dispatch_tasks">Диспетчеризация задач</a></li>
+<li><a href="#queues">Система очередей</a></li>
+<li><a href="#queue_tasks">Постановка задачи в очередь</a></li>
+<li><a href="#interactive">Запуск интерактивных программ</a></li>
+<li><a href="#nonparallel">Запуск непараллельных программ</a></li>
+<li><a href="#user_tasks">Состояние пользовательских задач</a></li>
+<li><a href="#stop_tasks">Остановка задач</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline23">Мониторинг</a>
+<li><a href="#monitoring">Мониторинг</a>
 <ul>
-<li><a href="#orgheadline24">Web-интерфейс</a></li>
-<li><a href="#orgheadline25">Консоль</a></li>
+<li><a href="#web_interface">Web-интерфейс</a></li>
+<li><a href="#console">Консоль</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline26">Справочная информация</a></li>
+<li><a href="#reference">Справочная информация</a></li>
 </ul>
 </div>
 </div>
+<p class="verse">
+Версия: <b>0.1</b><br  />
+Дата: <b>15-05-2017</b><br  />
+</p>
+
 <p>
 <br  />
 <br  />
@@ -241,59 +233,46 @@ for the JavaScript code in this tag.
 
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">Регистрация</a></li>
-<li><a href="#orgheadline2">Вход в систему</a>
+<li><a href="#registration">Регистрация</a></li>
+<li><a href="#login">Вход в систему</a>
 <ul>
-<li><a href="#orgheadline3">Вход с Windows-машины</a></li>
-<li><a href="#orgheadline4">Вход с терминала Linux</a></li>
+<li><a href="#login_windows">Вход с Windows-машины</a></li>
+<li><a href="#login_linux">Вход с терминала Linux</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline5">Копирование файлов</a></li>
-<li><a href="#orgheadline6">Работа на кластере</a>
+<li><a href="#work_cluster">Работа на кластере</a>
 <ul>
-<li><a href="#orgheadline7">Навигация</a>
+<li><a href="#compilation">Компиляция программ</a>
 <ul>
-<li><a href="#orgheadline8">Консоль</a></li>
-<li><a href="#orgheadline9">mc</a></li>
+<li><a href="#notes_dev">Замечания по разработке программ на отдельной машине</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline10">Редактирование файлов</a>
+<li><a href="#run_tasks">Запуск задач</a>
 <ul>
-<li><a href="#orgheadline11">mc-edit</a></li>
-<li><a href="#orgheadline12">Emacs, VIM</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline13">Компиляция программ</a>
-<ul>
-<li><a href="#orgheadline14">Замечания по разработке программ на отдельной машине</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline15">Запуск задач</a>
-<ul>
-<li><a href="#orgheadline16">Диспетчеризация задач</a></li>
-<li><a href="#orgheadline17">Система очередей</a></li>
-<li><a href="#orgheadline18">Постановка задачи в очередь</a></li>
-<li><a href="#orgheadline19">Запуск интерактивных программ</a></li>
-<li><a href="#orgheadline20">Запуск непараллельных программ</a></li>
-<li><a href="#orgheadline21">Состояние пользовательских задач</a></li>
-<li><a href="#orgheadline22">Остановка задач</a></li>
+<li><a href="#dispatch_tasks">Диспетчеризация задач</a></li>
+<li><a href="#queues">Система очередей</a></li>
+<li><a href="#queue_tasks">Постановка задачи в очередь</a></li>
+<li><a href="#interactive">Запуск интерактивных программ</a></li>
+<li><a href="#nonparallel">Запуск непараллельных программ</a></li>
+<li><a href="#user_tasks">Состояние пользовательских задач</a></li>
+<li><a href="#stop_tasks">Остановка задач</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline23">Мониторинг</a>
+<li><a href="#monitoring">Мониторинг</a>
 <ul>
-<li><a href="#orgheadline24">Web-интерфейс</a></li>
-<li><a href="#orgheadline25">Консоль</a></li>
+<li><a href="#web_interface">Web-интерфейс</a></li>
+<li><a href="#console">Консоль</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline26">Справочная информация</a></li>
+<li><a href="#reference">Справочная информация</a></li>
 </ul>
 </div>
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Регистрация</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<h2 id="registration"><a id="orgheadline1"></a>Регистрация</h2>
+<div class="outline-text-2" id="text-registration">
 <p>
 Регистрация пользователей на кластере происходит автоматически — посредством web-интерфейса. Загрузить html страницу с формой для регистрации можно по адресу: <a href="http://hpc.febras.net/cluster/registration.html">http://hpc.febras.net/cluster/registration.html</a>
  или пройти по ссылке с главной страницы сайта кластера: <a href="http://hpc.febras.net/">http://hpc.febras.net/</a>.
@@ -349,9 +328,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">Вход в систему</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="login"><a id="orgheadline4"></a>Вход в систему</h2>
+<div class="outline-text-2" id="text-login">
 <p>
 Для работы с системой пользователь должен иметь свою учетную запись на
 управляющем узле кластера. Регистрация пользователя на кластере
@@ -369,9 +348,9 @@ for the JavaScript code in this tag.
 </p>
 </div>
 
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">Вход с Windows-машины</h3>
-<div class="outline-text-3" id="text-orgheadline3">
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="login_windows"><a id="orgheadline2"></a>Вход с Windows-машины</h3>
+<div class="outline-text-3" id="text-login_windows">
 <p>
 Работа с системой осуществляется по безопасному протоколу SSH при помощи какого-либо
 ssh-клиента. Клиент должен поддерживать протокол версии 2. Рекомендуется использовать 
@@ -427,9 +406,9 @@ ssh и в поле «Host Name (or IP address)» указать адрес
 </div>
 </div>
 
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">Вход с терминала Linux</h3>
-<div class="outline-text-3" id="text-orgheadline4">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="login_linux"><a id="orgheadline3"></a>Вход с терминала Linux</h3>
+<div class="outline-text-3" id="text-login_linux">
 <p>
 В любой дистрибутив ОС Linux входит терминальный ssh-клиент (обычно
 OpenSSH). Минимальный формат команды для подключения к кластеру таков:
@@ -444,46 +423,20 @@ OpenSSH). Минимальный формат команды для подклю
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">Копирование файлов</h2>
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="work_cluster"><a id="orgheadline15"></a>Работа на кластере</h2>
+<div class="outline-text-2" id="text-work_cluster">
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6">Работа на кластере</h2>
-<div class="outline-text-2" id="text-orgheadline6">
-</div><div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">Навигация</h3>
-<div class="outline-text-3" id="text-orgheadline7">
-</div><div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8">Консоль</h4>
-</div>
-
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">mc</h4>
-</div>
-</div>
-
-<div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10">Редактирование файлов</h3>
-<div class="outline-text-3" id="text-orgheadline10">
-</div><div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11">mc-edit</h4>
-</div>
-
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12">Emacs, VIM</h4>
-</div>
-</div>
-
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">Компиляция программ</h3>
-<div class="outline-text-3" id="text-orgheadline13">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="compilation"><a id="orgheadline6"></a>Компиляция программ</h3>
+<div class="outline-text-3" id="text-compilation">
 <p>
 На кластере (на 15.12.2013) поддерживаются следующие компиляторы
 языков программирования для архитектуры x86_64:
 </p>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" align="center">
 <caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1.:</span> Компиляторы на кластере</caption>
 
 <colgroup>
@@ -661,7 +614,7 @@ icc -I/opt/intel/impi/4.1.2.040/intel64/include
 
 <tr>
 <td class="org-left">-o имя_файла</td>
-<td class="org-left">Имя выходного файла. Если этот параметр не указан, то поумолчанию готовая к выполнению программа будет называться a.out</td>
+<td class="org-left">Имя выходного файла. Если этот параметр не указан, то по-умолчанию готовая к выполнению программа будет называться a.out</td>
 </tr>
 </tbody>
 </table>
@@ -676,9 +629,9 @@ icc -I/opt/intel/impi/4.1.2.040/intel64/include
 </p>
 </div>
 
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14">Замечания по разработке программ на отдельной машине</h4>
-<div class="outline-text-4" id="text-orgheadline14">
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="notes_dev"><a id="orgheadline5"></a>Замечания по разработке программ на отдельной машине</h4>
+<div class="outline-text-4" id="text-notes_dev">
 <p>
 Практически все реализации MPI поддерживают запуск параллельных
 приложений в режиме эмуляции на отдельно взятой рабочей станции. Это
@@ -701,12 +654,14 @@ icc -I/opt/intel/impi/4.1.2.040/intel64/include
 </div>
 </div>
 
-<div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="orgheadline15">Запуск задач</h3>
-<div class="outline-text-3" id="text-orgheadline15">
-</div><div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16">Диспетчеризация задач</h4>
-<div class="outline-text-4" id="text-orgheadline16">
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="run_tasks"><a id="orgheadline14"></a>Запуск задач</h3>
+<div class="outline-text-3" id="text-run_tasks">
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="dispatch_tasks"><a id="orgheadline7"></a>Диспетчеризация задач</h4>
+<div class="outline-text-4" id="text-dispatch_tasks">
 <p>
 Для диспетчеризации задач на кластере используется система PBS
 Torque. С её помощью пользователь может отправлять свои задачи на
@@ -733,9 +688,9 @@ Torque. С её помощью пользователь может отправ�
 </div>
 </div>
 
-<div id="outline-container-orgheadline17" class="outline-4">
-<h4 id="orgheadline17">Система очередей</h4>
-<div class="outline-text-4" id="text-orgheadline17">
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="queues"><a id="orgheadline8"></a>Система очередей</h4>
+<div class="outline-text-4" id="text-queues">
 <p>
 На данный момент действуют 3 очереди: <i>vl_mars</i>, <i>vl_mercury</i>, <i>vl_pluto</i>. В
 таблице представлены отличия между очередями.
@@ -840,9 +795,9 @@ vl_mercury         --      --       --      --    4   0 --   E R
 </div>
 </div>
 
-<div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18">Постановка задачи в очередь</h4>
-<div class="outline-text-4" id="text-orgheadline18">
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="queue_tasks"><a id="orgheadline9"></a>Постановка задачи в очередь</h4>
+<div class="outline-text-4" id="text-queue_tasks">
 <p>
 Для постановки задачи в очередь на исполнение используется команда <code>qsub</code>. Данная команда
 принимает в качестве параметра имя скрипта, в котором описываются требуемые задачей ресурсы и
@@ -944,9 +899,9 @@ exit 0
 </div>
 </div>
 
-<div id="outline-container-orgheadline19" class="outline-4">
-<h4 id="orgheadline19">Запуск интерактивных программ</h4>
-<div class="outline-text-4" id="text-orgheadline19">
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="interactive"><a id="orgheadline10"></a>Запуск интерактивных программ</h4>
+<div class="outline-text-4" id="text-interactive">
 <p>
 Программы, использующие стандартный ввод, называются
 интерактивными. Как правило, такие программы после запуска требуют от
@@ -1012,9 +967,9 @@ exit 0
 </div>
 </div>
 
-<div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20">Запуск непараллельных программ</h4>
-<div class="outline-text-4" id="text-orgheadline20">
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="nonparallel"><a id="orgheadline11"></a>Запуск непараллельных программ</h4>
+<div class="outline-text-4" id="text-nonparallel">
 <p>
 Запуск непараллельных программ практически ничем не отличается от запуска параллельных
 программ. Единственное отличие заключается в том, что в <code>qsub</code> скрипте такой программы необходимо
@@ -1034,9 +989,9 @@ exit 0
 </div>
 </div>
 
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21">Состояние пользовательских задач</h4>
-<div class="outline-text-4" id="text-orgheadline21">
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="user_tasks"><a id="orgheadline12"></a>Состояние пользовательских задач</h4>
+<div class="outline-text-4" id="text-user_tasks">
 <p>
 Для получения информации об очередях и задачах пользователя
 используется команда <code>qstat</code>. Выполнение этой команды без параметров
@@ -1097,9 +1052,9 @@ Job ID       Username Queue    Jobname    SessID NDS  TSK  Memory Time  S Time
 </div>
 </div>
 
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22">Остановка задач</h4>
-<div class="outline-text-4" id="text-orgheadline22">
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="stop_tasks"><a id="orgheadline13"></a>Остановка задач</h4>
+<div class="outline-text-4" id="text-stop_tasks">
 <p>
 Остановка программы производится командой <code>qdel идентификатор_задачи</code>
 </p>
@@ -1125,12 +1080,14 @@ Job ID       Username Queue    Jobname    SessID NDS  TSK  Memory Time  S Time
 </div>
 </div>
 
-<div id="outline-container-orgheadline23" class="outline-2">
-<h2 id="orgheadline23">Мониторинг</h2>
-<div class="outline-text-2" id="text-orgheadline23">
-</div><div id="outline-container-orgheadline24" class="outline-3">
-<h3 id="orgheadline24">Web-интерфейс</h3>
-<div class="outline-text-3" id="text-orgheadline24">
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="monitoring"><a id="orgheadline18"></a>Мониторинг</h2>
+<div class="outline-text-2" id="text-monitoring">
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="web_interface"><a id="orgheadline16"></a>Web-интерфейс</h3>
+<div class="outline-text-3" id="text-web_interface">
 <p>
 Мониторинг кластера реализован при помощи системы Ganglia. Эта система позволяет следить
 за ресурсами кластера посредством web-интерфейса. Система мониторинга находится по адресу 
@@ -1147,9 +1104,9 @@ Job ID       Username Queue    Jobname    SessID NDS  TSK  Memory Time  S Time
 </div>
 </div>
 
-<div id="outline-container-orgheadline25" class="outline-3">
-<h3 id="orgheadline25">Консоль</h3>
-<div class="outline-text-3" id="text-orgheadline25">
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="console"><a id="orgheadline17"></a>Консоль</h3>
+<div class="outline-text-3" id="text-console">
 <p>
 Кроме графического интерфейса существует несколько полезных консольных
 команд для мониторинга. Команда <code>pbsnodes имя_узла</code> позволяет
@@ -1211,9 +1168,9 @@ mercury6             free
 </div>
 </div>
 
-<div id="outline-container-orgheadline26" class="outline-2">
-<h2 id="orgheadline26">Справочная информация</h2>
-<div class="outline-text-2" id="text-orgheadline26">
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="reference"><a id="orgheadline19"></a>Справочная информация</h2>
+<div class="outline-text-2" id="text-reference">
 <p>
 Описание основных команд при работе в ОС Linux – <a href="http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html">http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html</a>
 Документация к системе диспетчеризации заданий PBS Torque — <a href="http://www.clusterresources.com/torquedocs21/">http://www.clusterresources.com/torquedocs21/</a>

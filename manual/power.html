@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-05-12 Пт. 16:16 -->
+<!-- 2017-05-15 Пн. 17:18 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Руководство пользователя кластера OpenPOWER ВЦ ДВО РАН</title>
@@ -161,56 +161,41 @@ for the JavaScript code in this tag.
 <h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">Регистрация</a></li>
-<li><a href="#orgheadline2">Вход в систему</a>
+<li><a href="#registration">Регистрация</a></li>
+<li><a href="#login">Вход в систему</a>
 <ul>
-<li><a href="#orgheadline3">Вход с Windows-машины</a></li>
-<li><a href="#orgheadline4">Вход с терминала Linux</a></li>
+<li><a href="#login_windows">Вход с Windows-машины</a></li>
+<li><a href="#login_linux">Вход с терминала Linux</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline5">Копирование файлов</a></li>
-<li><a href="#orgheadline6">Работа на кластере</a>
+<li><a href="#work_cluster">Работа на кластере</a>
 <ul>
-<li><a href="#orgheadline7">Навигация</a>
+<li><a href="#compilation">Компиляция программ</a></li>
+<li><a href="#run_tasks">Запуск задач</a>
 <ul>
-<li><a href="#orgheadline8">Консоль</a></li>
-<li><a href="#orgheadline9">mc</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline10">Редактирование файлов</a>
-<ul>
-<li><a href="#orgheadline11">mc-edit</a></li>
-<li><a href="#orgheadline12">Emacs, VIM</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline13">Компиляция программ</a>
-<ul>
-<li><a href="#orgheadline14">Замечания по разработке программ на отдельной машине</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline15">Запуск задач</a>
-<ul>
-<li><a href="#orgheadline16">Диспетчеризация задач</a></li>
-<li><a href="#orgheadline17">Система очередей</a></li>
-<li><a href="#orgheadline18">Постановка задачи в очередь</a></li>
-<li><a href="#orgheadline19">Запуск интерактивных программ</a></li>
-<li><a href="#orgheadline20">Запуск непараллельных программ</a></li>
-<li><a href="#orgheadline21">Состояние пользовательских задач</a></li>
-<li><a href="#orgheadline22">Остановка задач</a></li>
+<li><a href="#dispatch_tasks">Диспетчеризация задач</a></li>
+<li><a href="#queues">Система очередей</a></li>
+<li><a href="#queue_tasks">Постановка задачи в очередь</a></li>
+<li><a href="#stop_tasks">Остановка задач</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline23">Мониторинг</a>
+<li><a href="#monitoring">Мониторинг</a>
 <ul>
-<li><a href="#orgheadline24">Web-интерфейс</a></li>
-<li><a href="#orgheadline25">Консоль</a></li>
+<li><a href="#web_interface">Web-интерфейс</a></li>
+<li><a href="#console">Консоль</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline26">Справочная информация</a></li>
+<li><a href="#reference">Справочная информация</a></li>
 </ul>
 </div>
 </div>
+<p class="verse">
+Версия: <b>0.1</b><br  />
+Дата: <b>15.05.2017</b><br  />
+</p>
+
 <p>
 <br  />
 <br  />
@@ -241,59 +226,39 @@ for the JavaScript code in this tag.
 
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">Регистрация</a></li>
-<li><a href="#orgheadline2">Вход в систему</a>
+<li><a href="#registration">Регистрация</a></li>
+<li><a href="#login">Вход в систему</a>
 <ul>
-<li><a href="#orgheadline3">Вход с Windows-машины</a></li>
-<li><a href="#orgheadline4">Вход с терминала Linux</a></li>
+<li><a href="#login_windows">Вход с Windows-машины</a></li>
+<li><a href="#login_linux">Вход с терминала Linux</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline5">Копирование файлов</a></li>
-<li><a href="#orgheadline6">Работа на кластере</a>
+<li><a href="#work_cluster">Работа на кластере</a>
 <ul>
-<li><a href="#orgheadline7">Навигация</a>
+<li><a href="#compilation">Компиляция программ</a></li>
+<li><a href="#run_tasks">Запуск задач</a>
 <ul>
-<li><a href="#orgheadline8">Консоль</a></li>
-<li><a href="#orgheadline9">mc</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline10">Редактирование файлов</a>
-<ul>
-<li><a href="#orgheadline11">mc-edit</a></li>
-<li><a href="#orgheadline12">Emacs, VIM</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline13">Компиляция программ</a>
-<ul>
-<li><a href="#orgheadline14">Замечания по разработке программ на отдельной машине</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline15">Запуск задач</a>
-<ul>
-<li><a href="#orgheadline16">Диспетчеризация задач</a></li>
-<li><a href="#orgheadline17">Система очередей</a></li>
-<li><a href="#orgheadline18">Постановка задачи в очередь</a></li>
-<li><a href="#orgheadline19">Запуск интерактивных программ</a></li>
-<li><a href="#orgheadline20">Запуск непараллельных программ</a></li>
-<li><a href="#orgheadline21">Состояние пользовательских задач</a></li>
-<li><a href="#orgheadline22">Остановка задач</a></li>
+<li><a href="#dispatch_tasks">Диспетчеризация задач</a></li>
+<li><a href="#queues">Система очередей</a></li>
+<li><a href="#queue_tasks">Постановка задачи в очередь</a></li>
+<li><a href="#stop_tasks">Остановка задач</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline23">Мониторинг</a>
+<li><a href="#monitoring">Мониторинг</a>
 <ul>
-<li><a href="#orgheadline24">Web-интерфейс</a></li>
-<li><a href="#orgheadline25">Консоль</a></li>
+<li><a href="#web_interface">Web-интерфейс</a></li>
+<li><a href="#console">Консоль</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline26">Справочная информация</a></li>
+<li><a href="#reference">Справочная информация</a></li>
 </ul>
 </div>
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Регистрация</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<h2 id="registration"><a id="orgheadline1"></a>Регистрация</h2>
+<div class="outline-text-2" id="text-registration">
 <p>
 Регистрация пользователей на кластере происходит через систему ЦКП
 <a href="http://ckp.ccfebras.ru/">http://ckp.ccfebras.ru/</a>.
@@ -301,9 +266,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">Вход в систему</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="login"><a id="orgheadline4"></a>Вход в систему</h2>
+<div class="outline-text-2" id="text-login">
 <p>
 Для работы с системой пользователь должен иметь свою учетную запись на
 управляющем узле кластера. Регистрация пользователя на кластере
@@ -331,9 +296,9 @@ for the JavaScript code in this tag.
 </p>
 </div>
 
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">Вход с Windows-машины</h3>
-<div class="outline-text-3" id="text-orgheadline3">
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="login_windows"><a id="orgheadline2"></a>Вход с Windows-машины</h3>
+<div class="outline-text-3" id="text-login_windows">
 <p>
 Работа с системой осуществляется по безопасному протоколу SSH при помощи какого-либо
 ssh-клиента. Клиент должен поддерживать протокол версии 2. Рекомендуется использовать 
@@ -389,9 +354,9 @@ ssh и в поле «Host Name (or IP address)» указать адрес
 </div>
 </div>
 
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">Вход с терминала Linux</h3>
-<div class="outline-text-3" id="text-orgheadline4">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="login_linux"><a id="orgheadline3"></a>Вход с терминала Linux</h3>
+<div class="outline-text-3" id="text-login_linux">
 <p>
 В любой дистрибутив ОС Linux входит терминальный ssh-клиент (обычно
 OpenSSH). Минимальный формат команды для подключения к кластеру таков:
@@ -406,51 +371,99 @@ OpenSSH). Минимальный формат команды для подклю
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">Копирование файлов</h2>
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="work_cluster"><a id="orgheadline11"></a>Работа на кластере</h2>
+<div class="outline-text-2" id="text-work_cluster">
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6">Работа на кластере</h2>
-<div class="outline-text-2" id="text-orgheadline6">
-</div><div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">Навигация</h3>
-<div class="outline-text-3" id="text-orgheadline7">
-</div><div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8">Консоль</h4>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="compilation"><a id="orgheadline5"></a>Компиляция программ</h3>
+<div class="outline-text-3" id="text-compilation">
+<p>
+На кластере (на 15.05.2017)
+ поддерживаются следующие компиляторы языков
+программирования для архитектуры ppc64le:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" align="center">
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1.:</span> Компиляторы на кластере</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Компилятор</td>
+<td class="org-left">Путь к файлу компилятора</td>
+<td class="org-left">Язык</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU C 4.8.5</td>
+<td class="org-left">/usr/bin/gcc</td>
+<td class="org-left">C</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU C++ 4.8.5</td>
+<td class="org-left">/usr/bin/g++</td>
+<td class="org-left">C++</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU Fortran 4.8.5</td>
+<td class="org-left">/usr/bin/gfortran</td>
+<td class="org-left">Fortran 90</td>
+</tr>
+
+<tr>
+<td class="org-left">IBM XL Fortran 15.1.5</td>
+<td class="org-left">/usr/bin/xlf</td>
+<td class="org-left">Fortran 77</td>
+</tr>
+
+<tr>
+<td class="org-left">IBM XL Fortran 15.1.5</td>
+<td class="org-left">/usr/bin/xlf90</td>
+<td class="org-left">Fortran 90</td>
+</tr>
+
+<tr>
+<td class="org-left">IBM XL C 13.1.5</td>
+<td class="org-left">/usr/bin/xlc</td>
+<td class="org-left">C</td>
+</tr>
+
+<tr>
+<td class="org-left">IBM XL C++ 13.1.5</td>
+<td class="org-left">/usr/bin/xlc++</td>
+<td class="org-left">C++</td>
+</tr>
+
+<tr>
+<td class="org-left">NVIDIA Cuda 8.0.61</td>
+<td class="org-left">/usr/local/cuda/bin/nvcc</td>
+<td class="org-left">C/C++</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">mc</h4>
-</div>
-</div>
+
 
 <div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10">Редактирование файлов</h3>
-<div class="outline-text-3" id="text-orgheadline10">
-</div><div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11">mc-edit</h4>
+<h3 id="run_tasks"><a id="orgheadline10"></a>Запуск задач</h3>
+<div class="outline-text-3" id="text-run_tasks">
 </div>
 
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12">Emacs, VIM</h4>
-</div>
-</div>
-
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">Компиляция программ</h3>
-<div class="outline-text-3" id="text-orgheadline13">
-</div><div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14">Замечания по разработке программ на отдельной машине</h4>
-</div>
-</div>
-
-<div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="orgheadline15">Запуск задач</h3>
-<div class="outline-text-3" id="text-orgheadline15">
-</div><div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16">Диспетчеризация задач</h4>
-<div class="outline-text-4" id="text-orgheadline16">
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="dispatch_tasks"><a id="orgheadline6"></a>Диспетчеризация задач</h4>
+<div class="outline-text-4" id="text-dispatch_tasks">
 <p>
 Для диспетчеризации задач на кластере используется система PBS
 Pro. С её помощью пользователь может отправлять свои задачи на
@@ -477,9 +490,9 @@ Pro. С её помощью пользователь может отправля
 </div>
 </div>
 
-<div id="outline-container-orgheadline17" class="outline-4">
-<h4 id="orgheadline17">Система очередей</h4>
-<div class="outline-text-4" id="text-orgheadline17">
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="queues"><a id="orgheadline7"></a>Система очередей</h4>
+<div class="outline-text-4" id="text-queues">
 <p>
 На данный момент действует 1 очередь: <i>workq</i>.
 </p>
@@ -508,25 +521,118 @@ workq              --      --       --     --      0     0   --   E R
 </div>
 </div>
 
-<div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18">Постановка задачи в очередь</h4>
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="queue_tasks"><a id="orgheadline8"></a>Постановка задачи в очередь</h4>
+<div class="outline-text-4" id="text-queue_tasks">
+<p>
+Для постановки задачи в очередь на исполнение используется команда <code>qsub</code>. Данная команда
+принимает в качестве параметра имя скрипта, в котором описываются требуемые задачей ресурсы и
+указываются команды, исполняемые при запуске. Рассмотрим пример, иллюстрирующий запуск ранее
+скомпилированной программы на 1 "порции" кластера, с использованием 2 mpi процессов на каждой.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter mpi_test]$ cat mpi_test.qsub
+#PBS -k oe
+#PBS -l select=1:mpiprocs=2
+#PBS -r n
+#PBS -M user@mail.com
+#PBS -m abe
+#PBS -q workq
+#PBS -N mpi_test
+#!/bin/sh
+
+cd /home/user/test/mpi_test
+
+module unload spectrum_mpi &amp;&amp; module load openmpi/gcc/1.10.6/4.8.5
+mpirun ./mpi
+
+exit 0
+[user@jupiter mpi_test]$ qsub mpi_test.qsub
+66330.jupiter1
+</pre>
 </div>
 
-<div id="outline-container-orgheadline19" class="outline-4">
-<h4 id="orgheadline19">Запуск интерактивных программ</h4>
+<p>
+Если команда выполнена успешно, то на экране отобразится идентификатор
+задачи (в данном случае это <i>66330.jupiter1</i>), в противном случае
+появится сообщение об ошибке. Ошибки пользовательской программы
+(неправильная компиляция и т.п.) проявятся только при переходе задачи
+к активному состоянию.
+</p>
+
+<div class="note">
+<p>
+<b>Примечание.</b> Весь вывод программы в стандартный поток и в поток ошибок
+перенаправляется в файлы, находящиеся в домашней директории пользователя.
+Названия таких файлов имеют формат <code>имя_задачи.(e/o)порядковый_номер</code>. Для
+запущенной задачи это будут: <i>mpi_test.e66330</i> – для потока ошибок и
+<i>mpi_test.o66330</i> – для стандартного потока вывода.
+</p>
+
 </div>
 
-<div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20">Запуск непараллельных программ</h4>
+<p>
+Прокомментируем каждую из строчек скрипта <code>mpi_test.qsub</code>
+</p>
+
+<p>
+<code>#PBS -k oe</code> — указание сброса потока вывода (o) и потока ошибок (e)
+</p>
+
+<p>
+<code>#PBS -l select=1:mpiprocs=2</code> — требуемое количество порций (1) и количество mpi процессов на каждой порции (2)
+</p>
+
+<p>
+<code>#PBS -r n</code> — является ли задача перезапускаемой (задачей с контрольными точками);
+<b>y</b> — является, <b>n</b> — не является
+</p>
+
+<p>
+<code>#PBS -M user@mail.com</code> — почтовый адрес пользователя
+</p>
+
+<p>
+<code>#PBS -m abe</code> — какие сообщения отправляются на указанный адрес (<b>a</b> — ошибка в
+выполнении задачи, <b>b</b> — начало выполнения, <b>e</b> — завершение
+выполнения)
+</p>
+
+<p>
+<code>#PBS -q workq</code> — идентификатор очереди
+</p>
+
+<p>
+<code>#PBS -N mpi_test</code> — название задачи
+</p>
+
+<p>
+<code>#!/bin/sh</code> — указание необходимого командного интерпретатора
+</p>
+
+<p>
+<code>cd /home/user/test/mpi_test</code> — переход в директорию с исполняемым файлом
+</p>
+
+<p>
+<code>module unload spectrum_mpi &amp;&amp; module load openmpi/gcc/1.10.6/4.8.5</code> — выбор openmpi вместо spectrum_mpi
+</p>
+
+<p>
+<code>mpirun ./mpi</code> — запуск приложения
+</p>
+
+<p>
+<code>exit 0</code> — выход
+</p>
+</div>
 </div>
 
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21">Состояние пользовательских задач</h4>
-</div>
-
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22">Остановка задач</h4>
-<div class="outline-text-4" id="text-orgheadline22">
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="stop_tasks"><a id="orgheadline9"></a>Остановка задач</h4>
+<div class="outline-text-4" id="text-stop_tasks">
 <p>
 Остановка программы производится командой <code>qdel идентификатор_задачи</code>
 </p>
@@ -552,12 +658,14 @@ workq              --      --       --     --      0     0   --   E R
 </div>
 </div>
 
-<div id="outline-container-orgheadline23" class="outline-2">
-<h2 id="orgheadline23">Мониторинг</h2>
-<div class="outline-text-2" id="text-orgheadline23">
-</div><div id="outline-container-orgheadline24" class="outline-3">
-<h3 id="orgheadline24">Web-интерфейс</h3>
-<div class="outline-text-3" id="text-orgheadline24">
+<div id="outline-container-orgheadline14" class="outline-2">
+<h2 id="monitoring"><a id="orgheadline14"></a>Мониторинг</h2>
+<div class="outline-text-2" id="text-monitoring">
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="web_interface"><a id="orgheadline12"></a>Web-интерфейс</h3>
+<div class="outline-text-3" id="text-web_interface">
 <p>
 Мониторинг кластера реализован при помощи системы Ganglia. Эта система позволяет следить
 за ресурсами кластера посредством web-интерфейса. Система мониторинга находится по адресу 
@@ -575,9 +683,9 @@ workq              --      --       --     --      0     0   --   E R
 </div>
 
 
-<div id="outline-container-orgheadline25" class="outline-3">
-<h3 id="orgheadline25">Консоль</h3>
-<div class="outline-text-3" id="text-orgheadline25">
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="console"><a id="orgheadline13"></a>Консоль</h3>
+<div class="outline-text-3" id="text-console">
 <div class="org-src-container">
 
 <pre class="src src-raw">[user@jupiter ~]$ pbsnodes jupiter2
@@ -609,12 +717,12 @@ jupiter2
 </div>
 </div>
 
-<div id="outline-container-orgheadline26" class="outline-2">
-<h2 id="orgheadline26">Справочная информация</h2>
-<div class="outline-text-2" id="text-orgheadline26">
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="reference"><a id="orgheadline15"></a>Справочная информация</h2>
+<div class="outline-text-2" id="text-reference">
 <p>
 Описание основных команд при работе в ОС Linux – <a href="http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html">http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html</a>
-Документация к системе диспетчеризации заданий PBS Torque — <a href="http://www.pbsworks.com/pdfs/PBSUserGuide14.2.pdf">http://www.pbsworks.com/pdfs/PBSUserGuide14.2.pdf</a>
+Документация к системе диспетчеризации заданий PBS Pro — <a href="http://www.pbsworks.com/pdfs/PBSUserGuide14.2.pdf">http://www.pbsworks.com/pdfs/PBSUserGuide14.2.pdf</a>
 </p>
 </div>
 </div>
