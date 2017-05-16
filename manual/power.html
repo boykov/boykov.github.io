@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-05-15 Пн. 17:18 -->
+<!-- 2017-05-16 Вт. 17:59 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Руководство пользователя кластера OpenPOWER ВЦ ДВО РАН</title>
@@ -161,39 +161,49 @@ for the JavaScript code in this tag.
 <h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#registration">Регистрация</a></li>
-<li><a href="#login">Вход в систему</a>
+<li><a href="#registration">1. Регистрация</a></li>
+<li><a href="#login">2. Вход в систему</a>
 <ul>
-<li><a href="#login_windows">Вход с Windows-машины</a></li>
-<li><a href="#login_linux">Вход с терминала Linux</a></li>
+<li><a href="#login_windows">2.1. Вход с Windows-машины</a></li>
+<li><a href="#login_linux">2.2. Вход с терминала Linux</a></li>
 </ul>
 </li>
-<li><a href="#work_cluster">Работа на кластере</a>
+<li><a href="#copy_files">3. Копирование файлов</a></li>
+<li><a href="#work_cluster">4. Работа на кластере</a>
 <ul>
-<li><a href="#compilation">Компиляция программ</a></li>
-<li><a href="#run_tasks">Запуск задач</a>
+<li><a href="#navigation">4.1. Навигация</a></li>
+<li><a href="#editing">4.2. Редактирование файлов</a></li>
+<li><a href="#compilation">4.3. Компиляция программ</a>
 <ul>
-<li><a href="#dispatch_tasks">Диспетчеризация задач</a></li>
-<li><a href="#queues">Система очередей</a></li>
-<li><a href="#queue_tasks">Постановка задачи в очередь</a></li>
-<li><a href="#stop_tasks">Остановка задач</a></li>
+<li><a href="#notes_dev">4.3.1. Замечания по разработке программ на отдельной машине</a></li>
+</ul>
+</li>
+<li><a href="#run_tasks">4.4. Запуск задач</a>
+<ul>
+<li><a href="#dispatch_tasks">4.4.1. Диспетчеризация задач</a></li>
+<li><a href="#queues">4.4.2. Система очередей</a></li>
+<li><a href="#queue_tasks">4.4.3. Постановка задачи в очередь</a></li>
+<li><a href="#interactive">4.4.4. Запуск интерактивных программ</a></li>
+<li><a href="#nonparallel">4.4.5. Запуск непараллельных программ</a></li>
+<li><a href="#user_tasks">4.4.6. Состояние пользовательских задач</a></li>
+<li><a href="#stop_tasks">4.4.7. Остановка задач</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#monitoring">Мониторинг</a>
+<li><a href="#monitoring">5. Мониторинг</a>
 <ul>
-<li><a href="#web_interface">Web-интерфейс</a></li>
-<li><a href="#console">Консоль</a></li>
+<li><a href="#web_interface">5.1. Web-интерфейс</a></li>
+<li><a href="#console">5.2. Консоль</a></li>
 </ul>
 </li>
-<li><a href="#reference">Справочная информация</a></li>
+<li><a href="#reference">6. Справочная информация</a></li>
 </ul>
 </div>
 </div>
 <p class="verse">
 Версия: <b>0.1</b><br  />
-Дата: <b>15.05.2017</b><br  />
+Дата: <b>16.05.2017</b><br  />
 </p>
 
 <p>
@@ -226,38 +236,48 @@ for the JavaScript code in this tag.
 
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#registration">Регистрация</a></li>
-<li><a href="#login">Вход в систему</a>
+<li><a href="#registration">1. Регистрация</a></li>
+<li><a href="#login">2. Вход в систему</a>
 <ul>
-<li><a href="#login_windows">Вход с Windows-машины</a></li>
-<li><a href="#login_linux">Вход с терминала Linux</a></li>
+<li><a href="#login_windows">2.1. Вход с Windows-машины</a></li>
+<li><a href="#login_linux">2.2. Вход с терминала Linux</a></li>
 </ul>
 </li>
-<li><a href="#work_cluster">Работа на кластере</a>
+<li><a href="#copy_files">3. Копирование файлов</a></li>
+<li><a href="#work_cluster">4. Работа на кластере</a>
 <ul>
-<li><a href="#compilation">Компиляция программ</a></li>
-<li><a href="#run_tasks">Запуск задач</a>
+<li><a href="#navigation">4.1. Навигация</a></li>
+<li><a href="#editing">4.2. Редактирование файлов</a></li>
+<li><a href="#compilation">4.3. Компиляция программ</a>
 <ul>
-<li><a href="#dispatch_tasks">Диспетчеризация задач</a></li>
-<li><a href="#queues">Система очередей</a></li>
-<li><a href="#queue_tasks">Постановка задачи в очередь</a></li>
-<li><a href="#stop_tasks">Остановка задач</a></li>
+<li><a href="#notes_dev">4.3.1. Замечания по разработке программ на отдельной машине</a></li>
+</ul>
+</li>
+<li><a href="#run_tasks">4.4. Запуск задач</a>
+<ul>
+<li><a href="#dispatch_tasks">4.4.1. Диспетчеризация задач</a></li>
+<li><a href="#queues">4.4.2. Система очередей</a></li>
+<li><a href="#queue_tasks">4.4.3. Постановка задачи в очередь</a></li>
+<li><a href="#interactive">4.4.4. Запуск интерактивных программ</a></li>
+<li><a href="#nonparallel">4.4.5. Запуск непараллельных программ</a></li>
+<li><a href="#user_tasks">4.4.6. Состояние пользовательских задач</a></li>
+<li><a href="#stop_tasks">4.4.7. Остановка задач</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#monitoring">Мониторинг</a>
+<li><a href="#monitoring">5. Мониторинг</a>
 <ul>
-<li><a href="#web_interface">Web-интерфейс</a></li>
-<li><a href="#console">Консоль</a></li>
+<li><a href="#web_interface">5.1. Web-интерфейс</a></li>
+<li><a href="#console">5.2. Консоль</a></li>
 </ul>
 </li>
-<li><a href="#reference">Справочная информация</a></li>
+<li><a href="#reference">6. Справочная информация</a></li>
 </ul>
 </div>
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="registration"><a id="orgheadline1"></a>Регистрация</h2>
+<h2 id="registration"><a id="orgheadline1"></a><span class="section-number-2">1</span> Регистрация</h2>
 <div class="outline-text-2" id="text-registration">
 <p>
 Регистрация пользователей на кластере происходит через систему ЦКП
@@ -267,7 +287,7 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="login"><a id="orgheadline4"></a>Вход в систему</h2>
+<h2 id="login"><a id="orgheadline4"></a><span class="section-number-2">2</span> Вход в систему</h2>
 <div class="outline-text-2" id="text-login">
 <p>
 Для работы с системой пользователь должен иметь свою учетную запись на
@@ -297,7 +317,7 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="login_windows"><a id="orgheadline2"></a>Вход с Windows-машины</h3>
+<h3 id="login_windows"><a id="orgheadline2"></a><span class="section-number-3">2.1</span> Вход с Windows-машины</h3>
 <div class="outline-text-3" id="text-login_windows">
 <p>
 Работа с системой осуществляется по безопасному протоколу SSH при помощи какого-либо
@@ -355,7 +375,7 @@ ssh и в поле «Host Name (or IP address)» указать адрес
 </div>
 
 <div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="login_linux"><a id="orgheadline3"></a>Вход с терминала Linux</h3>
+<h3 id="login_linux"><a id="orgheadline3"></a><span class="section-number-3">2.2</span> Вход с терминала Linux</h3>
 <div class="outline-text-3" id="text-login_linux">
 <p>
 В любой дистрибутив ОС Linux входит терминальный ssh-клиент (обычно
@@ -371,16 +391,43 @@ OpenSSH). Минимальный формат команды для подклю
 </div>
 </div>
 
-<div id="outline-container-orgheadline11" class="outline-2">
-<h2 id="work_cluster"><a id="orgheadline11"></a>Работа на кластере</h2>
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="copy_files"><a id="orgheadline5"></a><span class="section-number-2">3</span> Копирование файлов</h2>
+<div class="outline-text-2" id="text-copy_files">
+<p>
+См. соответсвующий раздел <a href="http://lits.ccfebras.ru/assets/files/user_guide.pdf">руководства кластера версии 5.0</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="work_cluster"><a id="orgheadline18"></a><span class="section-number-2">4</span> Работа на кластере</h2>
 <div class="outline-text-2" id="text-work_cluster">
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="compilation"><a id="orgheadline5"></a>Компиляция программ</h3>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="navigation"><a id="orgheadline6"></a><span class="section-number-3">4.1</span> Навигация</h3>
+<div class="outline-text-3" id="text-navigation">
+<p>
+См. соответсвующий раздел <a href="http://lits.ccfebras.ru/assets/files/user_guide.pdf">руководства кластера версии 5.0</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="editing"><a id="orgheadline7"></a><span class="section-number-3">4.2</span> Редактирование файлов</h3>
+<div class="outline-text-3" id="text-editing">
+<p>
+См. соответсвующий раздел <a href="http://lits.ccfebras.ru/assets/files/user_guide.pdf">руководства кластера версии 5.0</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="compilation"><a id="orgheadline9"></a><span class="section-number-3">4.3</span> Компиляция программ</h3>
 <div class="outline-text-3" id="text-compilation">
 <p>
-На кластере (на 15.05.2017)
+На кластере (на 16.05.2017)
  поддерживаются следующие компиляторы языков
 программирования для архитектуры ppc64le:
 </p>
@@ -451,18 +498,197 @@ OpenSSH). Минимальный формат команды для подклю
 </tr>
 </tbody>
 </table>
+
+<p>
+Компиляторы GNU и IBM XL находятся в каталоге, доступном для всех
+пользователей. Поэтому, например, при вызове команды:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ xlc
+</pre>
+</div>
+<p>
+будет запускаться компилятор IBM XL C 13.1.5. В переменной среды
+«LD_LIBRARY_PATH» также указаны пути к библиотекам этих компиляторов.
+</p>
+
+<p>
+На кластере используется система модулей окружения (<a href="http://modules.sourceforge.net/">Environment
+Modules</a>). Загруженные модули можно посмотреть с помощью команды:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ module list
+Currently Loaded Modulefiles:
+  1) pbs            2) cuda           3) essl           4) spectrum_mpi
+</pre>
+</div>
+<p>
+Видно, что в отличии от компиляторов GNU и IBM XL, компилятор cuda
+подключается при помощи соответствующего модуля. Среди подключенных
+по-умолчанию модулей находится и <i>spectrum_mpi</i>.
+</p>
+
+<p>
+В качестве реализации MPI библиотеки на кластере (на
+16.05.2017)
+поддерживается IBM Spectrum MPI. Кроме того, можно использовать любую
+из имеющихся дополнительных реализаций, подключив необходимый модуль:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">module unload spectrum_mpi
+module load openmpi/gcc/1.10.6/4.8.5
+</pre>
+</div>
+<p>
+Все реализациии MPI конфликтуют между собой, поэтому необходимо
+предварительно отключать альтернативный модуль. После подключения
+нужного модуля, пути к данной библиотеке добавляются в переменные
+среды «PATH» и «LD_LIBRARY_PATH».
+</p>
+
+<p>
+Список доступных модулей можно увидеть с помощью команды:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ module avail
+
+------------------------------------------ /usr/share/Modules/modulefiles -------------------------------------------
+dot         module-git  module-info modules     null        use.own
+
+------------------------------------------------- /etc/modulefiles --------------------------------------------------
+cuda                      openmpi/gcc/2.1.0/4.8.5   openmpi/xl/2.1.0          spectrum_mpi
+essl                      openmpi/pgi/1.10.2/2016   pbs
+openmpi/gcc/1.10.6/4.8.5  openmpi/xl/1.10.6         pgi/16.10(default)
+openmpi/gcc/2.0.2a1/4.8.5 openmpi/xl/2.0.2a1        pgi/2016
+</pre>
+</div>
+
+<p>
+Для компиляции mpi программ лучше всего использовать обёртки к
+компиляторам, чем вручную прописывать для этого специальные
+флаги. Так, например, чтобы скомпилировать mpi программу, написанную
+на языке Fortran, нужно воспользоваться оберткой <code>mpifort</code>. Данная
+команда вызовет компилятор IBM XL Fortran (при условии, что подключен
+модуль spectrum_mpi), с указанием всех необходимых флагов.
+</p>
+
+<p>
+Распишем соответствие между обертками и соответствующими им компиляторами:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" align="center">
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 2.:</span> Соответствие между обертками MPI и компиляторами</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Обертка</td>
+<td class="org-left">XL</td>
+<td class="org-left">GNU</td>
+</tr>
+
+<tr>
+<td class="org-left">mpicc</td>
+<td class="org-left">xlc_r</td>
+<td class="org-left">gcc</td>
+</tr>
+
+<tr>
+<td class="org-left">mpifort</td>
+<td class="org-left">xlf_r</td>
+<td class="org-left">gfortran</td>
+</tr>
+
+<tr>
+<td class="org-left">mpif77</td>
+<td class="org-left">xlf_r</td>
+<td class="org-left">gfortran</td>
+</tr>
+
+<tr>
+<td class="org-left">mpif90</td>
+<td class="org-left">xlf90_r</td>
+<td class="org-left">gfortran</td>
+</tr>
+
+<tr>
+<td class="org-left">mpic++</td>
+<td class="org-left">xlC_r</td>
+<td class="org-left">g++</td>
+</tr>
+
+<tr>
+<td class="org-left">mpicxx</td>
+<td class="org-left">xlC_r</td>
+<td class="org-left">g++</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Для того, чтобы посмотреть какие опции компилятора указываются при
+вызове обертки, можно воспользоваться следующей командой:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ mpicc -show
+gcc -I/opt/soft/openmpi/1.10.6/gcc/include -pthread -Wl,-rpath
+-Wl,/opt/soft/openmpi/1.10.6/gcc/lib -Wl,--enable-new-dtags
+-L/opt/soft/openmpi/1.10.6/gcc/lib -lmpi
+</pre>
+</div>
+
+<p>
+Как видно из данного вывода, единственными опциями, которые может
+потребоваться указать при вызове компилятора, могут оказаться опции
+оптимизации.
+</p>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="notes_dev"><a id="orgheadline8"></a><span class="section-number-4">4.3.1</span> Замечания по разработке программ на отдельной машине</h4>
+<div class="outline-text-4" id="text-notes_dev">
+<p>
+Практически все реализации MPI поддерживают запуск параллельных
+приложений в режиме эмуляции на отдельно взятой рабочей станции. Это
+можно делать как на Linux, так и Windows машинах.
+</p>
+
+<p>
+В Linux рекомендуется использовать пакет OpenMPI, а для создания MPI
+приложений на Windows машинах можно использовать пакет MPICH в версии
+для Windows. Для успешного портирования программ с Windows на Linux не
+следует использовать расширения предоставляемые средами
+программирования, такими как Visual Studio и Borland Builder.
+</p>
+
+<p>
+Подготовленные исходные коды программ лучше всего компилировать на
+кластере.
+</p>
 </div>
 </div>
+</div>
 
-
-
-<div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="run_tasks"><a id="orgheadline10"></a>Запуск задач</h3>
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="run_tasks"><a id="orgheadline17"></a><span class="section-number-3">4.4</span> Запуск задач</h3>
 <div class="outline-text-3" id="text-run_tasks">
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="dispatch_tasks"><a id="orgheadline6"></a>Диспетчеризация задач</h4>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="dispatch_tasks"><a id="orgheadline10"></a><span class="section-number-4">4.4.1</span> Диспетчеризация задач</h4>
 <div class="outline-text-4" id="text-dispatch_tasks">
 <p>
 Для диспетчеризации задач на кластере используется система PBS
@@ -490,17 +716,16 @@ Pro. С её помощью пользователь может отправля
 </div>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="queues"><a id="orgheadline7"></a>Система очередей</h4>
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="queues"><a id="orgheadline11"></a><span class="section-number-4">4.4.2</span> Система очередей</h4>
 <div class="outline-text-4" id="text-queues">
 <p>
 На данный момент действует 1 очередь: <i>workq</i>.
 </p>
 
 <p>
-Для получения информации об очередях, можно выполнить команду <code>qstat -q</code>.
+Для получения информации об очередях, можно выполнить команду <code>qstat -q</code>:
 </p>
-
 <div class="org-src-container">
 
 <pre class="src src-raw">[eab@jupiter install]$ qstat -q
@@ -517,25 +742,30 @@ workq              --      --       --     --      0     0   --   E R
 
 <p>
 <b>Queue</b> – имя очереди; <b>Run</b> – число выполняемых задач; <b>Que</b> – число задач, ожидающих начала выполнения.
+Команда <code>qstat -Qf имя_очереди</code>  позволяет получить информацию о конкретной очереди.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="queue_tasks"><a id="orgheadline8"></a>Постановка задачи в очередь</h4>
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="queue_tasks"><a id="orgheadline12"></a><span class="section-number-4">4.4.3</span> Постановка задачи в очередь</h4>
 <div class="outline-text-4" id="text-queue_tasks">
 <p>
-Для постановки задачи в очередь на исполнение используется команда <code>qsub</code>. Данная команда
-принимает в качестве параметра имя скрипта, в котором описываются требуемые задачей ресурсы и
-указываются команды, исполняемые при запуске. Рассмотрим пример, иллюстрирующий запуск ранее
-скомпилированной программы на 1 "порции" кластера, с использованием 2 mpi процессов на каждой.
+Для постановки задачи в очередь на исполнение используется команда
+<code>qsub</code>. Данная команда принимает в качестве параметра имя скрипта, в
+котором описываются требуемые задачей ресурсы и указываются команды,
+исполняемые при запуске. Рассмотрим пример, иллюстрирующий запуск
+ранее скомпилированной программы на 1 чанке (некоторой виртуальной
+части) кластера, с использованием 4 mpi процессов, выделением 4
+процессоров и 1 GPU на этом чанке:
 </p>
 
 <div class="org-src-container">
 
 <pre class="src src-raw">[user@jupiter mpi_test]$ cat mpi_test.qsub
 #PBS -k oe
-#PBS -l select=1:mpiprocs=2
+#PBS -l select=1:mpiprocs=4:ncpus=4:ngpus=1
+#PBS -l place=shared
 #PBS -r n
 #PBS -M user@mail.com
 #PBS -m abe
@@ -574,64 +804,182 @@ exit 0
 </div>
 
 <p>
-Прокомментируем каждую из строчек скрипта <code>mpi_test.qsub</code>
+Прокомментируем каждую из строчек скрипта <code>mpi_test.qsub</code>:
 </p>
 
 <p>
-<code>#PBS -k oe</code> — указание сброса потока вывода (o) и потока ошибок (e)
-</p>
-
-<p>
-<code>#PBS -l select=1:mpiprocs=2</code> — требуемое количество порций (1) и количество mpi процессов на каждой порции (2)
-</p>
-
-<p>
+<code>#PBS -k oe</code> — указание сброса потока вывода (o) и потока ошибок (e)<br  />
+<code>#PBS -l select=1:mpiprocs=4:ncpus=4:ngpus=1</code> — требуемое количество чанков (1); количество mpi процессов (4), количество выделяемых процессоров (4) и количество выделяемых GPU (1) на каждом чанке<br  />
+<code>#PBS -l place=shared</code> — использование узла вместе с другими задачами; <b>shared</b> — совместное использование, <b>excl</b> — монопольное использование<br  />
 <code>#PBS -r n</code> — является ли задача перезапускаемой (задачей с контрольными точками);
-<b>y</b> — является, <b>n</b> — не является
-</p>
-
-<p>
-<code>#PBS -M user@mail.com</code> — почтовый адрес пользователя
-</p>
-
-<p>
+<b>y</b> — является, <b>n</b> — не является<br  />
+<code>#PBS -M user@mail.com</code> — почтовый адрес пользователя<br  />
 <code>#PBS -m abe</code> — какие сообщения отправляются на указанный адрес (<b>a</b> — ошибка в
 выполнении задачи, <b>b</b> — начало выполнения, <b>e</b> — завершение
-выполнения)
-</p>
-
-<p>
-<code>#PBS -q workq</code> — идентификатор очереди
-</p>
-
-<p>
-<code>#PBS -N mpi_test</code> — название задачи
-</p>
-
-<p>
-<code>#!/bin/sh</code> — указание необходимого командного интерпретатора
-</p>
-
-<p>
-<code>cd /home/user/test/mpi_test</code> — переход в директорию с исполняемым файлом
-</p>
-
-<p>
-<code>module unload spectrum_mpi &amp;&amp; module load openmpi/gcc/1.10.6/4.8.5</code> — выбор openmpi вместо spectrum_mpi
-</p>
-
-<p>
-<code>mpirun ./mpi</code> — запуск приложения
-</p>
-
-<p>
+выполнения)<br  />
+<code>#PBS -q workq</code> — идентификатор очереди<br  />
+<code>#PBS -N mpi_test</code> — название задачи<br  />
+<code>#!/bin/sh</code> — указание необходимого командного интерпретатора<br  />
+<code>cd /home/user/test/mpi_test</code> — переход в директорию с исполняемым файлом<br  />
+<code>module unload spectrum_mpi &amp;&amp; module load openmpi/gcc/1.10.6/4.8.5</code> — выбор openmpi вместо spectrum_mpi<br  />
+<code>mpirun ./mpi</code> — запуск приложения<br  />
 <code>exit 0</code> — выход
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="stop_tasks"><a id="orgheadline9"></a>Остановка задач</h4>
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="interactive"><a id="orgheadline13"></a><span class="section-number-4">4.4.4</span> Запуск интерактивных программ</h4>
+<div class="outline-text-4" id="text-interactive">
+<p>
+Программы, использующие стандартный ввод, называются
+интерактивными. Как правило, такие программы после запуска требуют от
+пользователя ввода данных. При постановке задачи в очередь любая
+программа переводится в фоновый режим. В этом режиме ввод данных
+пользователем в запущенную программу невозможен. Для передачи данных
+таким программам используется механизм перенаправления стандартных
+потоков ввода/вывода.
+</p>
+
+<p>
+Для перенаправления подготавливается текстовый файл, содержимое
+которого в точности представляет собой данные, вводимые пользователем.
+Например, если программа <code>solver</code> предполагает ввод в первой строке
+размерности матрицы, а во второй количества итераций, то текстовый
+файл <code>input.txt</code> будет иметь вид:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter solver]$ cat input.txt
+10000000
+1000
+</pre>
+</div>
+
+<p>
+После каждого числа обязателен символ новой строки. Запуск программы
+на выполнение производится так:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">solver &lt; input.txt
+</pre>
+</div>
+
+<p>
+Скрипт для постановки в очередь задания, в рамках которого будет
+выполняться интерактивная программа, будет выглядеть следующим
+образом:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter solver]$ cat job.qsub
+#PBS -k oe
+#PBS -l select=1:ncpus=8:mpiprocs=8
+#PBS -r n
+#PBS -M user@mail.com
+#PBS -m abe
+#PBS -q workq
+#PBS -N solver
+#!/bin/sh
+
+cd /home/user/test/solver
+
+mpirun ./solver &lt; ./input.txt
+
+exit 0
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="nonparallel"><a id="orgheadline14"></a><span class="section-number-4">4.4.5</span> Запуск непараллельных программ</h4>
+<div class="outline-text-4" id="text-nonparallel">
+<p>
+Запуск непараллельных программ практически ничем не отличается от запуска параллельных
+программ. Единственное отличие заключается в том, что в <code>qsub</code> скрипте такой программы необходимо
+указать, что для её работы необходим только один логический процессор:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">#PBS -l select=1:ncpus=1
+</pre>
+</div>
+
+<p>
+Также в этом скрипте необходимо запускать непосредственно исполняемый
+файл программы, то есть не использовать для запуска <code>mpiexec</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="user_tasks"><a id="orgheadline15"></a><span class="section-number-4">4.4.6</span> Состояние пользовательских задач</h4>
+<div class="outline-text-4" id="text-user_tasks">
+<p>
+Для получения информации об очередях и задачах пользователя
+используется команда <code>qstat</code>. Выполнение этой команды без параметров
+покажет все задачи пользователя и их состояние.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ qstat
+Job id                  Name             User            Time Use S Queue
+----------------------- ---------------- --------------- -------- - -----
+700.jupiter1            mpi_test         user            00:10:40 R workq
+701.jupiter1            sample_job       user            0        Q workq
+702.jupiter1            solver           user            0        Q workq
+</pre>
+</div>
+
+<p>
+<b>Job id</b> — идентификатор задачи, полученный при выполнении <code>qsub</code>;
+<b>Name</b> — имя задачи; <b>User</b> — имя пользователя, запустившего задачу;
+<b>Time Use</b> — процессорное время, потраченное задачей; <b>S (State)</b> — с
+остояние задачи ( <b>R</b> – задача выполняется, <b>Q</b> – ожидает в очереди);
+<b>Queue</b> — очередь.
+</p>
+
+<p>
+В данном случае пользователю <b>user</b> принадлежат три задачи.
+</p>
+
+<p>
+С помощью команды <code>qstat -n идентификатор_задачи</code> можно получить
+список узлов, на которых выполняется конкретная задача. Эта информация
+полезна при мониторинге эффективности использования вычислительных
+ресурсов с использованием системы Ganglia, так как позволяет
+отслеживать состояние только используемых задачей узлов.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ qstat -n 701
+
+jupiter1:
+                                                           Req'd  Req'd   Elap
+Job ID          Username Queue    Jobname    SessID NDS TSK Memory Time  S Time
+--------------- -------- -------- ---------- ------ --- --- ------ ----- - -----
+298.jupiter1    eab      workq    mpi_test      --    1   4    2gb 00:00 R   -- 
+   jupiter1/0*4
+</pre>
+</div>
+
+<p>
+Для получения более подробной информации о конкретной задаче можно запустить команду
+<code>qstat -f идентификатор_задачи</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="stop_tasks"><a id="orgheadline16"></a><span class="section-number-4">4.4.7</span> Остановка задач</h4>
 <div class="outline-text-4" id="text-stop_tasks">
 <p>
 Остановка программы производится командой <code>qdel идентификатор_задачи</code>
@@ -658,13 +1006,13 @@ exit 0
 </div>
 </div>
 
-<div id="outline-container-orgheadline14" class="outline-2">
-<h2 id="monitoring"><a id="orgheadline14"></a>Мониторинг</h2>
+<div id="outline-container-orgheadline21" class="outline-2">
+<h2 id="monitoring"><a id="orgheadline21"></a><span class="section-number-2">5</span> Мониторинг</h2>
 <div class="outline-text-2" id="text-monitoring">
 </div>
 
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="web_interface"><a id="orgheadline12"></a>Web-интерфейс</h3>
+<div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="web_interface"><a id="orgheadline19"></a><span class="section-number-3">5.1</span> Web-интерфейс</h3>
 <div class="outline-text-3" id="text-web_interface">
 <p>
 Мониторинг кластера реализован при помощи системы Ganglia. Эта система позволяет следить
@@ -683,9 +1031,17 @@ exit 0
 </div>
 
 
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="console"><a id="orgheadline13"></a>Консоль</h3>
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="console"><a id="orgheadline20"></a><span class="section-number-3">5.2</span> Консоль</h3>
 <div class="outline-text-3" id="text-console">
+<p>
+Кроме графического интерфейса существует несколько полезных консольных
+команд для мониторинга. Команда <code>pbsnodes имя_узла</code> позволяет
+получить информацию о конкретном узле: тип, состояние, количество
+процессоров, выполняющиеся задачи. Ниже представлен фрагмент вывода
+этой команды.
+</p>
+
 <div class="org-src-container">
 
 <pre class="src src-raw">[user@jupiter ~]$ pbsnodes jupiter2
@@ -713,12 +1069,40 @@ jupiter2
      sharing = default_shared
 </pre>
 </div>
+
+<p>
+<b>state</b> – состояние узла (<b>job-exclusive</b> – все ресурсы узла заняты;
+<b>free</b> – на узле есть свободные ресурсы для запуска заданий; <b>offline</b>
+– узел временно выведен из эксплуатации, запуск заданий на нем
+невозможен; <b>down</b> – узел выключен); <b>pcpus</b> – число процессорных
+потоков на узле; <b>jobs</b> – задачи, запущенные на узле;
+<b>resources_available.ngpus</b> – число GPU на узле.
+</p>
+
+<p>
+При выполнении команды <code>pbsnodes -a -S -j</code> будет выведена сводная информация обо
+всех узлах кластера.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-raw">[user@jupiter ~]$ pbsnodes -a -S -j
+                                                        mem       ncpus   nmics   ngpus
+vnode           state           njobs   run   susp      f/t        f/t     f/t     f/t   jobs
+--------------- --------------- ------ ----- ------ ------------ ------- ------- ------- -------
+jupiter1        free                 0     0      0  251gb/251gb 160/160     0/0     2/2 --
+jupiter2        free                 0     0      0  251gb/251gb 160/160     0/0     2/2 --
+jupiter3        free                 0     0      0  251gb/251gb 160/160     0/0     2/2 --
+jupiter4        free                 0     0      0  251gb/251gb 160/160     0/0     2/2 --
+jupiter5        free                 0     0      0  251gb/251gb 160/160     0/0     2/2 --
+</pre>
+</div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline15" class="outline-2">
-<h2 id="reference"><a id="orgheadline15"></a>Справочная информация</h2>
+<div id="outline-container-orgheadline22" class="outline-2">
+<h2 id="reference"><a id="orgheadline22"></a><span class="section-number-2">6</span> Справочная информация</h2>
 <div class="outline-text-2" id="text-reference">
 <p>
 Описание основных команд при работе в ОС Linux – <a href="http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html">http://wwwinfo.jinr.ru/unixinfo/pc/lin_os.html</a>
