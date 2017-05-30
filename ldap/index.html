@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-03-29 Ср. 09:49 -->
+<!-- 2017-05-30 Вт. 17:45 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Аутентификация пользователей CentOS 5/6 с использованием OpenLDAP 2.3/2.4</title>
@@ -101,6 +101,7 @@
 <script type="text/javascript" src="../org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
 <style type="text/css">.org-src-name{ text-align: right; }</style>
 <style type="text/css">.outline-2{ margin-top: 60px; }</style>
+<style> p {text-align: justify; } </style>
 
 <style type="text/css">
   pre.src:before {
@@ -528,7 +529,7 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <b>slapd.d</b> (только для версии <b>2.4</b>). Эти два варианта являются
 взаимозаменяемыми и формируют практически идентичные результирующие
 файлы директории <b>slapd.d</b>. Второй способ заключается в использовании
-файла <b>slapd.ldif</b> и утилиты <b>slapdd</b>. В этом случае, содержимое
+файла <b>slapd.ldif</b> и утилиты <b>slapd</b>. В этом случае, содержимое
 файлов директории <b>slapd.d</b> существенно отличается, по сравнению с
 первым способом. Дело в том, что при использовании первого способа в
 файлах директории <b>slapd.d</b> присутствует большое количество
@@ -781,7 +782,7 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="background-color: #fdf6e3;">83a87,89</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> database      config</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}iWDZg5mFKTlK0y8mClqG1IUd7CUKn8QH</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw                {SSHA}7/mVSaKAJnSI99TXgvIwnA+ItLAnST+N</span>
 <span style="background-color: #fdf6e3;">85c91,93</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -993,7 +994,7 @@ OpenLDAP</b> (<b>5/2.3</b>) и <b>slapd</b> в случае <b>CentOS 6/2.4 Open
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLSCertificateKeyFile /etc/openldap/certs/server.key</span>
 <span style="background-color: #fdf6e3;">102a104,106</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootdn                "cn=Manager,cn=config"</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}t6/UlGwPVxv0gm2CcHJlUD52Y+WXKFH/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> rootpw          {SSHA}oodf//2UugLI5Mveplim7BflXi3U8yFb</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> </span>
 <span style="background-color: #fdf6e3;">114c118</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> database      bdb</span>
@@ -1526,7 +1527,7 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">295a296,303</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.8/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -1539,13 +1540,13 @@ rm /var/run/nslcd/*
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> modules = files shadow</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> create_modules = files shadow</span>
 <span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> modules = files shadow ldap</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> create_modules = ldap files shadow</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> modules = ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> create_modules = ldap</span>
 <span style="background-color: #fdf6e3;">64,65c64,65</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # server = ldap</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # basedn = dc=example,dc=com</span>
 <span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> server = ldap://172.17.0.8</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> server = ldap://172.17.0.5</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> basedn = dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">68,69c68,69</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # userBranch = ou=People</span>
@@ -1588,9 +1589,11 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> automount:  files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
 <span style="background-color: #fdf6e3;">13a14,16</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.8/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.5/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
+<span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
+<span style="background-color: #fdf6e3;">5c5,7</span>
 </pre>
 </div>
 </div>
@@ -1601,9 +1604,7 @@ rm /var/run/nslcd/*
 <div class="outline-text-4" id="text-2-4-2">
 <div class="org-src-container">
 <label class="org-src-name">Опции, выставляемые в файле <b>system-auth</b> для <b>5/2.3</b></label>
-<pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
-<span style="background-color: #fdf6e3;">5c5,7</span>
-<span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
+<pre class="src src-diff"><span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        sufficient    pam_unix.so nullok try_first_pass</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> auth        requisite     pam_succeed_if.so uid &gt;= 500 quiet</span>
@@ -1646,13 +1647,13 @@ rm /var/run/nslcd/*
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> modules = files shadow</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> create_modules = files shadow</span>
 <span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> modules = files shadow ldap</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> create_modules = ldap files shadow</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> modules = ldap</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> create_modules = ldap</span>
 <span style="background-color: #fdf6e3;">64,65c64,65</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # server = ldap</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # basedn = dc=example,dc=com</span>
 <span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> server = ldap://172.17.0.5</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> server = ldap://172.17.0.4</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> basedn = dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">68,69c68,69</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> # userBranch = ou=People</span>
@@ -1665,16 +1666,17 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn = cn=Manager,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #93a1a1;">/etc/nslcd.conf</span>
-<span style="background-color: #fdf6e3;">131,132c131,136</span>
+<span style="background-color: #fdf6e3;">131,132c131,137</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> uri ldap://127.0.0.1/</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> base dc=example,dc=com</span>
 <span style="background-color: #fdf6e3;">---</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> binddn uid=authenticator,ou=system,dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_reqcert allow</span>
 <span style="color: #93a1a1;">/etc/nsswitch.conf</span>
 <span style="background-color: #fdf6e3;">33,35c33,35</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> passwd:     files</span>
@@ -1695,12 +1697,11 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">63a64</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers: files ldap</span>
 <span style="color: #93a1a1;">/etc/openldap/ldap.conf</span>
-<span style="background-color: #fdf6e3;">15c15,17</span>
+<span style="background-color: #fdf6e3;">15c15,18</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> TLS_CACERTDIR /etc/openldap/certs</span>
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_CACERTDIR /etc/openldap/cacerts</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.5/</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> URI ldap://172.17.0.4/</span>
 </pre>
 </div>
 </div>
@@ -1711,7 +1712,9 @@ rm /var/run/nslcd/*
 <div class="outline-text-4" id="text-2-4-4">
 <div class="org-src-container">
 <label class="org-src-name">Опции, выставляемые файлах <b>system-auth</b>, <b>pam_ldap.conf</b> и <b>sudo-ldap.conf</b> для <b>6/2.4</b></label>
-<pre class="src src-diff"><span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
+<pre class="src src-diff"><span style="color: #859900;">&gt;</span><span style="color: #859900;"> BASE dc=mercury,dc=febras,dc=net</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> TLS_REQCERT allow</span>
+<span style="color: #93a1a1;">/etc/pam.d/system-auth</span>
 <span style="background-color: #fdf6e3;">5c5,7</span>
 <span style="color: #dc322f;">&lt;</span><span style="color: #dc322f;"> auth        sufficient    pam_unix.so try_first_pass nullok</span>
 <span style="background-color: #fdf6e3;">---</span>
@@ -1745,7 +1748,7 @@ rm /var/run/nslcd/*
 <span style="background-color: #fdf6e3;">---</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="background-color: #fdf6e3;">289a290,295</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> ssl no</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> tls_cacertdir /etc/openldap/cacerts</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> pam_password md5</span>
@@ -1753,7 +1756,7 @@ rm /var/run/nslcd/*
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> bindpw secret</span>
 <span style="color: #93a1a1;">/etc/sudo-ldap.conf</span>
 <span style="background-color: #fdf6e3;">86a87,92</span>
-<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.5/</span>
+<span style="color: #859900;">&gt;</span><span style="color: #859900;"> uri ldap://172.17.0.4/</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_base dc=mercury,dc=febras,dc=net</span>
 <span style="color: #859900;">&gt;</span><span style="color: #859900;"> sudoers_debug 0</span>
@@ -2906,7 +2909,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}$1$cMgX2/5Z$2dBOIa75mWgeQCeoDGYMA0
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2924,7 +2927,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2942,7 +2945,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2960,7 +2963,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2978,7 +2981,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -2996,7 +2999,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3014,7 +3017,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3032,7 +3035,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3050,7 +3053,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3068,7 +3071,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3085,7 +3088,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3103,7 +3106,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3121,7 +3124,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3139,7 +3142,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3157,7 +3160,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3175,7 +3178,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}*
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3193,7 +3196,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3211,7 +3214,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3229,7 +3232,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3247,7 +3250,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3265,7 +3268,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7
@@ -3282,7 +3285,7 @@ objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
 userPassword: {crypt}!!
-shadowLastChange: 17253
+shadowLastChange: 17315
 shadowMin: 0
 shadowMax: 99999
 shadowWarning: 7

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-05-16 Вт. 17:59 -->
+<!-- 2017-05-30 Вт. 17:12 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Руководство пользователя кластера x86_64 ВЦ ДВО РАН</title>
@@ -101,6 +101,7 @@
 <script type="text/javascript" src="../org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
 <style type="text/css">.org-src-name{ text-align: right; }</style>
 <style type="text/css">.outline-2{ margin-top: 60px; }</style>
+<style> p {text-align: justify; } </style>
 
 <style type="text/css">
   pre.src:before {
@@ -203,7 +204,7 @@ for the JavaScript code in this tag.
 </div>
 <p class="verse">
 Версия: <b>5.1</b><br  />
-Дата: <b>16-05-2017</b><br  />
+Дата: <b>30-05-2017</b><br  />
 </p>
 
 <p>
@@ -212,7 +213,7 @@ for the JavaScript code in this tag.
 Данное руководство содержит минимально необходимый объем информации
 для работы на кластере ВЦ ДВО РАН: описание процесса регистрации,
 сведения по работе в ОС Linux (вход в систему, работа с каталогами и
-файлами, мониторинг) и работе с MPI программами и не параллельными
+файлами, мониторинг) и работе с MPI программами и непараллельными
 программами на кластере (компиляция, запуск, остановка, работа с
 очередями). В тексте под термином параллельная программа
 подразумеваются только MPI программы.
@@ -401,7 +402,7 @@ ssh и в поле «Host Name (or IP address)» указать адрес
 режиме. Необходимо помнить, что консоль Linux, в отличии от Windows,
 различает регистр вводимых символов, то есть <code>mydoc.txt</code> и <code>mydoc.TXT</code> не
 одно и то же. После входа на экране отображается консоль командного
-интерпретатора в следующем формате имя_пользователя@машина текущий_каталог:
+интерпретатора в формате <code>имя_пользователя@машина текущий_каталог</code>:
 </p>
 
 <div class="org-src-container">
