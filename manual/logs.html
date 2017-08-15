@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+<head>
+<!-- 2017-08-15 Вт. 19:29 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aggregating Container Logs</title>
+<meta  name="generator" content="Org-mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="../org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="../org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style type="text/css">.org-src-name{ text-align: right; }</style>
+<style type="text/css">.outline-2{ margin-top: 60px; }</style>
+<style> p {text-align: justify; } </style>
+
+<style type="text/css">
+  pre.src:before {
+    top: -5px;
+  }
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Aggregating Container Logs</h1>
+<blockquote>
+<p>
+Организовать перенаправление средствами Openshift логов Docker в EFK.
+</p>
+
+<p>
+As an OpenShift Origin cluster administrator, you can deploy the EFK stack to <a href="https://docs.openshift.org/latest/install_config/aggregate_logging.html">aggregate logs</a> for a range of OpenShift Origin services. 
+</p>
+
+<p>
+<a href="https://github.com/openshift/openshift-ansible/tree/master/roles/openshift_logging">openshift_logging Role</a> is used for installing the Aggregated Logging stack.
+</p>
+</blockquote>
+
+<p>
+<span class="underline">Статус по задаче</span>:
+</p>
+
+<p>
+Был выбран самый простой и быстрый способ развертывания кластера с подключенным перенаправлением логов через <code class="src src-sh">oc cluster up --logging=true
+</code>, не требующий ничего, кроме бинарника OpenShift Client и установленного докера (использовался хост с Ubuntu) с дополнительной настройкой демона <code class="src src-sh">--insecure-registry 172.30.0.0/16
+</code>.
+</p>
+
+<p>
+Далее был создан проект <code class="src src-sh"><span class="org-builtin">test</span>
+</code> и протестирована функциональность перенаправления логов в EFK: cсылка <b>View Archive</b> на вкладке Logs для конкретного <b>pod</b>, обеспечивающая переход на сервис Kibana, работает, логи доступны в Kibana.
+</p>
+
+<p>
+<b>Использование ansible</b>. Запуск <code class="src src-sh">oc cluster up
+</code> вызывает bootstrap-сценарий развертывания, при котором создается контейнер openshift-ansible-logging-job, выполняющий необходимую работу по базовой настройке перенаправления логов. При этом задействованы всего 8 параметров роли <b>openshift_logging</b>.
+</p>
+
+<p>
+<span class="underline">Дальнейшие действия</span>:
+</p>
+
+<p>
+Можно смотреть в сторону доработки возможностей аггрегирования логов (оставаясь на текущей, простой в установке, конфигурации кластера), тогда желательно сформулировать направление, по которому будет вестись работа (например, <b>journald</b> или какие-то конкретные настройки).
+</p>
+
+<p>
+Или можно сосредоточиться на развертывании кластера вручную (не используя bootstrap) с выполнением необходимых шагов установки и конфигурировании параметров роли.
+</p>
+
+<p>
+Пространства имен кластера:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-raw">NAMESPACE   NAME                                 REVISION   DESIRED   CURRENT   TRIGGERED BY
+default     dc/docker-registry                   1          1         1         config
+default     dc/router                            1          1         1         config
+logging     dc/hello-openshift                   1          1         1         config
+logging     dc/logging-curator                   1          1         1         config
+logging     dc/logging-es-data-master-jcy100hz   1          1         1         config
+logging     dc/logging-kibana                    1          1         1         config
+test        dc/jenkins                           1          1         1         config,image(jenkins:latest)
+NAMESPACE   NAME                                   DESIRED   CURRENT   READY     AGE       CONTAINER(S)          IMAGE(S)                                                                                              SELECTOR
+default     rc/docker-registry-1                   1         1         1         5h        registry              openshift/origin-docker-registry:v3.6.0                                                               deployment=docker-registry-1,deploymentconfig=docker-registry,docker-registry=default
+default     rc/router-1                            1         1         1         5h        router                openshift/origin-haproxy-router:v3.6.0                                                                deployment=router-1,deploymentconfig=router,router=router
+logging     rc/hello-openshift-1                   1         1         1         25m       hello-openshift       docker.io/openshift/hello-openshift:latest                                                            deployment=hello-openshift-1,deploymentconfig=hello-openshift,run=hello-openshift
+logging     rc/logging-curator-1                   1         1         1         4h        curator               openshift/origin-logging-curator:v3.6.0                                                               component=curator,deployment=logging-curator-1,deploymentconfig=logging-curator,logging-infra=curator,provider=openshift
+logging     rc/logging-es-data-master-jcy100hz-1   1         1         1         5h        elasticsearch         openshift/origin-logging-elasticsearch:v3.6.0                                                         component=es,deployment=logging-es-data-master-jcy100hz-1,deploymentconfig=logging-es-data-master-jcy100hz,logging-infra=elasticsearch,provider=openshift
+logging     rc/logging-kibana-1                    1         1         1         4h        kibana,kibana-proxy   openshift/origin-logging-kibana:v3.6.0,openshift/origin-logging-auth-proxy:v3.6.0                     component=kibana,deployment=logging-kibana-1,deploymentconfig=logging-kibana,logging-infra=kibana,provider=openshift
+test        rc/jenkins-1                           1         1         1         4h        jenkins               openshift/jenkins-2-centos7@sha256:20d195e4d327c12c96e588482a3a3618a316ec7e34a9ac67d963df7887339ff2   app=jenkins,deployment=jenkins-1,deploymentconfig=jenkins
+NAMESPACE   NAME                    HOST/PORT                         PATH      SERVICES         PORT      TERMINATION          WILDCARD
+logging     routes/logging-kibana   kibana-logging.127.0.0.1.nip.io             logging-kibana   &lt;all&gt;     reencrypt/Redirect   None
+NAMESPACE   NAME                     CLUSTER-IP       EXTERNAL-IP   PORT(S)                              AGE       SELECTOR
+default     svc/docker-registry      172.30.1.1       &lt;none&gt;        5000/TCP                             5h        docker-registry=default
+default     svc/kubernetes           172.30.0.1       &lt;none&gt;        443/TCP,53/UDP,53/TCP                5h        &lt;none&gt;
+default     svc/router               172.30.228.9     &lt;none&gt;        80/TCP,443/TCP,1936/TCP              5h        router=router
+logging     svc/logging-es           172.30.98.241    &lt;none&gt;        9200/TCP                             5h        component=es,provider=openshift
+logging     svc/logging-es-cluster   172.30.45.202    &lt;none&gt;        9300/TCP                             5h        component=es,provider=openshift
+logging     svc/logging-kibana       172.30.38.124    &lt;none&gt;        443/TCP                              5h        component=kibana,provider=openshift
+test        svc/jenkins              172.30.175.234   &lt;none&gt;        53/TCP,8080/TCP,8443/TCP,50000/TCP   4h        deploymentconfig=jenkins
+NAMESPACE   NAME                                 DESIRED   SUCCESSFUL   AGE       CONTAINER(S)                    IMAGE(S)                          SELECTOR
+default     jobs/persistent-volume-setup         1         1            5h        storage-setup-job               openshift/origin:v3.6.0           controller-uid=76112f21-815d-11e7-b28a-005056a62ea2
+logging     jobs/openshift-ansible-logging-job   1         1            5h        openshift-ansible-logging-job   openshift/origin-ansible:v3.6.0   controller-uid=77310085-815d-11e7-b28a-005056a62ea2
+NAMESPACE   NAME                                         READY     STATUS      RESTARTS   AGE       IP             NODE
+default     po/docker-registry-1-840mk                   1/1       Running     0          5h        172.17.0.2     localhost
+default     po/persistent-volume-setup-cmfsl             0/1       Completed   0          5h        172.17.0.2     localhost
+default     po/router-1-35v63                            1/1       Running     0          5h        192.168.0.95   localhost
+logging     po/hello-openshift-1-xvjvb                   1/1       Running     0          25m       172.17.0.7     localhost
+logging     po/logging-curator-1-39w3l                   1/1       Running     0          4h        172.17.0.4     localhost
+logging     po/logging-es-data-master-jcy100hz-1-2lx69   1/1       Running     0          5h        172.17.0.3     localhost
+logging     po/logging-fluentd-774nn                     1/1       Running     0          4h        172.17.0.5     localhost
+logging     po/logging-kibana-1-40qks                    2/2       Running     0          4h        172.17.0.6     localhost
+logging     po/openshift-ansible-logging-job-2cdwx       0/1       Completed   0          5h        192.168.0.95   localhost
+test        po/jenkins-1-498ds                           1/1       Running     0          4h        172.17.0.8     localhost
+</pre>
+</div>
+</div>
+</body>
+</html>
