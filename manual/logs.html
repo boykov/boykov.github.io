@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-<!-- 2017-08-15 Вт. 19:29 -->
+<!-- 2017-08-18 Пт. 19:02 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Aggregating Container Logs</title>
@@ -159,18 +159,34 @@ for the JavaScript code in this tag.
 <div id="content">
 <h1 class="title">Aggregating Container Logs</h1>
 <blockquote>
-<p>
-Организовать перенаправление средствами Openshift логов Docker в EFK.
-</p>
+<ol class="org-ol">
+<li>Организовать перенаправление средствами Openshift логов Docker в EFK.</li>
+<li>Написать роль для прописывания в конфигурацию openshift(развернутого на Ubuntu) -  логирования в elk/efk стек.</li>
+</ol>
 
 <p>
 As an OpenShift Origin cluster administrator, you can deploy the EFK stack to <a href="https://docs.openshift.org/latest/install_config/aggregate_logging.html">aggregate logs</a> for a range of OpenShift Origin services. 
 </p>
 
 <p>
-<a href="https://github.com/openshift/openshift-ansible/tree/master/roles/openshift_logging">openshift_logging Role</a> is used for installing the Aggregated Logging stack.
+The openshift-ansible <a href="https://github.com/openshift/openshift-ansible/tree/master/roles/openshift_logging">openshift_logging role</a> orchestrates the deployment of the logging stack including: resource definitions, key/cert generation, component start and stop order.
 </p>
 </blockquote>
+
+<div class="note">
+<p>
+If you are not using the provided Kibana and Elasticsearch images, you will not have the same multi-tenant capabilities and your data will not be restricted by user access to a particular project.
+</p>
+
+</div>
+
+<p>
+Openshift, равернутый на Ubuntu. 
+</p>
+
+<a onclick="toggleDiv2('centos',$(this));" class="fa fa-caret-right"> 1. openshift centos</a>
+
+<div id="centos" style="display:none">
 
 <p>
 <span class="underline">Статус по задаче</span>:
@@ -250,6 +266,8 @@ logging     po/logging-kibana-1-40qks                    2/2       Running     0
 logging     po/openshift-ansible-logging-job-2cdwx       0/1       Completed   0          5h        192.168.0.95   localhost
 test        po/jenkins-1-498ds                           1/1       Running     0          4h        172.17.0.8     localhost
 </pre>
+</div>
+
 </div>
 </div>
 </body>
