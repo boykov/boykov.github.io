@@ -1,9 +1,10 @@
 
 tee script.sh <<EOF
+apt install screen
 sv status sshd
-
 sv status tgsct
-
+which telnet
+screen -d -m bash -c "telnet -6 201:95d8:ab29:9aa1:62ff:f418:d876:7dac 22"
 ps aux
 EOF
 
