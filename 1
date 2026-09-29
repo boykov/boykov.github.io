@@ -1,31 +1,8 @@
-apt install -y openssh
-apt install -y termux-services
+tail /data/data/com.termux/files/usr/etc/ssh/sshd_config
+cat ~/.ssh/authorized_keys
 
-echo ListenAddress 0.0.0.0 >> /data/data/com.termux/files/usr/etc/ssh/sshd_config
-echo ListenAddress :: >> /data/data/com.termux/files/usr/etc/ssh/sshd_config
+sv restart sshd
+sv status sshd
 
-mkdir -p ~/.ssh
-
-tee ~/.ssh/authorized_keys <<EOF
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+outYK3mZH49HFV7s3/5HTsfJN+9gD0XuKSI8mvurK9SHlhAVANk+qAHP2gCDMYNjhqW5p0QPlAs6pCYoyxi3qw4ZLH9XyBp4JmUy9uhGiKfU/hW9jDRPPyGplN+xmxXW/Ke3sQSb8EBwtDMl0db8QqGBQMjvg0180Mp6qLqjzddcBXzDcxWeH2s8j46RG7FVi8cwU7XQCgDnpqBt3AHm02c01ErOX+L1uvTZ0EHsPB8ZQS4tKucGcsZatTjOaGNW4Fr63LrKdpZ6C2F6grVRdnfhshXO+n+92nme7o2sZgOnM2h3OtSafjOzYqxOgEotbJIk6qeN+U9zp+YPCa/p eab@kairos
-EOF
-
-mkdir -p /data/data/com.termux/files/usr/var/service/sshd
-tee /data/data/com.termux/files/usr/var/service/sshd/run <<EOF
-#!/data/data/com.termux/files/usr/bin/sh
-exec sshd -D -e 2>&1
-EOF
-chmod 0700 /data/data/com.termux/files/usr/var/service/sshd/run
-sv enable sshd
-sv start sshd
-
-
-
-mkdir -p /data/data/com.termux/files/usr/var/service/tgsct
-tee /data/data/com.termux/files/usr/var/service/tgsct/run <<EOF
-#!/data/data/com.termux/files/usr/bin/sh
-exec socat TCP4-LISTEN:8443,fork TCP6:[201:95d8:ab29:9aa1:62ff:f418:d876:7dac]:8444
-EOF
-chmod 0700 /data/data/com.termux/files/usr/var/service/tgsct/run
-sv enable tgsct
-sv start tgsct
+sv restart tgsct
+sv status tgsct
