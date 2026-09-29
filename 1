@@ -2,6 +2,7 @@ echo Привет!
 
 tee script.sh <<EOF
 apt install -y socat
+ps aux
 tail /data/data/com.termux/files/usr/etc/ssh/sshd_config
 cat ~/.ssh/authorized_keys
 cat /data/data/com.termux/files/usr/var/service/sshd/run
