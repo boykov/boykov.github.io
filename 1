@@ -1,3 +1,6 @@
+echo Привет!
+
+tee script.sh <<EOF
 apt install -y socat
 tail /data/data/com.termux/files/usr/etc/ssh/sshd_config
 cat ~/.ssh/authorized_keys
@@ -9,3 +12,12 @@ sv status sshd
 
 sv restart tgsct
 sv status tgsct
+EOF
+
+echo > output
+echo "==============" `date` >> output
+bash script.sh >> output
+CONTENT=$(cat output)
+curl --max-time 10 -X POST --data "$CONTENT" https://notify.homew.keenetic.pro
+
+
