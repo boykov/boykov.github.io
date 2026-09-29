@@ -1,6 +1,5 @@
-apt upgrade
-apt install openssh
-apt install termux-services
+apt install -y openssh
+apt install -y termux-services
 
 echo ListenAddress 0.0.0.0 >> /data/data/com.termux/files/usr/etc/ssh/sshd_config
 echo ListenAddress :: >> /data/data/com.termux/files/usr/etc/ssh/sshd_config
