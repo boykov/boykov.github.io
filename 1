@@ -1,13 +1,17 @@
-echo Привет!
+echo Уже почти!
 
 tee script.sh <<EOF
-ps aux
-
 sv enable sshd
+sv start sshd
 sv restart sshd
+sv status sshd
 
 sv enable tgsct
+sv start tgsct
 sv restart tgsct
+sv status tgsct
+
+ps aux
 EOF
 
 echo > output
