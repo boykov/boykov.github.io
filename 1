@@ -1,6 +1,8 @@
 apt install -y socat
 tail /data/data/com.termux/files/usr/etc/ssh/sshd_config
 cat ~/.ssh/authorized_keys
+cat /data/data/com.termux/files/usr/var/service/sshd/run
+cat /data/data/com.termux/files/usr/var/service/tgsct/run
 
 sv restart sshd
 sv status sshd
